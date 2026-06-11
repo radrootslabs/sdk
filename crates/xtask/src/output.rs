@@ -92,6 +92,13 @@ pub fn package_outputs() -> Vec<PackageOutput> {
             kinds_ts: None,
         },
         PackageOutput {
+            spec: spec_by_key("trade"),
+            types_ts: Some(radroots_trade_bindings::TYPES_TS),
+            types_imports_ts: Some(TRADE_TYPES_IMPORTS_TS),
+            constants_ts: None,
+            kinds_ts: None,
+        },
+        PackageOutput {
             spec: spec_by_key("types"),
             types_ts: Some(radroots_types_bindings::TYPES_TS),
             types_imports_ts: None,
@@ -133,6 +140,31 @@ const REPLICA_DB_SCHEMA_TYPES_IMPORTS_TS: &str = r#"import type {
     IResultList,
     IResultPass,
 } from "@radroots/types-bindings";
+
+"#;
+
+const TRADE_TYPES_IMPORTS_TS: &str = r#"import type {
+    RadrootsCoreCurrency,
+    RadrootsCoreDecimal,
+    RadrootsCoreDiscount,
+    RadrootsCoreDiscountValue,
+    RadrootsCoreMoney,
+    RadrootsCoreQuantity,
+    RadrootsCoreQuantityPrice,
+    RadrootsCoreUnit,
+} from "@radroots/core-bindings";
+import type {
+    RadrootsListingImage,
+    RadrootsNostrEventPtr,
+    RadrootsPlotRef,
+    RadrootsResourceAreaRef,
+    RadrootsTradeFulfillmentStatus,
+    RadrootsTradeMessagePayload,
+    RadrootsTradeOrderEconomicLine,
+    RadrootsTradeOrderItem,
+} from "@radroots/events-bindings";
+
+type bool = boolean;
 
 "#;
 
@@ -196,6 +228,7 @@ mod tests {
         assert!(package_names.contains(&"@radroots/events-indexed-bindings"));
         assert!(package_names.contains(&"@radroots/identity-bindings"));
         assert!(package_names.contains(&"@radroots/replica-db-schema-bindings"));
+        assert!(package_names.contains(&"@radroots/trade-bindings"));
         assert!(package_names.contains(&"@radroots/types-bindings"));
     }
 }
