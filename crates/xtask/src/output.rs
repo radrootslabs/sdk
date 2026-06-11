@@ -54,6 +54,16 @@ pub fn package_outputs() -> Vec<PackageOutput> {
             constants_ts: None,
         },
         PackageOutput {
+            spec: spec_by_key("events_indexed"),
+            types_ts: Some(radroots_events_indexed_bindings::TYPES_TS),
+            constants_ts: None,
+        },
+        PackageOutput {
+            spec: spec_by_key("identity"),
+            types_ts: None,
+            constants_ts: Some(radroots_identity_bindings::CONSTANTS_TS),
+        },
+        PackageOutput {
             spec: spec_by_key("types"),
             types_ts: Some(radroots_types_bindings::TYPES_TS),
             constants_ts: None,
@@ -115,6 +125,8 @@ mod tests {
             .map(|output| output.spec.package_name)
             .collect::<Vec<_>>();
         assert!(package_names.contains(&"@radroots/core-bindings"));
+        assert!(package_names.contains(&"@radroots/events-indexed-bindings"));
+        assert!(package_names.contains(&"@radroots/identity-bindings"));
         assert!(package_names.contains(&"@radroots/types-bindings"));
     }
 }
