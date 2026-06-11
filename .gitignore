@@ -1,0 +1,47 @@
+# Rust
+/target/
+**/*.rs.bk
+
+node_modules
+dist
+.turbo
+
+# Logs
+logs/
+*.log
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+.local*
+justfile
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+*.crt
+*.key
+
+# Testing
+test*.json
+
+# Editors
+.vscode/
+.idea/
+*.iml
+
+# Dev
+.local
+.direnv/
+.treefmt-cache/
+result
+notes*.txt
+
+# Beads / Dolt runtime files
+.beads/dolt/
+.beads/dolt-access.lock

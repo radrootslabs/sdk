@@ -1,0 +1,14 @@
+# radroots_sdk
+
+This is the README for `sdk` which contains the Rad Roots SDK, including Rust runtime
+APIs, generated bindings, FFI layers, and package surfaces.
+
+## Copyright
+
+Except as otherwise noted, all files in the `sdk` distribution are
+
+    Copyright (c) 2026 Tyson Lupul
+
+## License
+
+This repository is licensed under either MIT or Apache-2.0, at your option. See LICENSE-MIT and LICENSE-APACHE.
