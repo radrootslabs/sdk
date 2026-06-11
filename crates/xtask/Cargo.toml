@@ -12,3 +12,6 @@ publish = false
 [[bin]]
 name = "radroots_sdk_xtask"
 path = "src/main.rs"
+
+[dependencies]
+serde_json = "1"

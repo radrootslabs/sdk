@@ -679,6 +679,9 @@ dependencies = [
 [[package]]
 name = "radroots_sdk_xtask"
 version = "0.1.0"
+dependencies = [
+ "serde_json",
+]
 
 [[package]]
 name = "radroots_secret_vault"
