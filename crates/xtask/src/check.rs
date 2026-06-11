@@ -10,6 +10,7 @@ pub fn check() -> Result<(), String> {
     validate_package_matrix()?;
     let root = workspace_root()?;
     check_forbidden_packages(&root)?;
+    check_binding_crate_sources(&root)?;
     for spec in package_specs() {
         let package_dir = root.join(spec.package_dir);
         let package_json_path = package_dir.join("package.json");
@@ -29,6 +30,45 @@ pub fn check() -> Result<(), String> {
             if actual != expected.contents {
                 return Err(format!("stale generated output: {}", path.display()));
             }
+        }
+    }
+    Ok(())
+}
+
+fn check_binding_crate_sources(root: &Path) -> Result<(), String> {
+    for spec in package_specs() {
+        let crate_src_dir = root.join(spec.crate_dir).join("src");
+        let typescript_dir = crate_src_dir.join("typescript");
+        if typescript_dir.exists() {
+            return Err(format!(
+                "forbidden crate TypeScript source directory exists: {}",
+                typescript_dir.display()
+            ));
+        }
+        check_no_typescript_files(&crate_src_dir)?;
+    }
+    Ok(())
+}
+
+fn check_no_typescript_files(dir: &Path) -> Result<(), String> {
+    for entry in
+        fs::read_dir(dir).map_err(|error| format!("failed to read {}: {error}", dir.display()))?
+    {
+        let entry =
+            entry.map_err(|error| format!("failed to read {} entry: {error}", dir.display()))?;
+        let path = entry.path();
+        let file_type = entry
+            .file_type()
+            .map_err(|error| format!("failed to inspect {}: {error}", path.display()))?;
+        if file_type.is_dir() {
+            check_no_typescript_files(&path)?;
+        } else if file_type.is_file()
+            && path.extension().and_then(|extension| extension.to_str()) == Some("ts")
+        {
+            return Err(format!(
+                "forbidden crate TypeScript source file exists: {}",
+                path.display()
+            ));
         }
     }
     Ok(())
@@ -75,10 +115,60 @@ fn check_package_json(path: &Path, expected_name: &str) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests {
-    use super::check;
+    use std::{
+        fs,
+        path::PathBuf,
+        time::{SystemTime, UNIX_EPOCH},
+    };
+
+    use super::{check, check_binding_crate_sources, check_no_typescript_files};
 
     #[test]
     fn package_skeleton_is_valid() {
         check().expect("package skeleton validates");
+    }
+
+    #[test]
+    fn rejects_crate_typescript_directories() {
+        let root = test_root("typescript_dir");
+        let typescript_dir = root
+            .join("crates")
+            .join("core_bindings")
+            .join("src")
+            .join("typescript");
+        fs::create_dir_all(&typescript_dir).expect("create forbidden directory");
+
+        let error = check_binding_crate_sources(&root).expect_err("forbidden directory rejected");
+
+        assert!(error.contains("forbidden crate TypeScript source directory"));
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn rejects_crate_typescript_files() {
+        let root = test_root("typescript_file");
+        let src_dir = root.join("crates/core_bindings/src");
+        fs::create_dir_all(&src_dir).expect("create crate source directory");
+        fs::write(src_dir.join("types.ts"), "export type A = string;\n")
+            .expect("write forbidden file");
+
+        let error = check_no_typescript_files(&src_dir).expect_err("forbidden file rejected");
+
+        assert!(error.contains("forbidden crate TypeScript source file"));
+        let _ = fs::remove_dir_all(root);
+    }
+
+    fn test_root(name: &str) -> PathBuf {
+        let stamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system time after epoch")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "radroots_sdk_xtask_check_{name}_{}_{}",
+            std::process::id(),
+            stamp
+        ));
+        let _ = fs::remove_dir_all(&root);
+        root
     }
 }
