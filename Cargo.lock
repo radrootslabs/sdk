@@ -684,6 +684,7 @@ dependencies = [
  "radroots_events_bindings",
  "radroots_events_indexed_bindings",
  "radroots_identity_bindings",
+ "radroots_replica_db_schema_bindings",
  "radroots_types_bindings",
  "serde_json",
 ]

@@ -18,5 +18,6 @@ radroots_core_bindings = { path = "../core_bindings" }
 radroots_events_bindings = { path = "../events_bindings" }
 radroots_events_indexed_bindings = { path = "../events_indexed_bindings" }
 radroots_identity_bindings = { path = "../identity_bindings" }
+radroots_replica_db_schema_bindings = { path = "../replica_db_schema_bindings" }
 radroots_types_bindings = { path = "../types_bindings" }
 serde_json = "1"
