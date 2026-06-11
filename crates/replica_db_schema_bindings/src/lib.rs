@@ -1,15 +1,18 @@
 pub use radroots_replica_db_schema as upstream;
 
-pub const TYPES_TS: &str = include_str!("typescript/types.ts");
+mod model;
+
+pub use model::types_module;
 
 #[cfg(test)]
 mod tests {
-    use super::TYPES_TS;
+    use super::types_module;
 
     #[test]
     fn preserves_replica_schema_exports() {
-        assert!(TYPES_TS.contains("export type Farm"));
-        assert!(TYPES_TS.contains("export type GcsLocation"));
-        assert!(TYPES_TS.contains("export type IGcsLocationFindManyResolve"));
+        let rendered = types_module().render();
+        assert!(rendered.contains("export type Farm"));
+        assert!(rendered.contains("export type GcsLocation"));
+        assert!(rendered.contains("export type IGcsLocationFindManyResolve"));
     }
 }

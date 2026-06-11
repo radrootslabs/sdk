@@ -30,7 +30,7 @@ export type GcsLocation = { id: string, created_at: string, updated_at: string, 
 
 export type GcsLocationFarmArgs = { id: string, };
 
-export type GcsLocationFindManyRel = { "on_trade_product": GcsLocationTradeProductArgs } | { "off_trade_product": GcsLocationTradeProductArgs } | { "on_farm": GcsLocationFarmArgs } | { "off_farm": GcsLocationFarmArgs } | { "on_plot": GcsLocationPlotArgs } | { "off_plot": GcsLocationPlotArgs };
+export type GcsLocationFindManyRel = { on_trade_product: GcsLocationTradeProductArgs, } | { off_trade_product: GcsLocationTradeProductArgs, } | { on_farm: GcsLocationFarmArgs, } | { off_farm: GcsLocationFarmArgs, } | { on_plot: GcsLocationPlotArgs, } | { off_plot: GcsLocationPlotArgs, };
 
 export type GcsLocationPlotArgs = { id: string, };
 
@@ -484,7 +484,7 @@ export type LogErrorQueryBindValues = { id: string, } | { nostr_pubkey: string, 
 
 export type MediaImage = { id: string, created_at: string, updated_at: string, file_path: string, mime_type: string, res_base: string, res_path: string, label: string | null, description: string | null, };
 
-export type MediaImageFindManyRel = { "on_trade_product": MediaImageTradeProductArgs } | { "off_trade_product": MediaImageTradeProductArgs };
+export type MediaImageFindManyRel = { on_trade_product: MediaImageTradeProductArgs, } | { off_trade_product: MediaImageTradeProductArgs, };
 
 export type MediaImageQueryBindValues = { id: string, } | { file_path: string, };
 
@@ -496,7 +496,7 @@ export type NostrEventStateQueryBindValues = { id: string, } | { key: string, };
 
 export type NostrProfile = { id: string, created_at: string, updated_at: string, public_key: string, profile_type: string, name: string, display_name: string | null, about: string | null, website: string | null, picture: string | null, banner: string | null, nip05: string | null, lud06: string | null, lud16: string | null, };
 
-export type NostrProfileFindManyRel = { "on_relay": NostrProfileRelayArgs } | { "off_relay": NostrProfileRelayArgs };
+export type NostrProfileFindManyRel = { on_relay: NostrProfileRelayArgs, } | { off_relay: NostrProfileRelayArgs, };
 
 export type NostrProfileQueryBindValues = { id: string, } | { public_key: string, };
 
@@ -504,7 +504,7 @@ export type NostrProfileRelayArgs = { id: string, };
 
 export type NostrRelay = { id: string, created_at: string, updated_at: string, url: string, relay_id: string | null, name: string | null, description: string | null, pubkey: string | null, contact: string | null, supported_nips: string | null, software: string | null, version: string | null, data: string | null, };
 
-export type NostrRelayFindManyRel = { "on_profile": NostrRelayProfileArgs } | { "off_profile": NostrRelayProfileArgs };
+export type NostrRelayFindManyRel = { on_profile: NostrRelayProfileArgs, } | { off_profile: NostrRelayProfileArgs, };
 
 export type NostrRelayProfileArgs = { public_key: string, };
 

@@ -670,6 +670,7 @@ name = "radroots_replica_db_schema_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_replica_db_schema",
+ "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -722,6 +723,7 @@ dependencies = [
 name = "radroots_trade_bindings"
 version = "0.1.0"
 dependencies = [
+ "radroots_sdk_binding_model",
  "radroots_trade",
 ]
 
