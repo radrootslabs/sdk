@@ -1,7 +1,6 @@
 pub use radroots_types as upstream;
 
-pub const TYPES_TS: &str =
-    include_str!("../../../testdata/baseline/current-radroots-generated/types/types.ts");
+pub const TYPES_TS: &str = include_str!("typescript/types.ts");
 
 #[cfg(test)]
 mod tests {

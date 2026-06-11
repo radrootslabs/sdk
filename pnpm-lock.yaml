@@ -41,30 +41,6 @@ importers:
 
   packages/types-bindings: {}
 
-  tests/import-smoke:
-    dependencies:
-      '@radroots/core-bindings':
-        specifier: workspace:*
-        version: link:../../packages/core-bindings
-      '@radroots/events-bindings':
-        specifier: workspace:*
-        version: link:../../packages/events-bindings
-      '@radroots/events-indexed-bindings':
-        specifier: workspace:*
-        version: link:../../packages/events-indexed-bindings
-      '@radroots/identity-bindings':
-        specifier: workspace:*
-        version: link:../../packages/identity-bindings
-      '@radroots/replica-db-schema-bindings':
-        specifier: workspace:*
-        version: link:../../packages/replica-db-schema-bindings
-      '@radroots/trade-bindings':
-        specifier: workspace:*
-        version: link:../../packages/trade-bindings
-      '@radroots/types-bindings':
-        specifier: workspace:*
-        version: link:../../packages/types-bindings
-
 packages:
 
   typescript@5.9.3:

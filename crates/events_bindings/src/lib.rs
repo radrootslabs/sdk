@@ -1,11 +1,8 @@
 pub use radroots_events as upstream;
 
-pub const TYPES_TS: &str =
-    include_str!("../../../testdata/baseline/current-radroots-generated/events/types.ts");
-pub const CONSTANTS_TS: &str =
-    include_str!("../../../testdata/baseline/current-radroots-generated/events/constants.ts");
-pub const KINDS_TS: &str =
-    include_str!("../../../testdata/baseline/current-radroots-generated/events/kinds.ts");
+pub const TYPES_TS: &str = include_str!("typescript/types.ts");
+pub const CONSTANTS_TS: &str = include_str!("typescript/constants.ts");
+pub const KINDS_TS: &str = include_str!("typescript/kinds.ts");
 
 #[cfg(test)]
 mod tests {
