@@ -9,11 +9,14 @@ impl TsModule {
     }
 
     pub fn render(&self) -> String {
-        self.declarations
-            .iter()
-            .map(TsDeclaration::render)
-            .collect::<Vec<_>>()
-            .join("\n\n")
+        let mut rendered = String::new();
+        for (index, declaration) in self.declarations.iter().enumerate() {
+            if index > 0 {
+                rendered.push_str(render_separator(&self.declarations[index - 1], declaration));
+            }
+            rendered.push_str(&declaration.render());
+        }
+        rendered
     }
 }
 
@@ -31,6 +34,13 @@ impl TsDeclaration {
             Self::Const(constant) => constant.render(),
             Self::ImportType(import) => import.render(),
         }
+    }
+}
+
+fn render_separator(previous: &TsDeclaration, current: &TsDeclaration) -> &'static str {
+    match (previous, current) {
+        (TsDeclaration::Const(_), TsDeclaration::Const(_)) => "\n",
+        _ => "\n\n",
     }
 }
 

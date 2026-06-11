@@ -85,10 +85,12 @@ pub fn package_outputs() -> Vec<PackageOutput> {
         },
         PackageOutput {
             spec: spec_by_key("events"),
-            types_ts: Some(TsSource::text(radroots_events_bindings::TYPES_TS)),
+            types_ts: Some(TsSource::Module(radroots_events_bindings::types_module())),
             types_imports_ts: Some(EVENTS_TYPES_IMPORTS_TS),
-            constants_ts: Some(TsSource::text(radroots_events_bindings::CONSTANTS_TS)),
-            kinds_ts: Some(TsSource::text(radroots_events_bindings::KINDS_TS)),
+            constants_ts: Some(TsSource::Module(
+                radroots_events_bindings::constants_module(),
+            )),
+            kinds_ts: Some(TsSource::Module(radroots_events_bindings::kinds_module())),
         },
         PackageOutput {
             spec: spec_by_key("events_indexed"),

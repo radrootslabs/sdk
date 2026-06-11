@@ -1,24 +1,27 @@
 pub use radroots_events as upstream;
 
-pub const TYPES_TS: &str = include_str!("typescript/types.ts");
-pub const CONSTANTS_TS: &str = include_str!("typescript/constants.ts");
-pub const KINDS_TS: &str = include_str!("typescript/kinds.ts");
+mod model;
+
+pub use model::{constants_module, kinds_module, types_module};
 
 #[cfg(test)]
 mod tests {
-    use super::{CONSTANTS_TS, KINDS_TS, TYPES_TS};
+    use super::{constants_module, kinds_module, types_module};
 
     #[test]
     fn preserves_event_type_exports() {
-        assert!(TYPES_TS.contains("export type RadrootsListing"));
-        assert!(TYPES_TS.contains("export type RadrootsJobInput"));
-        assert!(TYPES_TS.contains("export type RadrootsTradeOrderRequested"));
+        let rendered = types_module().render();
+        assert!(rendered.contains("export type RadrootsListing"));
+        assert!(rendered.contains("export type RadrootsJobInput"));
+        assert!(rendered.contains("export type RadrootsTradeOrderRequested"));
     }
 
     #[test]
     fn preserves_event_constant_exports() {
-        assert!(CONSTANTS_TS.contains("RADROOTS_LISTING_PRODUCT_TAG_KEYS"));
-        assert!(KINDS_TS.contains("KIND_LISTING"));
-        assert!(KINDS_TS.contains("KIND_TRADE_LISTING_ORDER_REQ"));
+        let constants = constants_module().render();
+        let kinds = kinds_module().render();
+        assert!(constants.contains("RADROOTS_LISTING_PRODUCT_TAG_KEYS"));
+        assert!(kinds.contains("KIND_LISTING"));
+        assert!(kinds.contains("KIND_TRADE_LISTING_ORDER_REQ"));
     }
 }
