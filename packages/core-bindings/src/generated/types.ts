@@ -8,9 +8,9 @@ export type RadrootsCoreDiscount = { scope: RadrootsCoreDiscountScope, threshold
 
 export type RadrootsCoreDiscountScope = "bin" | "order_total";
 
-export type RadrootsCoreDiscountThreshold = { "kind": "bin_count", "amount": { bin_id: string, min: number, } } | { "kind": "order_quantity", "amount": { min: RadrootsCoreQuantity, } };
+export type RadrootsCoreDiscountThreshold = { kind: "bin_count", amount: { bin_id: string, min: number, }, } | { kind: "order_quantity", amount: { min: RadrootsCoreQuantity, }, };
 
-export type RadrootsCoreDiscountValue = { "kind": "money_per_bin", "amount": RadrootsCoreMoney } | { "kind": "percent", "amount": RadrootsCorePercent };
+export type RadrootsCoreDiscountValue = { kind: "money_per_bin", amount: RadrootsCoreMoney, } | { kind: "percent", amount: RadrootsCorePercent, };
 
 export type RadrootsCoreMoney = { amount: string, currency: string, };
 

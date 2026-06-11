@@ -1,26 +1,74 @@
 pub use radroots_events_indexed as upstream;
 
-pub const TYPES_TS: &str = r#"export type RadrootsEventsIndexedShardId = string;
+use radroots_sdk_binding_model as ts;
 
-export type RadrootsEventsIndexedIdRange = { start: string, end: string, };
-
-export type RadrootsEventsIndexedShardMetadata = { file: string, count: number, first_id: string, last_id: string, first_published_at: number, last_published_at: number, sha256: string, };
-
-export type RadrootsEventsIndexedManifest = { country: string, total: number, shard_size: number, first_published_at: number, last_published_at: number, shards: Array<RadrootsEventsIndexedShardMetadata>, };
-
-export type RadrootsEventsIndexedShardCheckpoint = { shard_id: RadrootsEventsIndexedShardId, last_created_at: number, last_event_id: string | null, cursor: string | null, };
-
-export type RadrootsEventsIndexedIndexCheckpoint = { generated_at: number, shards: Array<RadrootsEventsIndexedShardCheckpoint>, };
-"#;
+pub fn types_module() -> ts::TsModule {
+    ts::module(vec![
+        ts::type_alias("RadrootsEventsIndexedShardId", ts::string()),
+        ts::type_alias(
+            "RadrootsEventsIndexedIdRange",
+            ts::object(vec![
+                ts::field("start", ts::string()),
+                ts::field("end", ts::string()),
+            ]),
+        ),
+        ts::type_alias(
+            "RadrootsEventsIndexedShardMetadata",
+            ts::object(vec![
+                ts::field("file", ts::string()),
+                ts::field("count", ts::number()),
+                ts::field("first_id", ts::string()),
+                ts::field("last_id", ts::string()),
+                ts::field("first_published_at", ts::number()),
+                ts::field("last_published_at", ts::number()),
+                ts::field("sha256", ts::string()),
+            ]),
+        ),
+        ts::type_alias(
+            "RadrootsEventsIndexedManifest",
+            ts::object(vec![
+                ts::field("country", ts::string()),
+                ts::field("total", ts::number()),
+                ts::field("shard_size", ts::number()),
+                ts::field("first_published_at", ts::number()),
+                ts::field("last_published_at", ts::number()),
+                ts::field(
+                    "shards",
+                    ts::array(ts::reference("RadrootsEventsIndexedShardMetadata")),
+                ),
+            ]),
+        ),
+        ts::type_alias(
+            "RadrootsEventsIndexedShardCheckpoint",
+            ts::object(vec![
+                ts::field("shard_id", ts::reference("RadrootsEventsIndexedShardId")),
+                ts::field("last_created_at", ts::number()),
+                ts::field("last_event_id", ts::nullable(ts::string())),
+                ts::field("cursor", ts::nullable(ts::string())),
+            ]),
+        ),
+        ts::type_alias(
+            "RadrootsEventsIndexedIndexCheckpoint",
+            ts::object(vec![
+                ts::field("generated_at", ts::number()),
+                ts::field(
+                    "shards",
+                    ts::array(ts::reference("RadrootsEventsIndexedShardCheckpoint")),
+                ),
+            ]),
+        ),
+    ])
+}
 
 #[cfg(test)]
 mod tests {
-    use super::TYPES_TS;
+    use super::types_module;
 
     #[test]
     fn exports_indexed_manifest_and_checkpoint_types() {
-        assert!(TYPES_TS.contains("export type RadrootsEventsIndexedManifest"));
-        assert!(TYPES_TS.contains("export type RadrootsEventsIndexedIndexCheckpoint"));
-        assert!(TYPES_TS.contains("export type RadrootsEventsIndexedShardId = string"));
+        let rendered = types_module().render();
+        assert!(rendered.contains("export type RadrootsEventsIndexedManifest"));
+        assert!(rendered.contains("export type RadrootsEventsIndexedIndexCheckpoint"));
+        assert!(rendered.contains("export type RadrootsEventsIndexedShardId = string"));
     }
 }

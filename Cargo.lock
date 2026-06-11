@@ -581,6 +581,7 @@ name = "radroots_core_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_core",
+ "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -617,6 +618,7 @@ name = "radroots_events_indexed_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_events_indexed",
+ "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -638,6 +640,7 @@ name = "radroots_identity_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_identity",
+ "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -733,6 +736,7 @@ dependencies = [
 name = "radroots_types_bindings"
 version = "0.1.0"
 dependencies = [
+ "radroots_sdk_binding_model",
  "radroots_types",
 ]
 
