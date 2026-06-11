@@ -7,13 +7,14 @@ use crate::{
         strip_legacy_generated_header,
     },
 };
+use radroots_sdk_binding_model::TsModule;
 
 pub struct PackageOutput {
     pub spec: PackageSpec,
-    pub types_ts: Option<&'static str>,
+    pub types_ts: Option<TsSource>,
     pub types_imports_ts: Option<&'static str>,
-    pub constants_ts: Option<&'static str>,
-    pub kinds_ts: Option<&'static str>,
+    pub constants_ts: Option<TsSource>,
+    pub kinds_ts: Option<TsSource>,
 }
 
 pub struct GeneratedFile {
@@ -21,22 +22,41 @@ pub struct GeneratedFile {
     pub contents: String,
 }
 
+#[allow(dead_code)]
+pub enum TsSource {
+    Text(&'static str),
+    Module(TsModule),
+}
+
+impl TsSource {
+    fn text(value: &'static str) -> Self {
+        Self::Text(value)
+    }
+
+    fn render(&self) -> String {
+        match self {
+            Self::Text(value) => strip_legacy_generated_header(value),
+            Self::Module(module) => module.render(),
+        }
+    }
+}
+
 impl PackageOutput {
     pub fn files(&self) -> Vec<GeneratedFile> {
         let mut files = Vec::new();
-        if let Some(types_ts) = self.types_ts {
+        if let Some(types_ts) = &self.types_ts {
             files.push(GeneratedFile {
                 relative_path: format!("src/generated/{}", generated_types_file()),
                 contents: render_ts(types_ts, self.types_imports_ts),
             });
         }
-        if let Some(constants_ts) = self.constants_ts {
+        if let Some(constants_ts) = &self.constants_ts {
             files.push(GeneratedFile {
                 relative_path: format!("src/generated/{}", generated_constants_file()),
                 contents: render_ts(constants_ts, None),
             });
         }
-        if let Some(kinds_ts) = self.kinds_ts {
+        if let Some(kinds_ts) = &self.kinds_ts {
             files.push(GeneratedFile {
                 relative_path: format!("src/generated/{}", generated_kinds_file()),
                 contents: render_ts(kinds_ts, None),
@@ -58,21 +78,21 @@ pub fn package_outputs() -> Vec<PackageOutput> {
     vec![
         PackageOutput {
             spec: spec_by_key("core"),
-            types_ts: Some(radroots_core_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(radroots_core_bindings::TYPES_TS)),
             types_imports_ts: None,
             constants_ts: None,
             kinds_ts: None,
         },
         PackageOutput {
             spec: spec_by_key("events"),
-            types_ts: Some(radroots_events_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(radroots_events_bindings::TYPES_TS)),
             types_imports_ts: Some(EVENTS_TYPES_IMPORTS_TS),
-            constants_ts: Some(radroots_events_bindings::CONSTANTS_TS),
-            kinds_ts: Some(radroots_events_bindings::KINDS_TS),
+            constants_ts: Some(TsSource::text(radroots_events_bindings::CONSTANTS_TS)),
+            kinds_ts: Some(TsSource::text(radroots_events_bindings::KINDS_TS)),
         },
         PackageOutput {
             spec: spec_by_key("events_indexed"),
-            types_ts: Some(radroots_events_indexed_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(radroots_events_indexed_bindings::TYPES_TS)),
             types_imports_ts: None,
             constants_ts: None,
             kinds_ts: None,
@@ -81,26 +101,28 @@ pub fn package_outputs() -> Vec<PackageOutput> {
             spec: spec_by_key("identity"),
             types_ts: None,
             types_imports_ts: None,
-            constants_ts: Some(radroots_identity_bindings::CONSTANTS_TS),
+            constants_ts: Some(TsSource::text(radroots_identity_bindings::CONSTANTS_TS)),
             kinds_ts: None,
         },
         PackageOutput {
             spec: spec_by_key("replica_db_schema"),
-            types_ts: Some(radroots_replica_db_schema_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(
+                radroots_replica_db_schema_bindings::TYPES_TS,
+            )),
             types_imports_ts: Some(REPLICA_DB_SCHEMA_TYPES_IMPORTS_TS),
             constants_ts: None,
             kinds_ts: None,
         },
         PackageOutput {
             spec: spec_by_key("trade"),
-            types_ts: Some(radroots_trade_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(radroots_trade_bindings::TYPES_TS)),
             types_imports_ts: Some(TRADE_TYPES_IMPORTS_TS),
             constants_ts: None,
             kinds_ts: None,
         },
         PackageOutput {
             spec: spec_by_key("types"),
-            types_ts: Some(radroots_types_bindings::TYPES_TS),
+            types_ts: Some(TsSource::text(radroots_types_bindings::TYPES_TS)),
             types_imports_ts: None,
             constants_ts: None,
             kinds_ts: None,
@@ -116,8 +138,8 @@ fn spec_by_key(key: &str) -> PackageSpec {
         .unwrap_or_else(|| panic!("missing package spec for {key}"))
 }
 
-fn render_ts(source: &str, imports: Option<&str>) -> String {
-    let body = strip_legacy_generated_header(source);
+fn render_ts(source: &TsSource, imports: Option<&str>) -> String {
+    let body = source.render();
     let imports = imports.unwrap_or("");
     format!("{}{}{}", generated_header(), imports, body.trim_start())
 }
@@ -196,11 +218,15 @@ fn render_index(output: &PackageOutput) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{package_outputs, render_ts};
+    use super::{TsSource, package_outputs, render_ts};
+    use radroots_sdk_binding_model::{module, string, type_alias};
 
     #[test]
     fn renders_sdk_header() {
-        let output = render_ts("// legacy\n\nexport type A = string;\n", None);
+        let output = render_ts(
+            &TsSource::text("// legacy\n\nexport type A = string;\n"),
+            None,
+        );
         assert!(output.starts_with("// @generated by cargo xtask generate ts"));
         assert!(output.contains("export type A = string;"));
     }
@@ -208,13 +234,25 @@ mod tests {
     #[test]
     fn renders_import_prelude_after_header() {
         let output = render_ts(
-            "export type A = B;\n",
+            &TsSource::text("export type A = B;\n"),
             Some("import type { B } from \"b\";\n\n"),
         );
         assert!(output.starts_with(
             "// @generated by cargo xtask generate ts\n// Do not edit by hand.\nimport type"
         ));
         assert!(output.contains("export type A = B;"));
+    }
+
+    #[test]
+    fn renders_model_sources() {
+        let output = render_ts(
+            &TsSource::Module(module(vec![type_alias("A", string())])),
+            None,
+        );
+        assert_eq!(
+            output,
+            "// @generated by cargo xtask generate ts\n// Do not edit by hand.\nexport type A = string;"
+        );
     }
 
     #[test]

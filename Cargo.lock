@@ -677,6 +677,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "radroots_sdk_binding_model"
+version = "0.1.0"
+
+[[package]]
 name = "radroots_sdk_xtask"
 version = "0.1.0"
 dependencies = [
@@ -685,6 +689,7 @@ dependencies = [
  "radroots_events_indexed_bindings",
  "radroots_identity_bindings",
  "radroots_replica_db_schema_bindings",
+ "radroots_sdk_binding_model",
  "radroots_trade_bindings",
  "radroots_types_bindings",
  "serde_json",

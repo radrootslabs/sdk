@@ -1,5 +1,6 @@
 [workspace]
 members = [
+  "crates/binding_model",
   "crates/core_bindings",
   "crates/events_bindings",
   "crates/events_indexed_bindings",

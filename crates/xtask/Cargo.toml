@@ -14,6 +14,7 @@ name = "radroots_sdk_xtask"
 path = "src/main.rs"
 
 [dependencies]
+radroots_sdk_binding_model = { path = "../binding_model" }
 radroots_core_bindings = { path = "../core_bindings" }
 radroots_events_bindings = { path = "../events_bindings" }
 radroots_events_indexed_bindings = { path = "../events_indexed_bindings" }
