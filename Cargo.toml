@@ -1,5 +1,14 @@
 [workspace]
-members = []
+members = [
+  "crates/core_bindings",
+  "crates/events_bindings",
+  "crates/events_indexed_bindings",
+  "crates/identity_bindings",
+  "crates/replica_db_schema_bindings",
+  "crates/trade_bindings",
+  "crates/types_bindings",
+  "crates/xtask",
+]
 resolver = "2"
 
 [workspace.package]
@@ -10,3 +19,17 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/radrootslabs/sdk"
 homepage = "https://radroots.org"
 readme = "README"
+
+[workspace.dependencies]
+radroots_core = { path = "../lib/crates/core", version = "0.1.0-alpha.2", default-features = false }
+radroots_events = { path = "../lib/crates/events", version = "0.1.0-alpha.2", default-features = false }
+radroots_events_indexed = { path = "../lib/crates/events_indexed", version = "0.1.0-alpha.2", default-features = false }
+radroots_identity = { path = "../lib/crates/identity", version = "0.1.0-alpha.2", default-features = false, features = [
+  "std",
+] }
+radroots_replica_db_schema = { path = "../lib/crates/replica_db_schema", version = "0.1.0-alpha.2", default-features = false }
+radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
+  "serde_json",
+  "std",
+] }
+radroots_types = { path = "../lib/crates/types", version = "0.1.0-alpha.2", default-features = false }

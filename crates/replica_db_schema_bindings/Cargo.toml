@@ -1,0 +1,13 @@
+[package]
+name = "radroots_replica_db_schema_bindings"
+description = "Generated bindings for Radroots replica schemas"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+publish = false
+
+[dependencies]
+radroots_replica_db_schema = { workspace = true }
