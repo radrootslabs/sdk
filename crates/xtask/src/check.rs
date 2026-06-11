@@ -9,6 +9,7 @@ pub fn check() -> Result<(), String> {
     validate_package_matrix()?;
     let root = workspace_root()?;
     check_forbidden_packages(&root)?;
+    check_baseline(&root)?;
     for spec in package_specs() {
         let package_dir = root.join(spec.package_dir);
         let package_json_path = package_dir.join("package.json");
@@ -16,6 +17,41 @@ pub fn check() -> Result<(), String> {
         check_package_json(&package_json_path, spec.package_name)?;
         if !index_path.is_file() {
             return Err(format!("missing package index: {}", index_path.display()));
+        }
+    }
+    Ok(())
+}
+
+fn check_baseline(root: &Path) -> Result<(), String> {
+    let baseline = root.join("testdata/baseline/current-radroots-generated");
+    if !baseline.is_dir() {
+        return Err(format!(
+            "missing generated baseline: {}",
+            baseline.display()
+        ));
+    }
+    let mut files = Vec::new();
+    collect_files(&baseline, &mut files)?;
+    if files.is_empty() {
+        return Err(format!(
+            "generated baseline is empty: {}",
+            baseline.display()
+        ));
+    }
+    Ok(())
+}
+
+fn collect_files(dir: &Path, files: &mut Vec<std::path::PathBuf>) -> Result<(), String> {
+    let entries =
+        fs::read_dir(dir).map_err(|error| format!("failed to read {}: {error}", dir.display()))?;
+    for entry in entries {
+        let entry =
+            entry.map_err(|error| format!("failed to read {} entry: {error}", dir.display()))?;
+        let path = entry.path();
+        if path.is_dir() {
+            collect_files(&path, files)?;
+        } else if path.is_file() {
+            files.push(path);
         }
     }
     Ok(())
