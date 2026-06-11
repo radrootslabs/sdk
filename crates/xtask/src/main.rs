@@ -2,6 +2,7 @@ mod check;
 mod fs;
 mod generate;
 mod manifest;
+mod output;
 mod package_matrix;
 mod ts;
 

@@ -14,4 +14,6 @@ name = "radroots_sdk_xtask"
 path = "src/main.rs"
 
 [dependencies]
+radroots_core_bindings = { path = "../core_bindings" }
+radroots_types_bindings = { path = "../types_bindings" }
 serde_json = "1"

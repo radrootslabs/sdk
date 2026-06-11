@@ -2,6 +2,7 @@ use std::{fs, path::Path};
 
 use crate::{
     fs::workspace_root,
+    output::package_outputs,
     package_matrix::{FORBIDDEN_PACKAGE_NAMES, package_specs, validate_package_matrix},
 };
 
@@ -17,6 +18,18 @@ pub fn check() -> Result<(), String> {
         check_package_json(&package_json_path, spec.package_name)?;
         if !index_path.is_file() {
             return Err(format!("missing package index: {}", index_path.display()));
+        }
+    }
+    for output in package_outputs() {
+        for expected in output.files() {
+            let path = root
+                .join(output.spec.package_dir)
+                .join(expected.relative_path);
+            let actual = fs::read_to_string(&path)
+                .map_err(|error| format!("failed to read {}: {error}", path.display()))?;
+            if actual != expected.contents {
+                return Err(format!("stale generated output: {}", path.display()));
+            }
         }
     }
     Ok(())
