@@ -681,6 +681,7 @@ name = "radroots_sdk_xtask"
 version = "0.1.0"
 dependencies = [
  "radroots_core_bindings",
+ "radroots_events_bindings",
  "radroots_events_indexed_bindings",
  "radroots_identity_bindings",
  "radroots_types_bindings",

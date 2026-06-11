@@ -10,6 +10,10 @@ pub fn generated_constants_file() -> &'static str {
     "constants.ts"
 }
 
+pub fn generated_kinds_file() -> &'static str {
+    "kinds.ts"
+}
+
 pub fn normalize_lf(value: &str) -> String {
     value.replace("\r\n", "\n")
 }
@@ -25,8 +29,8 @@ pub fn strip_legacy_generated_header(value: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        generated_constants_file, generated_header, generated_types_file, normalize_lf,
-        strip_legacy_generated_header,
+        generated_constants_file, generated_header, generated_kinds_file, generated_types_file,
+        normalize_lf, strip_legacy_generated_header,
     };
 
     #[test]
@@ -41,6 +45,7 @@ mod tests {
     fn generated_file_names_are_stable() {
         assert_eq!(generated_types_file(), "types.ts");
         assert_eq!(generated_constants_file(), "constants.ts");
+        assert_eq!(generated_kinds_file(), "kinds.ts");
     }
 
     #[test]
