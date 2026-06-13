@@ -3,7 +3,9 @@ use std::{fs, path::Path};
 use crate::{
     fs::workspace_root,
     output::package_outputs,
-    package_matrix::{FORBIDDEN_PACKAGE_NAMES, package_specs, validate_package_matrix},
+    package_matrix::{
+        FORBIDDEN_PACKAGE_NAMES, package_specs, validate_package_matrix, wasm_package_specs,
+    },
 };
 
 pub fn check() -> Result<(), String> {
@@ -19,6 +21,10 @@ pub fn check() -> Result<(), String> {
         if !index_path.is_file() {
             return Err(format!("missing package index: {}", index_path.display()));
         }
+    }
+    for spec in wasm_package_specs() {
+        let package_dir = root.join(spec.package_dir);
+        check_package_json(&package_dir.join("package.json"), spec.package_name)?;
     }
     for output in package_outputs() {
         for expected in output.files() {
@@ -46,6 +52,9 @@ fn check_binding_crate_sources(root: &Path) -> Result<(), String> {
             ));
         }
         check_no_typescript_files(&crate_src_dir)?;
+    }
+    for spec in wasm_package_specs() {
+        check_no_typescript_files(&root.join(spec.crate_dir).join("src"))?;
     }
     Ok(())
 }

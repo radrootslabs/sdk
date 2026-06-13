@@ -9,6 +9,17 @@ pub struct PackageSpec {
     pub package_dir: &'static str,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct WasmPackageSpec {
+    pub key: &'static str,
+    pub crate_name: &'static str,
+    pub crate_dir: &'static str,
+    pub package_name: &'static str,
+    pub package_dir: &'static str,
+    pub out_name: &'static str,
+    pub out_dir: &'static str,
+}
+
 pub const PACKAGE_SPECS: [PackageSpec; 7] = [
     PackageSpec {
         key: "core",
@@ -61,11 +72,45 @@ pub const PACKAGE_SPECS: [PackageSpec; 7] = [
     },
 ];
 
+pub const WASM_PACKAGE_SPECS: [WasmPackageSpec; 3] = [
+    WasmPackageSpec {
+        key: "events_codec",
+        crate_name: "radroots_events_codec_wasm",
+        crate_dir: "crates/events_codec_wasm",
+        package_name: "@radroots/events-codec-wasm",
+        package_dir: "packages/events-codec-wasm",
+        out_name: "radroots_events_codec_wasm",
+        out_dir: "../../packages/events-codec-wasm/dist",
+    },
+    WasmPackageSpec {
+        key: "replica_db",
+        crate_name: "radroots_replica_db_wasm",
+        crate_dir: "crates/replica_db_wasm",
+        package_name: "@radroots/replica-db-wasm",
+        package_dir: "packages/replica-db-wasm",
+        out_name: "radroots_replica_db_wasm",
+        out_dir: "../../packages/replica-db-wasm/dist",
+    },
+    WasmPackageSpec {
+        key: "replica_sync",
+        crate_name: "radroots_replica_sync_wasm",
+        crate_dir: "crates/replica_sync_wasm",
+        package_name: "@radroots/replica-sync-wasm",
+        package_dir: "packages/replica-sync-wasm",
+        out_name: "radroots_replica_sync_wasm",
+        out_dir: "../../packages/replica-sync-wasm/dist",
+    },
+];
+
 pub const FORBIDDEN_PACKAGE_NAMES: [&str; 2] =
     ["@radroots/tangle-db-schema-bindings", "@radroots/contracts"];
 
 pub fn package_specs() -> &'static [PackageSpec] {
     &PACKAGE_SPECS
+}
+
+pub fn wasm_package_specs() -> &'static [WasmPackageSpec] {
+    &WASM_PACKAGE_SPECS
 }
 
 pub fn validate_package_matrix() -> Result<(), String> {
@@ -95,12 +140,37 @@ pub fn validate_package_matrix() -> Result<(), String> {
             ));
         }
     }
+    for spec in wasm_package_specs() {
+        if FORBIDDEN_PACKAGE_NAMES.contains(&spec.package_name) {
+            return Err(format!(
+                "forbidden package in matrix: {}",
+                spec.package_name
+            ));
+        }
+        if !crate_names.insert(spec.crate_name) {
+            return Err(format!("duplicate crate in matrix: {}", spec.crate_name));
+        }
+        if !package_names.insert(spec.package_name) {
+            return Err(format!(
+                "duplicate package in matrix: {}",
+                spec.package_name
+            ));
+        }
+        if !package_dirs.insert(spec.package_dir) {
+            return Err(format!(
+                "duplicate package directory in matrix: {}",
+                spec.package_dir
+            ));
+        }
+    }
     Ok(())
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{FORBIDDEN_PACKAGE_NAMES, package_specs, validate_package_matrix};
+    use super::{
+        FORBIDDEN_PACKAGE_NAMES, package_specs, validate_package_matrix, wasm_package_specs,
+    };
 
     #[test]
     fn package_matrix_is_valid() {
@@ -110,11 +180,15 @@ mod tests {
     #[test]
     fn approved_package_count_is_stable() {
         assert_eq!(package_specs().len(), 7);
+        assert_eq!(wasm_package_specs().len(), 3);
     }
 
     #[test]
     fn forbidden_names_are_absent() {
         for spec in package_specs() {
+            assert!(!FORBIDDEN_PACKAGE_NAMES.contains(&spec.package_name));
+        }
+        for spec in wasm_package_specs() {
             assert!(!FORBIDDEN_PACKAGE_NAMES.contains(&spec.package_name));
         }
     }
@@ -125,6 +199,15 @@ mod tests {
             package_specs()
                 .iter()
                 .any(|spec| spec.package_name == "@radroots/replica-db-schema-bindings")
+        );
+    }
+
+    #[test]
+    fn wasm_packages_use_sdk_package_names() {
+        assert!(
+            wasm_package_specs()
+                .iter()
+                .any(|spec| spec.package_name == "@radroots/replica-db-wasm")
         );
     }
 }

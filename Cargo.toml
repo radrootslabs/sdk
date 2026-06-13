@@ -2,10 +2,14 @@
 members = [
   "crates/binding_model",
   "crates/core_bindings",
+  "crates/events_codec_wasm",
   "crates/events_bindings",
   "crates/events_indexed_bindings",
   "crates/identity_bindings",
+  "crates/replica_db_wasm",
   "crates/replica_db_schema_bindings",
+  "crates/replica_sync_wasm",
+  "crates/sdk",
   "crates/trade_bindings",
   "crates/types_bindings",
   "crates/xtask",
@@ -24,13 +28,42 @@ readme = "README"
 [workspace.dependencies]
 radroots_core = { path = "../lib/crates/core", version = "0.1.0-alpha.2", default-features = false }
 radroots_events = { path = "../lib/crates/events", version = "0.1.0-alpha.2", default-features = false }
+radroots_events_codec = { path = "../lib/crates/events_codec", version = "0.1.0-alpha.2", default-features = false }
 radroots_events_indexed = { path = "../lib/crates/events_indexed", version = "0.1.0-alpha.2", default-features = false }
 radroots_identity = { path = "../lib/crates/identity", version = "0.1.0-alpha.2", default-features = false, features = [
   "std",
 ] }
+radroots_nostr = { path = "../lib/crates/nostr", version = "0.1.0-alpha.2", default-features = false }
+radroots_nostr_connect = { path = "../lib/crates/nostr_connect", version = "0.1.0-alpha.2", default-features = false }
+radroots_nostr_signer = { path = "../lib/crates/nostr_signer", version = "0.1.0-alpha.2", default-features = false }
+radroots_replica_db = { path = "../lib/crates/replica_db", version = "0.1.0-alpha.2", default-features = false }
 radroots_replica_db_schema = { path = "../lib/crates/replica_db_schema", version = "0.1.0-alpha.2", default-features = false }
+radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "0.1.0-alpha.2", default-features = false }
+radroots_sql_core = { path = "../lib/crates/sql_core", version = "0.1.0-alpha.2", default-features = false }
+radroots_sql_wasm_core = { path = "../lib/crates/sql_wasm_core", version = "0.1.0-alpha.2", default-features = false }
 radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
   "serde_json",
   "std",
 ] }
 radroots_types = { path = "../lib/crates/types", version = "0.1.0-alpha.2", default-features = false }
+
+base64 = { version = "0.22", default-features = false, features = ["alloc"] }
+futures = { version = "0.3" }
+js-sys = { version = "0.3" }
+nostr = { version = "0.44.2" }
+reqwest = { version = "0.12", default-features = false, features = [
+  "json",
+  "rustls-tls",
+] }
+serde = { version = "1", default-features = false, features = [
+  "derive",
+  "alloc",
+] }
+serde_json = { version = "1", default-features = false, features = ["alloc"] }
+serde-wasm-bindgen = { version = "0.6" }
+tempfile = { version = "3" }
+tokio = { version = "1" }
+tokio-tungstenite = "0.26.2"
+uuid = { version = "1.22.0", features = ["v4", "v7"] }
+wasm-bindgen = { version = "0.2" }
+wasm-bindgen-test = { version = "0.3" }

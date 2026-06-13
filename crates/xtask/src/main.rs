@@ -5,6 +5,7 @@ mod manifest;
 mod output;
 mod package_matrix;
 mod ts;
+mod wasm;
 
 fn main() {
     if let Err(error) = run(std::env::args().skip(1)) {
@@ -17,6 +18,9 @@ fn run(args: impl IntoIterator<Item = String>) -> Result<(), String> {
     let args = args.into_iter().collect::<Vec<_>>();
     match args.as_slice() {
         [command, target] if command == "generate" && target == "ts" => generate::generate_ts(),
+        [command, target, rest @ ..] if command == "generate" && target == "wasm" => {
+            wasm::generate(rest)
+        }
         [command] if command == "check" => check::check(),
         [] => Err(usage()),
         _ => Err(usage()),
@@ -24,7 +28,8 @@ fn run(args: impl IntoIterator<Item = String>) -> Result<(), String> {
 }
 
 fn usage() -> String {
-    "usage: cargo xtask generate ts | cargo xtask check".to_owned()
+    "usage: cargo xtask generate ts | cargo xtask generate wasm [--package <key>] | cargo xtask check"
+        .to_owned()
 }
 
 #[cfg(test)]

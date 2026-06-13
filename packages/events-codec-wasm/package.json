@@ -1,0 +1,23 @@
+{
+  "name": "@radroots/events-codec-wasm",
+  "description": "WebAssembly bindings for radroots_events_codec",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/radroots_events_codec_wasm.js",
+  "types": "./dist/radroots_events_codec_wasm.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/radroots_events_codec_wasm.d.ts",
+      "import": "./dist/radroots_events_codec_wasm.js",
+      "default": "./dist/radroots_events_codec_wasm.js"
+    }
+  },
+  "scripts": {
+    "build": "cd ../.. && cargo xtask generate wasm --package events_codec",
+    "typecheck": "node -e \"require('fs').accessSync('dist/radroots_events_codec_wasm.d.ts')\""
+  },
+  "sideEffects": false
+}

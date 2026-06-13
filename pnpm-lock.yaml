@@ -20,6 +20,8 @@ importers:
         specifier: workspace:*
         version: link:../core-bindings
 
+  packages/events-codec-wasm: {}
+
   packages/events-indexed-bindings: {}
 
   packages/identity-bindings: {}
@@ -29,6 +31,10 @@ importers:
       '@radroots/types-bindings':
         specifier: workspace:*
         version: link:../types-bindings
+
+  packages/replica-db-wasm: {}
+
+  packages/replica-sync-wasm: {}
 
   packages/trade-bindings:
     dependencies:

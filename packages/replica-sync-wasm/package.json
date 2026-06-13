@@ -1,0 +1,23 @@
+{
+  "name": "@radroots/replica-sync-wasm",
+  "description": "WebAssembly bindings for radroots_replica_sync",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/radroots_replica_sync_wasm.js",
+  "types": "./dist/radroots_replica_sync_wasm.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/radroots_replica_sync_wasm.d.ts",
+      "import": "./dist/radroots_replica_sync_wasm.js",
+      "default": "./dist/radroots_replica_sync_wasm.js"
+    }
+  },
+  "scripts": {
+    "build": "cd ../.. && cargo xtask generate wasm --package replica_sync",
+    "typecheck": "node -e \"require('fs').accessSync('dist/radroots_replica_sync_wasm.d.ts')\""
+  },
+  "sideEffects": false
+}
