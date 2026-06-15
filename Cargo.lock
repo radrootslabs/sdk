@@ -1976,6 +1976,7 @@ name = "radroots_sdk"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "hex",
  "nostr",
  "radroots_authority",
  "radroots_core",
@@ -1996,6 +1997,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "sha2",
  "sqlx",
  "tempfile",
  "tokio",
