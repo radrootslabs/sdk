@@ -21,9 +21,7 @@ export type RadrootsAccountClaim = { username: string, pubkey: string, nip05?: s
 
 export type RadrootsActiveTradeEnvelope<T> = { version: number, domain: RadrootsTradeDomain, type: RadrootsActiveTradeMessageType, order_id: string, listing_addr: string, payload: T, };
 
-export type RadrootsActiveTradeFulfillmentState = "accepted_not_fulfilled" | "preparing" | "ready_for_pickup" | "out_for_delivery" | "delivered" | "seller_cancelled";
-
-export type RadrootsActiveTradeMessageType = "TradeOrderRequested" | "TradeOrderDecision" | "TradeOrderRevisionProposed" | "TradeOrderRevisionDecision" | "TradeOrderCancelled" | "TradeFulfillmentUpdated" | "TradeBuyerReceipt" | "TradePaymentRecorded" | "TradeSettlementDecision";
+export type RadrootsActiveTradeMessageType = "TradeOrderRequested" | "TradeOrderDecision" | "TradeOrderRevisionProposed" | "TradeOrderRevisionDecision" | "TradeOrderCancelled";
 
 export type RadrootsAppData = { d_tag: string, content: string, };
 
@@ -141,8 +139,6 @@ export type RadrootsSeal = { content: string, };
 
 export type RadrootsTradeAnswer = { question_id: string, };
 
-export type RadrootsTradeBuyerReceipt = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, received: boolean, issue?: string | null, received_at: bigint, };
-
 export type RadrootsTradeDiscountDecision = { kind: "accept", amount: { value: RadrootsCoreDiscountValue, }, } | { kind: "decline", amount: { reason?: string | null, }, };
 
 export type RadrootsTradeDiscountOffer = { discount_id: string, value: RadrootsCoreDiscountValue, };
@@ -159,12 +155,6 @@ export type RadrootsTradeEconomicLineKind = "listing_discount" | "basket_adjustm
 
 export type RadrootsTradeEnvelope<T> = { version: number, domain: RadrootsTradeDomain, type: RadrootsTradeMessageType, order_id?: string | null, listing_addr: string, payload: T, };
 
-export type RadrootsTradeFulfillmentStatus = { kind: "preparing", } | { kind: "shipped", } | { kind: "ready_for_pickup", } | { kind: "delivered", } | { kind: "cancelled", };
-
-export type RadrootsTradeFulfillmentUpdate = { status: RadrootsTradeFulfillmentStatus, };
-
-export type RadrootsTradeFulfillmentUpdated = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsActiveTradeFulfillmentState, };
-
 export type RadrootsTradeInventoryCommitment = { bin_id: string, bin_count: number, };
 
 export type RadrootsTradeListingCancel = { reason?: string | null, };
@@ -177,9 +167,9 @@ export type RadrootsTradeListingValidateResult = { valid: boolean, errors: Array
 
 export type RadrootsTradeListingValidationError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsTradeListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_delivery_method", };
 
-export type RadrootsTradeMessagePayload = { kind: "listing_validate_request", amount: RadrootsTradeListingValidateRequest, } | { kind: "listing_validate_result", amount: RadrootsTradeListingValidateResult, } | { kind: "trade_order_requested", amount: RadrootsTradeOrderRequested, } | { kind: "order_response", amount: RadrootsTradeOrderResponse, } | { kind: "order_revision", amount: RadrootsTradeOrderRevision, } | { kind: "order_revision_accept", amount: RadrootsTradeOrderRevisionResponse, } | { kind: "order_revision_decline", amount: RadrootsTradeOrderRevisionResponse, } | { kind: "question", amount: RadrootsTradeQuestion, } | { kind: "answer", amount: RadrootsTradeAnswer, } | { kind: "discount_request", amount: RadrootsTradeDiscountRequest, } | { kind: "discount_offer", amount: RadrootsTradeDiscountOffer, } | { kind: "discount_accept", amount: RadrootsTradeDiscountDecision, } | { kind: "discount_decline", amount: RadrootsTradeDiscountDecision, } | { kind: "cancel", amount: RadrootsTradeListingCancel, } | { kind: "fulfillment_update", amount: RadrootsTradeFulfillmentUpdate, } | { kind: "receipt", amount: RadrootsTradeReceipt, };
+export type RadrootsTradeMessagePayload = { kind: "listing_validate_request", amount: RadrootsTradeListingValidateRequest, } | { kind: "listing_validate_result", amount: RadrootsTradeListingValidateResult, } | { kind: "trade_order_requested", amount: RadrootsTradeOrderRequested, } | { kind: "order_response", amount: RadrootsTradeOrderResponse, } | { kind: "order_revision", amount: RadrootsTradeOrderRevision, } | { kind: "order_revision_accept", amount: RadrootsTradeOrderRevisionResponse, } | { kind: "order_revision_decline", amount: RadrootsTradeOrderRevisionResponse, } | { kind: "question", amount: RadrootsTradeQuestion, } | { kind: "answer", amount: RadrootsTradeAnswer, } | { kind: "discount_request", amount: RadrootsTradeDiscountRequest, } | { kind: "discount_offer", amount: RadrootsTradeDiscountOffer, } | { kind: "discount_accept", amount: RadrootsTradeDiscountDecision, } | { kind: "discount_decline", amount: RadrootsTradeDiscountDecision, } | { kind: "cancel", amount: RadrootsTradeListingCancel, };
 
-export type RadrootsTradeMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel" | "fulfillment_update" | "receipt";
+export type RadrootsTradeMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel";
 
 export type RadrootsTradeOrderCancelled = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, reason: string, };
 
@@ -213,20 +203,10 @@ export type RadrootsTradeOrderRevisionProposed = { revision_id: string, order_id
 
 export type RadrootsTradeOrderRevisionResponse = { accepted: boolean, reason?: string | null, };
 
-export type RadrootsTradeOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled" | "fulfilled" | "completed";
-
-export type RadrootsTradePaymentMethod = "cash" | "manual_transfer" | "other";
-
-export type RadrootsTradePaymentRecorded = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, root_event_id: string, previous_event_id: string, agreement_event_id: string, quote_id: string, quote_version: number, economics_digest: string, amount: RadrootsCoreDecimal, currency: RadrootsCoreCurrency, method: RadrootsTradePaymentMethod, reference?: string | null, paid_at?: number | null, };
+export type RadrootsTradeOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled";
 
 export type RadrootsTradePricingBasis = "listing_event";
 
 export type RadrootsTradeQuestion = { question_id: string, };
-
-export type RadrootsTradeReceipt = { acknowledged: boolean, at: bigint, };
-
-export type RadrootsTradeSettlementDecision = "accepted" | "rejected";
-
-export type RadrootsTradeSettlementDecisionEvent = { order_id: string, listing_addr: string, seller_pubkey: string, buyer_pubkey: string, root_event_id: string, previous_event_id: string, agreement_event_id: string, payment_event_id: string, quote_id: string, quote_version: number, economics_digest: string, amount: RadrootsCoreDecimal, currency: RadrootsCoreCurrency, decision: RadrootsTradeSettlementDecision, reason?: string | null, };
 
 export type RadrootsTradeTransportLane = "service" | "public";

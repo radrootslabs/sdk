@@ -49,17 +49,6 @@ pub fn types_module() -> ts::TsModule {
             ]),
         ),
         ts::type_alias(
-            "RadrootsActiveTradeFulfillmentState",
-            ts::union(vec![
-                ts::string_literal("accepted_not_fulfilled"),
-                ts::string_literal("preparing"),
-                ts::string_literal("ready_for_pickup"),
-                ts::string_literal("out_for_delivery"),
-                ts::string_literal("delivered"),
-                ts::string_literal("seller_cancelled"),
-            ]),
-        ),
-        ts::type_alias(
             "RadrootsActiveTradeMessageType",
             ts::union(vec![
                 ts::string_literal("TradeOrderRequested"),
@@ -67,10 +56,6 @@ pub fn types_module() -> ts::TsModule {
                 ts::string_literal("TradeOrderRevisionProposed"),
                 ts::string_literal("TradeOrderRevisionDecision"),
                 ts::string_literal("TradeOrderCancelled"),
-                ts::string_literal("TradeFulfillmentUpdated"),
-                ts::string_literal("TradeBuyerReceipt"),
-                ts::string_literal("TradePaymentRecorded"),
-                ts::string_literal("TradeSettlementDecision"),
             ]),
         ),
         ts::type_alias(
@@ -778,18 +763,6 @@ pub fn types_module() -> ts::TsModule {
             ts::object(vec![ts::field("question_id", ts::string())]),
         ),
         ts::type_alias(
-            "RadrootsTradeBuyerReceipt",
-            ts::object(vec![
-                ts::field("order_id", ts::string()),
-                ts::field("listing_addr", ts::string()),
-                ts::field("buyer_pubkey", ts::string()),
-                ts::field("seller_pubkey", ts::string()),
-                ts::field("received", ts::boolean()),
-                ts::optional_field("issue", ts::union(vec![ts::string(), ts::null()])),
-                ts::field("received_at", ts::bigint()),
-            ]),
-        ),
-        ts::type_alias(
             "RadrootsTradeDiscountDecision",
             ts::union(vec![
                 ts::object(vec![
@@ -861,39 +834,6 @@ pub fn types_module() -> ts::TsModule {
                 ts::optional_field("order_id", ts::union(vec![ts::string(), ts::null()])),
                 ts::field("listing_addr", ts::string()),
                 ts::field("payload", ts::reference("T")),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeFulfillmentStatus",
-            ts::union(vec![
-                ts::object(vec![ts::field("kind", ts::string_literal("preparing"))]),
-                ts::object(vec![ts::field("kind", ts::string_literal("shipped"))]),
-                ts::object(vec![ts::field(
-                    "kind",
-                    ts::string_literal("ready_for_pickup"),
-                )]),
-                ts::object(vec![ts::field("kind", ts::string_literal("delivered"))]),
-                ts::object(vec![ts::field("kind", ts::string_literal("cancelled"))]),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeFulfillmentUpdate",
-            ts::object(vec![ts::field(
-                "status",
-                ts::reference("RadrootsTradeFulfillmentStatus"),
-            )]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeFulfillmentUpdated",
-            ts::object(vec![
-                ts::field("order_id", ts::string()),
-                ts::field("listing_addr", ts::string()),
-                ts::field("buyer_pubkey", ts::string()),
-                ts::field("seller_pubkey", ts::string()),
-                ts::field(
-                    "status",
-                    ts::reference("RadrootsActiveTradeFulfillmentState"),
-                ),
             ]),
         ),
         ts::type_alias(
@@ -1097,14 +1037,6 @@ pub fn types_module() -> ts::TsModule {
                     ts::field("kind", ts::string_literal("cancel")),
                     ts::field("amount", ts::reference("RadrootsTradeListingCancel")),
                 ]),
-                ts::object(vec![
-                    ts::field("kind", ts::string_literal("fulfillment_update")),
-                    ts::field("amount", ts::reference("RadrootsTradeFulfillmentUpdate")),
-                ]),
-                ts::object(vec![
-                    ts::field("kind", ts::string_literal("receipt")),
-                    ts::field("amount", ts::reference("RadrootsTradeReceipt")),
-                ]),
             ]),
         ),
         ts::type_alias(
@@ -1124,8 +1056,6 @@ pub fn types_module() -> ts::TsModule {
                 ts::string_literal("discount_accept"),
                 ts::string_literal("discount_decline"),
                 ts::string_literal("cancel"),
-                ts::string_literal("fulfillment_update"),
-                ts::string_literal("receipt"),
             ]),
         ),
         ts::type_alias(
@@ -1347,36 +1277,6 @@ pub fn types_module() -> ts::TsModule {
                 ts::string_literal("accepted"),
                 ts::string_literal("declined"),
                 ts::string_literal("cancelled"),
-                ts::string_literal("fulfilled"),
-                ts::string_literal("completed"),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradePaymentMethod",
-            ts::union(vec![
-                ts::string_literal("cash"),
-                ts::string_literal("manual_transfer"),
-                ts::string_literal("other"),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradePaymentRecorded",
-            ts::object(vec![
-                ts::field("order_id", ts::string()),
-                ts::field("listing_addr", ts::string()),
-                ts::field("buyer_pubkey", ts::string()),
-                ts::field("seller_pubkey", ts::string()),
-                ts::field("root_event_id", ts::string()),
-                ts::field("previous_event_id", ts::string()),
-                ts::field("agreement_event_id", ts::string()),
-                ts::field("quote_id", ts::string()),
-                ts::field("quote_version", ts::number()),
-                ts::field("economics_digest", ts::string()),
-                ts::field("amount", ts::reference("RadrootsCoreDecimal")),
-                ts::field("currency", ts::reference("RadrootsCoreCurrency")),
-                ts::field("method", ts::reference("RadrootsTradePaymentMethod")),
-                ts::optional_field("reference", ts::union(vec![ts::string(), ts::null()])),
-                ts::optional_field("paid_at", ts::union(vec![ts::number(), ts::null()])),
             ]),
         ),
         ts::type_alias(
@@ -1386,40 +1286,6 @@ pub fn types_module() -> ts::TsModule {
         ts::type_alias(
             "RadrootsTradeQuestion",
             ts::object(vec![ts::field("question_id", ts::string())]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeReceipt",
-            ts::object(vec![
-                ts::field("acknowledged", ts::boolean()),
-                ts::field("at", ts::bigint()),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeSettlementDecision",
-            ts::union(vec![
-                ts::string_literal("accepted"),
-                ts::string_literal("rejected"),
-            ]),
-        ),
-        ts::type_alias(
-            "RadrootsTradeSettlementDecisionEvent",
-            ts::object(vec![
-                ts::field("order_id", ts::string()),
-                ts::field("listing_addr", ts::string()),
-                ts::field("seller_pubkey", ts::string()),
-                ts::field("buyer_pubkey", ts::string()),
-                ts::field("root_event_id", ts::string()),
-                ts::field("previous_event_id", ts::string()),
-                ts::field("agreement_event_id", ts::string()),
-                ts::field("payment_event_id", ts::string()),
-                ts::field("quote_id", ts::string()),
-                ts::field("quote_version", ts::number()),
-                ts::field("economics_digest", ts::string()),
-                ts::field("amount", ts::reference("RadrootsCoreDecimal")),
-                ts::field("currency", ts::reference("RadrootsCoreCurrency")),
-                ts::field("decision", ts::reference("RadrootsTradeSettlementDecision")),
-                ts::optional_field("reason", ts::union(vec![ts::string(), ts::null()])),
-            ]),
         ),
         ts::type_alias(
             "RadrootsTradeTransportLane",

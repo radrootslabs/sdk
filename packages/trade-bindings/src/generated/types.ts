@@ -39,12 +39,6 @@ export type RadrootsListingStatus = { kind: "active", } | { kind: "sold", } | { 
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
-export type RadrootsTradeFulfillmentException = { code: string, severity: RadrootsTradeFulfillmentExceptionSeverity, status: RadrootsTradeFulfillmentExceptionStatus, source?: string | null, notes?: string | null, };
-
-export type RadrootsTradeFulfillmentExceptionSeverity = "notice" | "warning" | "blocking";
-
-export type RadrootsTradeFulfillmentExceptionStatus = "open" | "monitoring" | "resolved";
-
 export type RadrootsTradeListing = { listing_id: string, listing_addr: string, seller_pubkey: string, title: string, description: string, product_type: string, primary_bin_id: string, bin_quantity: RadrootsCoreQuantity, unit: RadrootsCoreUnit, unit_price: RadrootsCoreMoney, inventory_available: RadrootsCoreDecimal, availability: RadrootsListingAvailability, location: RadrootsListingLocation, delivery_method: RadrootsListingDeliveryMethod, listing: RadrootsListing, };
 
 export type RadrootsTradeListingBackofficeOverlay = { listing_addr: string, review_queue?: RadrootsTradeReviewQueueEntry | null, moderation_flags: Array<RadrootsTradeModerationFlag>, };
@@ -75,7 +69,7 @@ export type RadrootsTradeMarketplaceListingSummary = { listing_addr: string, sel
 
 export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsTradeOrderStatus, last_message_type: RadrootsTradeMessageType, item_count: number, total_bin_count: number, has_requested_discounts: boolean, last_reason?: string | null, };
 
-export type RadrootsTradeMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel" | "fulfillment_update" | "receipt";
+export type RadrootsTradeMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel";
 
 export type RadrootsTradeModerationFlag = { code: string, severity: RadrootsTradeModerationSeverity, status: RadrootsTradeModerationStatus, source?: string | null, reason?: string | null, };
 
@@ -83,11 +77,11 @@ export type RadrootsTradeModerationSeverity = "notice" | "warning" | "block";
 
 export type RadrootsTradeModerationStatus = "open" | "snoozed" | "resolved";
 
-export type RadrootsTradeOrderBackofficeOverlay = { order_id: string, review_queue?: RadrootsTradeReviewQueueEntry | null, moderation_flags: Array<RadrootsTradeModerationFlag>, fulfillment_exceptions: Array<RadrootsTradeFulfillmentException>, };
+export type RadrootsTradeOrderBackofficeOverlay = { order_id: string, review_queue?: RadrootsTradeReviewQueueEntry | null, moderation_flags: Array<RadrootsTradeModerationFlag>, };
 
-export type RadrootsTradeOrderBackofficeQuery = { order: RadrootsTradeOrderQuery, requires_review?: boolean | null, has_open_moderation_flags?: boolean | null, has_open_fulfillment_exceptions?: boolean | null, };
+export type RadrootsTradeOrderBackofficeQuery = { order: RadrootsTradeOrderQuery, requires_review?: boolean | null, has_open_moderation_flags?: boolean | null, };
 
-export type RadrootsTradeOrderBackofficeView = { order: RadrootsTradeOrderWorkflowProjection, marketplace: RadrootsTradeMarketplaceOrderSummary, overlay?: RadrootsTradeOrderBackofficeOverlay | null, requires_review: boolean, open_moderation_flag_count: number, open_fulfillment_exception_count: number, };
+export type RadrootsTradeOrderBackofficeView = { order: RadrootsTradeOrderWorkflowProjection, marketplace: RadrootsTradeMarketplaceOrderSummary, overlay?: RadrootsTradeOrderBackofficeOverlay | null, requires_review: boolean, open_moderation_flag_count: number, };
 
 export type RadrootsTradeOrderFacets = { buyer_pubkeys: Array<RadrootsTradeFacetCount>, seller_pubkeys: Array<RadrootsTradeFacetCount>, listing_addrs: Array<RadrootsTradeFacetCount>, statuses: Array<RadrootsTradeFacetCount>, };
 
@@ -97,11 +91,11 @@ export type RadrootsTradeOrderSort = { field: RadrootsTradeOrderSortField, direc
 
 export type RadrootsTradeOrderSortField = "order_id" | "listing_addr" | "buyer_pubkey" | "seller_pubkey" | "status" | "last_message_type" | "total_bin_count";
 
-export type RadrootsTradeOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled" | "fulfilled" | "completed";
+export type RadrootsTradeOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled";
 
 export type RadrootsTradeOrderWorkflowMessage = { event_id: string, actor_pubkey: string, counterparty_pubkey: string, listing_addr: string, order_id?: string | null, listing_event?: RadrootsNostrEventPtr | null, root_event_id?: string | null, prev_event_id?: string | null, payload: RadrootsTradeMessagePayload, };
 
-export type RadrootsTradeOrderWorkflowProjection = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsTradeOrderItem>, requested_discounts?: Array<RadrootsTradeOrderEconomicLine> | null, status: RadrootsTradeOrderStatus, listing_snapshot?: RadrootsNostrEventPtr | null, root_event_id: string, last_event_id: string, last_discount_request?: RadrootsCoreDiscountValue | null, last_discount_offer?: RadrootsCoreDiscountValue | null, accepted_discount?: RadrootsCoreDiscountValue | null, last_fulfillment_status?: RadrootsTradeFulfillmentStatus | null, receipt_acknowledged?: boolean | null, receipt_at?: number | null, last_reason?: string | null, last_discount_decline_reason?: string | null, question_count: number, answer_count: number, revision_count: number, discount_request_count: number, discount_offer_count: number, discount_accept_count: number, discount_decline_count: number, cancellation_count: number, fulfillment_update_count: number, receipt_count: number, last_message_type: RadrootsTradeMessageType, last_actor_pubkey: string, };
+export type RadrootsTradeOrderWorkflowProjection = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsTradeOrderItem>, requested_discounts?: Array<RadrootsTradeOrderEconomicLine> | null, status: RadrootsTradeOrderStatus, listing_snapshot?: RadrootsNostrEventPtr | null, root_event_id: string, last_event_id: string, last_discount_request?: RadrootsCoreDiscountValue | null, last_discount_offer?: RadrootsCoreDiscountValue | null, accepted_discount?: RadrootsCoreDiscountValue | null, last_reason?: string | null, last_discount_decline_reason?: string | null, question_count: number, answer_count: number, revision_count: number, discount_request_count: number, discount_offer_count: number, discount_accept_count: number, discount_decline_count: number, cancellation_count: number, last_message_type: RadrootsTradeMessageType, last_actor_pubkey: string, };
 
 export type RadrootsTradeReviewPriority = "low" | "normal" | "high" | "critical";
 
