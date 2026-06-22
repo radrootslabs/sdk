@@ -23,3 +23,5 @@ radroots_replica_db_schema_bindings = { path = "../replica_db_schema_bindings" }
 radroots_types_bindings = { path = "../types_bindings" }
 radroots_trade_bindings = { path = "../trade_bindings" }
 serde_json = "1"
+serde = { workspace = true, features = ["derive"] }
+toml = "0.8"

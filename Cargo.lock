@@ -2031,7 +2031,9 @@ dependencies = [
  "radroots_sdk_binding_model",
  "radroots_trade_bindings",
  "radroots_types_bindings",
+ "serde",
  "serde_json",
+ "toml",
 ]
 
 [[package]]

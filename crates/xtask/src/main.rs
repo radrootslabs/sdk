@@ -1,4 +1,5 @@
 mod check;
+mod contracts;
 mod fs;
 mod generate;
 mod manifest;

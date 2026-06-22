@@ -15,7 +15,6 @@ import type {
     RadrootsNostrEventPtr,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
-    RadrootsTradeFulfillmentStatus,
     RadrootsTradeMessagePayload,
     RadrootsTradeOrderEconomicLine,
     RadrootsTradeOrderItem,

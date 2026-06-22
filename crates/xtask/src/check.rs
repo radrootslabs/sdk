@@ -1,6 +1,7 @@
 use std::{collections::BTreeSet, fs, path::Path};
 
 use crate::{
+    contracts::validate_sdk_contracts,
     fs::workspace_root,
     output::package_outputs,
     package_matrix::{
@@ -12,6 +13,7 @@ use crate::{
 pub fn check() -> Result<(), String> {
     validate_package_matrix()?;
     let root = workspace_root()?;
+    validate_sdk_contracts(&root)?;
     check_forbidden_packages(&root)?;
     check_binding_crate_sources(&root)?;
     for spec in package_specs() {
