@@ -1897,8 +1897,8 @@ dependencies = [
  "radroots_replica_db",
  "radroots_replica_db_schema",
  "radroots_replica_sync",
+ "radroots_sdk_sql_wasm_runtime",
  "radroots_sql_core",
- "radroots_sql_wasm_core",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",
@@ -1932,8 +1932,7 @@ dependencies = [
  "base64 0.22.1",
  "radroots_events",
  "radroots_replica_sync",
- "radroots_sql_core",
- "radroots_sql_wasm_core",
+ "radroots_sdk_sql_wasm_runtime",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",
@@ -2010,6 +2009,17 @@ name = "radroots_sdk_binding_model"
 version = "0.1.0"
 
 [[package]]
+name = "radroots_sdk_sql_wasm_runtime"
+version = "0.1.0-alpha.2"
+dependencies = [
+ "radroots_sql_core",
+ "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "radroots_sdk_xtask"
 version = "0.1.0"
 dependencies = [
@@ -2033,32 +2043,10 @@ name = "radroots_sql_core"
 version = "0.1.0-alpha.2"
 dependencies = [
  "chrono",
- "radroots_sql_wasm_bridge",
  "rusqlite",
  "serde",
- "serde-wasm-bindgen",
  "serde_json",
  "uuid",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "radroots_sql_wasm_bridge"
-version = "0.1.0-alpha.2"
-dependencies = [
- "js-sys",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "radroots_sql_wasm_core"
-version = "0.1.0-alpha.2"
-dependencies = [
- "radroots_sql_core",
- "radroots_sql_wasm_bridge",
- "serde",
- "serde-wasm-bindgen",
- "wasm-bindgen",
 ]
 
 [[package]]

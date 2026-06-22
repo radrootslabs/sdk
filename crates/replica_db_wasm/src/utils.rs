@@ -8,6 +8,6 @@ where
     T: Serialize,
 {
     let json = serde_json::to_string(&value)
-        .map_err(|err| radroots_sql_wasm_core::err_js(SqlError::from(err)))?;
+        .map_err(|err| radroots_sdk_sql_wasm_runtime::err_js(SqlError::from(err)))?;
     Ok(JsValue::from_str(&json))
 }

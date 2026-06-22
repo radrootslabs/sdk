@@ -2,10 +2,11 @@ use crate::utils::value_to_js;
 use radroots_replica_db::migrations;
 use radroots_replica_db::{ReplicaDbExportManifestRs, export_manifest};
 use radroots_replica_sync::radroots_replica_sync_status;
-use radroots_sql_core::{
-    WasmSqlExecutor, export_lock_begin, export_lock_end, with_export_lock_bypass,
+use radroots_sdk_sql_wasm_runtime::parse_json;
+use radroots_sdk_sql_wasm_runtime::{
+    WasmSqlExecutor, err_js, export_bytes, export_lock_begin, export_lock_end,
+    with_export_lock_bypass,
 };
-use radroots_sql_wasm_core::{err_js, parse_json};
 use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::*;
 
@@ -149,7 +150,7 @@ fn export_snapshot(exec: &WasmSqlExecutor) -> Result<JsValue, JsValue> {
 }
 
 fn export_snapshot_value(manifest: ReplicaDbExportManifestRs) -> Result<JsValue, JsValue> {
-    let bytes_js = radroots_sql_wasm_core::export_bytes();
+    let bytes_js = export_bytes();
     export_snapshot_value_with_bytes(manifest, bytes_js)
 }
 

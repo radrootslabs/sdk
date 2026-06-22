@@ -10,6 +10,7 @@ members = [
   "crates/replica_db_schema_bindings",
   "crates/replica_sync_wasm",
   "crates/sdk",
+  "crates/sql_wasm_runtime",
   "crates/trade_bindings",
   "crates/types_bindings",
   "crates/xtask",
@@ -43,8 +44,8 @@ radroots_relay_transport = { path = "../lib/crates/relay_transport", version = "
 radroots_replica_db = { path = "../lib/crates/replica_db", version = "0.1.0-alpha.2", default-features = false }
 radroots_replica_db_schema = { path = "../lib/crates/replica_db_schema", version = "0.1.0-alpha.2", default-features = false }
 radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "0.1.0-alpha.2", default-features = false }
+radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "0.1.0-alpha.2" }
 radroots_sql_core = { path = "../lib/crates/sql_core", version = "0.1.0-alpha.2", default-features = false }
-radroots_sql_wasm_core = { path = "../lib/crates/sql_wasm_core", version = "0.1.0-alpha.2", default-features = false }
 radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
   "serde_json",
   "std",
