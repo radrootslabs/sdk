@@ -1844,6 +1844,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "radroots_publish_proxy_protocol"
+version = "0.1.0-alpha.2"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "radroots_relay_transport"
 version = "0.1.0-alpha.2"
 dependencies = [
@@ -1987,6 +1994,7 @@ dependencies = [
  "radroots_nostr_connect",
  "radroots_nostr_signer",
  "radroots_outbox",
+ "radroots_publish_proxy_protocol",
  "radroots_relay_transport",
  "radroots_replica_db",
  "radroots_replica_db_schema",
