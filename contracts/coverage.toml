@@ -1,6 +1,5 @@
 [policy]
-threshold = 100.0
-enforce = false
+enforce = true
 require_regions = true
 require_functions = true
 require_lines = true
@@ -11,7 +10,31 @@ wasm_target = "wasm32-unknown-unknown"
 
 [report]
 output = "target/sdk-coverage/summary.json"
-ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/tools/xtask/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_db_wasm/src/wasm_impl.rs)"
+ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_db_wasm/src/wasm_impl.rs)"
+
+[scopes.radroots_sdk]
+paths = ["crates/sdk/src/**"]
+threshold = 98.0
+
+[scopes.xtask]
+paths = ["tools/xtask/src/**"]
+threshold = 100.0
+
+[scopes.events_codec_wasm]
+paths = ["crates/events_codec_wasm/src/**"]
+threshold = 100.0
+
+[scopes.sql_wasm_runtime]
+paths = ["crates/sql_wasm_runtime/src/**"]
+threshold = 100.0
+
+[scopes.replica_sync_wasm]
+paths = ["crates/replica_sync_wasm/src/**"]
+threshold = 100.0
+
+[scopes.replica_db_snapshot]
+paths = ["crates/replica_db_wasm/src/snapshot.rs"]
+threshold = 100.0
 
 [generated]
 typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck; current handwritten package entrypoints only re-export generated surfaces and must gain focused tests if runtime logic is added"
