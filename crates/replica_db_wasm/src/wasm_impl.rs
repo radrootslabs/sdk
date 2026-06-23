@@ -1,4 +1,7 @@
-use crate::utils::value_to_js;
+use crate::{
+    snapshot::{EXPORT_DB_BYTES_FIELD, EXPORT_MANIFEST_FIELD, synced_export_error},
+    utils::value_to_js,
+};
 use radroots_replica_db::migrations;
 use radroots_replica_db::{ReplicaDbExportManifestRs, export_manifest};
 use radroots_replica_sync::radroots_replica_sync_status;
@@ -137,12 +140,9 @@ fn export_snapshot(exec: &WasmSqlExecutor) -> Result<JsValue, JsValue> {
             err.to_string(),
         ))
     })?;
-    if status.pending_count > 0 {
+    if let Some(message) = synced_export_error(status.pending_count, status.expected_count) {
         return Err(err_js(radroots_sql_core::SqlError::InvalidArgument(
-            format!(
-                "replica db export requires synced state (pending {}/{})",
-                status.pending_count, status.expected_count
-            ),
+            message,
         )));
     }
     let manifest = export_manifest(exec).map_err(err_js)?;
@@ -164,9 +164,13 @@ fn export_snapshot_value_with_bytes(
         ))
     })?;
     let obj = js_sys::Object::new();
-    js_sys::Reflect::set(&obj, &JsValue::from_str("manifest_rs"), &manifest_js)
-        .map_err(|_| err_js(radroots_sql_core::SqlError::Internal))?;
-    js_sys::Reflect::set(&obj, &JsValue::from_str("db_bytes"), &bytes_js)
+    js_sys::Reflect::set(
+        &obj,
+        &JsValue::from_str(EXPORT_MANIFEST_FIELD),
+        &manifest_js,
+    )
+    .map_err(|_| err_js(radroots_sql_core::SqlError::Internal))?;
+    js_sys::Reflect::set(&obj, &JsValue::from_str(EXPORT_DB_BYTES_FIELD), &bytes_js)
         .map_err(|_| err_js(radroots_sql_core::SqlError::Internal))?;
     Ok(JsValue::from(obj))
 }

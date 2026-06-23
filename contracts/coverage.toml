@@ -11,7 +11,7 @@ wasm_target = "wasm32-unknown-unknown"
 
 [report]
 output = "target/sdk-coverage/summary.json"
-ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/tools/xtask/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_(db|sync)_wasm/src/lib.rs|/crates/replica_db_wasm/src/wasm_impl.rs|/crates/replica_sync_wasm/src/lib.rs)"
+ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/tools/xtask/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_db_wasm/src/wasm_impl.rs)"
 
 [generated]
 typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck"
@@ -27,8 +27,8 @@ paths = ["crates/*_bindings/**", "crates/binding_model/**"]
 reason = "binding crates are generator-owned source facades with behavior covered by xtask generator tests"
 
 [exclusions.wasm_glue_bootstrap]
-paths = ["crates/replica_db_wasm/src/wasm_impl.rs", "crates/replica_sync_wasm/src/lib.rs"]
-reason = "temporary bootstrap exclusion until WASM behavior is extracted and covered by the WASM coverage refactor slice"
+paths = ["crates/replica_db_wasm/src/wasm_impl.rs"]
+reason = "temporary bootstrap exclusion for the generated-style DB wrapper forwarding file while exported snapshot policy and sync parsing behavior are covered natively"
 
 [exclusions.xtask_bootstrap]
 paths = ["tools/xtask/**"]
