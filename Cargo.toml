@@ -13,7 +13,7 @@ members = [
   "crates/sql_wasm_runtime",
   "crates/trade_bindings",
   "crates/types_bindings",
-  "crates/xtask",
+  "tools/xtask",
 ]
 resolver = "2"
 
