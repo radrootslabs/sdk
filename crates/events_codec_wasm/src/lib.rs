@@ -1023,6 +1023,17 @@ mod tests {
     }
 
     #[test]
+    fn field_bindings_surface_builder_errors() {
+        let crdt_json = serde_json::json!({
+            "change": sample_crdt_change(),
+            "author_pubkey": " "
+        })
+        .to_string();
+
+        assert!(farm_crdt_change_tags(&crdt_json).is_err());
+    }
+
+    #[test]
     fn group_bindings_encode_to_json_when_input_is_valid() {
         let metadata = sample_group_metadata();
         assert_tags_json(group_put_user_tags(
