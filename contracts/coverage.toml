@@ -1,0 +1,35 @@
+[policy]
+threshold = 100.0
+enforce = false
+require_regions = true
+require_functions = true
+require_lines = true
+
+[toolchain]
+rust = "1.92.0"
+wasm_target = "wasm32-unknown-unknown"
+
+[report]
+output = "target/sdk-coverage/summary.json"
+ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/tools/xtask/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_(db|sync)_wasm/src/lib.rs|/crates/replica_db_wasm/src/wasm_impl.rs|/crates/replica_sync_wasm/src/lib.rs)"
+
+[generated]
+typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck"
+binding_crates = "generated Rust binding crates are excluded from line coverage and verified by generator unit tests plus generated TypeScript reproducibility"
+wasm_glue = "wasm-bindgen glue is excluded only while pure SDK behavior is covered by native extracted-logic tests and generated package checks"
+
+[exclusions.generated_typescript]
+paths = ["packages/*/src/generated/**", "packages/*/dist/**"]
+reason = "generated package output is checked through cargo xtask check, cargo xtask generate ts, cargo xtask generate wasm, and pnpm typecheck"
+
+[exclusions.generated_binding_crates]
+paths = ["crates/*_bindings/**", "crates/binding_model/**"]
+reason = "binding crates are generator-owned source facades with behavior covered by xtask generator tests"
+
+[exclusions.wasm_glue_bootstrap]
+paths = ["crates/replica_db_wasm/src/wasm_impl.rs", "crates/replica_sync_wasm/src/lib.rs"]
+reason = "temporary bootstrap exclusion until WASM behavior is extracted and covered by the WASM coverage refactor slice"
+
+[exclusions.xtask_bootstrap]
+paths = ["tools/xtask/**"]
+reason = "temporary bootstrap exclusion until coverage command behavior is stable and the final gate includes xtask coverage"
