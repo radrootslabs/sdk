@@ -14,7 +14,7 @@ output = "target/sdk-coverage/summary.json"
 ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/tools/xtask/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_db_wasm/src/wasm_impl.rs)"
 
 [generated]
-typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck"
+typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck; current handwritten package entrypoints only re-export generated surfaces and must gain focused tests if runtime logic is added"
 binding_crates = "generated Rust binding crates are excluded from line coverage and verified by generator unit tests plus generated TypeScript reproducibility"
 wasm_glue = "wasm-bindgen glue is excluded only while pure SDK behavior is covered by native extracted-logic tests and generated package checks"
 
