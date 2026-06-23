@@ -5,7 +5,7 @@
   "scripts": {
     "generate:ts": "cargo xtask generate ts",
     "generate:wasm": "cargo xtask generate wasm",
-    "check": "cargo xtask generate ts && cargo xtask generate wasm && cargo xtask check && pnpm -r build && pnpm -r typecheck",
+    "check": "cargo xtask generate ts && pnpm -r build && cargo xtask check && pnpm -r typecheck",
     "coverage": "cargo xtask coverage run",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck"
