@@ -500,6 +500,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
 
 [[package]]
+name = "dto_bindgen_core"
+version = "0.1.0"
+source = "git+https://github.com/triesap/dto_bindgen?rev=96ed6c691aacab31860828d25da2e0167b13d92c#96ed6c691aacab31860828d25da2e0167b13d92c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde",
+ "serde_json",
+ "sha2",
+ "syn",
+ "toml",
+]
+
+[[package]]
 name = "either"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2031,6 +2045,7 @@ dependencies = [
 name = "radroots_sdk_xtask"
 version = "0.1.0"
 dependencies = [
+ "dto_bindgen_core",
  "radroots_core_bindings",
  "radroots_events_bindings",
  "radroots_events_indexed_bindings",
