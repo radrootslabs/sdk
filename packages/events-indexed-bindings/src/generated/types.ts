@@ -8,6 +8,6 @@ export type RadrootsEventsIndexedShardMetadata = { file: string, count: number, 
 
 export type RadrootsEventsIndexedManifest = { country: string, total: number, shard_size: number, first_published_at: number, last_published_at: number, shards: Array<RadrootsEventsIndexedShardMetadata>, };
 
-export type RadrootsEventsIndexedShardCheckpoint = { shard_id: RadrootsEventsIndexedShardId, last_created_at: number, last_event_id: string | null, cursor: string | null, };
+export type RadrootsEventsIndexedShardCheckpoint = { shard_id: RadrootsEventsIndexedShardId, last_created_at: number, last_event_id?: string | null, cursor?: string | null, };
 
 export type RadrootsEventsIndexedIndexCheckpoint = { generated_at: number, shards: Array<RadrootsEventsIndexedShardCheckpoint>, };
