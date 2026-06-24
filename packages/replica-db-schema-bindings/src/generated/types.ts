@@ -212,6 +212,8 @@ export type IGcsLocationFieldsFilter = { id?: string, created_at?: string, updat
 
 export type IGcsLocationFieldsPartial = { d_tag?: ReplicaDbJsonValue | null, lat?: ReplicaDbJsonValue | null, lng?: ReplicaDbJsonValue | null, geohash?: ReplicaDbJsonValue | null, point?: ReplicaDbJsonValue | null, polygon?: ReplicaDbJsonValue | null, accuracy?: ReplicaDbJsonValue | null, altitude?: ReplicaDbJsonValue | null, tag_0?: ReplicaDbJsonValue | null, label?: ReplicaDbJsonValue | null, area?: ReplicaDbJsonValue | null, elevation?: ReplicaDbJsonValue | null, soil?: ReplicaDbJsonValue | null, climate?: ReplicaDbJsonValue | null, gc_id?: ReplicaDbJsonValue | null, gc_name?: ReplicaDbJsonValue | null, gc_admin1_id?: ReplicaDbJsonValue | null, gc_admin1_name?: ReplicaDbJsonValue | null, gc_country_id?: ReplicaDbJsonValue | null, gc_country_name?: ReplicaDbJsonValue | null, };
 
+export type IGcsLocationFindMany = { filter: IGcsLocationFieldsFilter | null, } | { rel: GcsLocationFindManyRel, };
+
 export type IGcsLocationFindManyResolve = IResultList<GcsLocation>;
 
 export type IGcsLocationFindOne = IGcsLocationFindOneArgs | IGcsLocationFindOneRelArgs;
@@ -273,6 +275,8 @@ export type IMediaImageFields = { file_path: string, mime_type: string, res_base
 export type IMediaImageFieldsFilter = { id?: string, created_at?: string, updated_at?: string, file_path?: string, mime_type?: string, res_base?: string, res_path?: string, label?: string, description?: string, };
 
 export type IMediaImageFieldsPartial = { file_path?: ReplicaDbJsonValue | null, mime_type?: ReplicaDbJsonValue | null, res_base?: ReplicaDbJsonValue | null, res_path?: ReplicaDbJsonValue | null, label?: ReplicaDbJsonValue | null, description?: ReplicaDbJsonValue | null, };
+
+export type IMediaImageFindMany = { filter: IMediaImageFieldsFilter | null, } | { rel: MediaImageFindManyRel, };
 
 export type IMediaImageFindManyResolve = IResultList<MediaImage>;
 
@@ -336,6 +340,8 @@ export type INostrProfileFieldsFilter = { id?: string, created_at?: string, upda
 
 export type INostrProfileFieldsPartial = { public_key?: ReplicaDbJsonValue | null, profile_type?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, display_name?: ReplicaDbJsonValue | null, about?: ReplicaDbJsonValue | null, website?: ReplicaDbJsonValue | null, picture?: ReplicaDbJsonValue | null, banner?: ReplicaDbJsonValue | null, nip05?: ReplicaDbJsonValue | null, lud06?: ReplicaDbJsonValue | null, lud16?: ReplicaDbJsonValue | null, };
 
+export type INostrProfileFindMany = { filter: INostrProfileFieldsFilter | null, } | { rel: NostrProfileFindManyRel, };
+
 export type INostrProfileFindManyResolve = IResultList<NostrProfile>;
 
 export type INostrProfileFindOne = INostrProfileFindOneArgs | INostrProfileFindOneRelArgs;
@@ -369,6 +375,8 @@ export type INostrRelayFields = { url: string, relay_id?: string | null, name?: 
 export type INostrRelayFieldsFilter = { id?: string, created_at?: string, updated_at?: string, url?: string, relay_id?: string, name?: string, description?: string, pubkey?: string, contact?: string, supported_nips?: string, software?: string, version?: string, data?: string, };
 
 export type INostrRelayFieldsPartial = { url?: ReplicaDbJsonValue | null, relay_id?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, description?: ReplicaDbJsonValue | null, pubkey?: ReplicaDbJsonValue | null, contact?: ReplicaDbJsonValue | null, supported_nips?: ReplicaDbJsonValue | null, software?: ReplicaDbJsonValue | null, version?: ReplicaDbJsonValue | null, data?: ReplicaDbJsonValue | null, };
+
+export type INostrRelayFindMany = { filter: INostrRelayFieldsFilter | null, } | { rel: NostrRelayFindManyRel, };
 
 export type INostrRelayFindManyResolve = IResultList<NostrRelay>;
 

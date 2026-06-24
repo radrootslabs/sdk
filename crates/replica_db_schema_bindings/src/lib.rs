@@ -22,6 +22,10 @@ mod tests {
 
         assert!(actual.contains(&"Farm"));
         assert!(actual.contains(&"GcsLocation"));
+        assert!(actual.contains(&"IGcsLocationFindMany"));
         assert!(actual.contains(&"IGcsLocationFindManyResolve"));
+        assert!(actual.contains(&"IMediaImageFindMany"));
+        assert!(actual.contains(&"INostrProfileFindMany"));
+        assert!(actual.contains(&"INostrRelayFindMany"));
     }
 }
