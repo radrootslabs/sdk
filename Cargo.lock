@@ -1685,7 +1685,6 @@ name = "radroots_core_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_core",
- "radroots_sdk_binding_model",
 ]
 
 [[package]]
