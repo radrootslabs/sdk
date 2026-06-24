@@ -10,5 +10,5 @@ homepage.workspace = true
 publish = false
 
 [dependencies]
-radroots_sdk_binding_model = { path = "../binding_model" }
-radroots_replica_db_schema = { workspace = true }
+dto_bindgen_core = { workspace = true }
+radroots_replica_db_schema = { workspace = true, features = ["dto-bindgen"] }

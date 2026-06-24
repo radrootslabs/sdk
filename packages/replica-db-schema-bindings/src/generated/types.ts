@@ -50,9 +50,11 @@ export type IFarmFields = { d_tag: string, pubkey: string, name: string, about?:
 
 export type IFarmFieldsFilter = { id?: string, created_at?: string, updated_at?: string, d_tag?: string, pubkey?: string, name?: string, about?: string, website?: string, picture?: string, banner?: string, location_primary?: string, location_city?: string, location_region?: string, location_country?: string, };
 
-export type IFarmFieldsPartial = { d_tag?: string | null, pubkey?: string | null, name?: string | null, about?: string | null, website?: string | null, picture?: string | null, banner?: string | null, location_primary?: string | null, location_city?: string | null, location_region?: string | null, location_country?: string | null, };
+export type IFarmFieldsPartial = { d_tag?: ReplicaDbJsonValue | null, pubkey?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, about?: ReplicaDbJsonValue | null, website?: ReplicaDbJsonValue | null, picture?: ReplicaDbJsonValue | null, banner?: ReplicaDbJsonValue | null, location_primary?: ReplicaDbJsonValue | null, location_city?: ReplicaDbJsonValue | null, location_region?: ReplicaDbJsonValue | null, location_country?: ReplicaDbJsonValue | null, };
 
-export type IFarmFindMany = { filter: IFarmFieldsFilter | null, };
+export type IFarmFindMany = IFarmFindManyArgs;
+
+export type IFarmFindManyArgs = { filter: IFarmFieldsFilter | null, };
 
 export type IFarmFindManyResolve = IResultList<Farm>;
 
@@ -60,7 +62,7 @@ export type IFarmFindOne = IFarmFindOneArgs;
 
 export type IFarmFindOneArgs = { on: FarmQueryBindValues, };
 
-export type IFarmFindOneResolve = IResult<Farm>;
+export type IFarmFindOneResolve = IResult<Farm | null>;
 
 export type IFarmGcsLocationCreate = IFarmGcsLocationFields;
 
@@ -74,9 +76,11 @@ export type IFarmGcsLocationFields = { farm_id: string, gcs_location_id: string,
 
 export type IFarmGcsLocationFieldsFilter = { id?: string, created_at?: string, updated_at?: string, farm_id?: string, gcs_location_id?: string, role?: string, };
 
-export type IFarmGcsLocationFieldsPartial = { farm_id?: string | null, gcs_location_id?: string | null, role?: string | null, };
+export type IFarmGcsLocationFieldsPartial = { farm_id?: ReplicaDbJsonValue | null, gcs_location_id?: ReplicaDbJsonValue | null, role?: ReplicaDbJsonValue | null, };
 
-export type IFarmGcsLocationFindMany = { filter: IFarmGcsLocationFieldsFilter | null, };
+export type IFarmGcsLocationFindMany = IFarmGcsLocationFindManyArgs;
+
+export type IFarmGcsLocationFindManyArgs = { filter: IFarmGcsLocationFieldsFilter | null, };
 
 export type IFarmGcsLocationFindManyResolve = IResultList<FarmGcsLocation>;
 
@@ -84,9 +88,11 @@ export type IFarmGcsLocationFindOne = IFarmGcsLocationFindOneArgs;
 
 export type IFarmGcsLocationFindOneArgs = { on: FarmGcsLocationQueryBindValues, };
 
-export type IFarmGcsLocationFindOneResolve = IResult<FarmGcsLocation>;
+export type IFarmGcsLocationFindOneResolve = IResult<FarmGcsLocation | null>;
 
-export type IFarmGcsLocationUpdate = { on: FarmGcsLocationQueryBindValues, fields: IFarmGcsLocationFieldsPartial, };
+export type IFarmGcsLocationUpdate = IFarmGcsLocationUpdateArgs;
+
+export type IFarmGcsLocationUpdateArgs = { on: FarmGcsLocationQueryBindValues, fields: IFarmGcsLocationFieldsPartial, };
 
 export type IFarmGcsLocationUpdateResolve = IResult<FarmGcsLocation>;
 
@@ -102,9 +108,11 @@ export type IFarmMemberClaimFields = { member_pubkey: string, farm_pubkey: strin
 
 export type IFarmMemberClaimFieldsFilter = { id?: string, created_at?: string, updated_at?: string, member_pubkey?: string, farm_pubkey?: string, };
 
-export type IFarmMemberClaimFieldsPartial = { member_pubkey?: string | null, farm_pubkey?: string | null, };
+export type IFarmMemberClaimFieldsPartial = { member_pubkey?: ReplicaDbJsonValue | null, farm_pubkey?: ReplicaDbJsonValue | null, };
 
-export type IFarmMemberClaimFindMany = { filter: IFarmMemberClaimFieldsFilter | null, };
+export type IFarmMemberClaimFindMany = IFarmMemberClaimFindManyArgs;
+
+export type IFarmMemberClaimFindManyArgs = { filter: IFarmMemberClaimFieldsFilter | null, };
 
 export type IFarmMemberClaimFindManyResolve = IResultList<FarmMemberClaim>;
 
@@ -112,9 +120,11 @@ export type IFarmMemberClaimFindOne = IFarmMemberClaimFindOneArgs;
 
 export type IFarmMemberClaimFindOneArgs = { on: FarmMemberClaimQueryBindValues, };
 
-export type IFarmMemberClaimFindOneResolve = IResult<FarmMemberClaim>;
+export type IFarmMemberClaimFindOneResolve = IResult<FarmMemberClaim | null>;
 
-export type IFarmMemberClaimUpdate = { on: FarmMemberClaimQueryBindValues, fields: IFarmMemberClaimFieldsPartial, };
+export type IFarmMemberClaimUpdate = IFarmMemberClaimUpdateArgs;
+
+export type IFarmMemberClaimUpdateArgs = { on: FarmMemberClaimQueryBindValues, fields: IFarmMemberClaimFieldsPartial, };
 
 export type IFarmMemberClaimUpdateResolve = IResult<FarmMemberClaim>;
 
@@ -130,9 +140,11 @@ export type IFarmMemberFields = { farm_id: string, member_pubkey: string, role: 
 
 export type IFarmMemberFieldsFilter = { id?: string, created_at?: string, updated_at?: string, farm_id?: string, member_pubkey?: string, role?: string, };
 
-export type IFarmMemberFieldsPartial = { farm_id?: string | null, member_pubkey?: string | null, role?: string | null, };
+export type IFarmMemberFieldsPartial = { farm_id?: ReplicaDbJsonValue | null, member_pubkey?: ReplicaDbJsonValue | null, role?: ReplicaDbJsonValue | null, };
 
-export type IFarmMemberFindMany = { filter: IFarmMemberFieldsFilter | null, };
+export type IFarmMemberFindMany = IFarmMemberFindManyArgs;
+
+export type IFarmMemberFindManyArgs = { filter: IFarmMemberFieldsFilter | null, };
 
 export type IFarmMemberFindManyResolve = IResultList<FarmMember>;
 
@@ -140,9 +152,11 @@ export type IFarmMemberFindOne = IFarmMemberFindOneArgs;
 
 export type IFarmMemberFindOneArgs = { on: FarmMemberQueryBindValues, };
 
-export type IFarmMemberFindOneResolve = IResult<FarmMember>;
+export type IFarmMemberFindOneResolve = IResult<FarmMember | null>;
 
-export type IFarmMemberUpdate = { on: FarmMemberQueryBindValues, fields: IFarmMemberFieldsPartial, };
+export type IFarmMemberUpdate = IFarmMemberUpdateArgs;
+
+export type IFarmMemberUpdateArgs = { on: FarmMemberQueryBindValues, fields: IFarmMemberFieldsPartial, };
 
 export type IFarmMemberUpdateResolve = IResult<FarmMember>;
 
@@ -158,9 +172,11 @@ export type IFarmTagFields = { farm_id: string, tag: string, };
 
 export type IFarmTagFieldsFilter = { id?: string, created_at?: string, updated_at?: string, farm_id?: string, tag?: string, };
 
-export type IFarmTagFieldsPartial = { farm_id?: string | null, tag?: string | null, };
+export type IFarmTagFieldsPartial = { farm_id?: ReplicaDbJsonValue | null, tag?: ReplicaDbJsonValue | null, };
 
-export type IFarmTagFindMany = { filter: IFarmTagFieldsFilter | null, };
+export type IFarmTagFindMany = IFarmTagFindManyArgs;
+
+export type IFarmTagFindManyArgs = { filter: IFarmTagFieldsFilter | null, };
 
 export type IFarmTagFindManyResolve = IResultList<FarmTag>;
 
@@ -168,13 +184,17 @@ export type IFarmTagFindOne = IFarmTagFindOneArgs;
 
 export type IFarmTagFindOneArgs = { on: FarmTagQueryBindValues, };
 
-export type IFarmTagFindOneResolve = IResult<FarmTag>;
+export type IFarmTagFindOneResolve = IResult<FarmTag | null>;
 
-export type IFarmTagUpdate = { on: FarmTagQueryBindValues, fields: IFarmTagFieldsPartial, };
+export type IFarmTagUpdate = IFarmTagUpdateArgs;
+
+export type IFarmTagUpdateArgs = { on: FarmTagQueryBindValues, fields: IFarmTagFieldsPartial, };
 
 export type IFarmTagUpdateResolve = IResult<FarmTag>;
 
-export type IFarmUpdate = { on: FarmQueryBindValues, fields: IFarmFieldsPartial, };
+export type IFarmUpdate = IFarmUpdateArgs;
+
+export type IFarmUpdateArgs = { on: FarmQueryBindValues, fields: IFarmFieldsPartial, };
 
 export type IFarmUpdateResolve = IResult<Farm>;
 
@@ -190,9 +210,7 @@ export type IGcsLocationFields = { d_tag: string, lat: number, lng: number, geoh
 
 export type IGcsLocationFieldsFilter = { id?: string, created_at?: string, updated_at?: string, d_tag?: string, lat?: number, lng?: number, geohash?: string, point?: string, polygon?: string, accuracy?: number, altitude?: number, tag_0?: string, label?: string, area?: number, elevation?: number, soil?: string, climate?: string, gc_id?: string, gc_name?: string, gc_admin1_id?: string, gc_admin1_name?: string, gc_country_id?: string, gc_country_name?: string, };
 
-export type IGcsLocationFieldsPartial = { d_tag?: string | null, lat?: number | null, lng?: number | null, geohash?: string | null, point?: string | null, polygon?: string | null, accuracy?: number | null, altitude?: number | null, tag_0?: string | null, label?: string | null, area?: number | null, elevation?: number | null, soil?: string | null, climate?: string | null, gc_id?: string | null, gc_name?: string | null, gc_admin1_id?: string | null, gc_admin1_name?: string | null, gc_country_id?: string | null, gc_country_name?: string | null, };
-
-export type IGcsLocationFindMany = { filter: IGcsLocationFieldsFilter | null, } | { rel: GcsLocationFindManyRel, };
+export type IGcsLocationFieldsPartial = { d_tag?: ReplicaDbJsonValue | null, lat?: ReplicaDbJsonValue | null, lng?: ReplicaDbJsonValue | null, geohash?: ReplicaDbJsonValue | null, point?: ReplicaDbJsonValue | null, polygon?: ReplicaDbJsonValue | null, accuracy?: ReplicaDbJsonValue | null, altitude?: ReplicaDbJsonValue | null, tag_0?: ReplicaDbJsonValue | null, label?: ReplicaDbJsonValue | null, area?: ReplicaDbJsonValue | null, elevation?: ReplicaDbJsonValue | null, soil?: ReplicaDbJsonValue | null, climate?: ReplicaDbJsonValue | null, gc_id?: ReplicaDbJsonValue | null, gc_name?: ReplicaDbJsonValue | null, gc_admin1_id?: ReplicaDbJsonValue | null, gc_admin1_name?: ReplicaDbJsonValue | null, gc_country_id?: ReplicaDbJsonValue | null, gc_country_name?: ReplicaDbJsonValue | null, };
 
 export type IGcsLocationFindManyResolve = IResultList<GcsLocation>;
 
@@ -202,9 +220,11 @@ export type IGcsLocationFindOneArgs = { on: GcsLocationQueryBindValues, };
 
 export type IGcsLocationFindOneRelArgs = { rel: GcsLocationFindManyRel, };
 
-export type IGcsLocationFindOneResolve = IResult<GcsLocation>;
+export type IGcsLocationFindOneResolve = IResult<GcsLocation | null>;
 
-export type IGcsLocationUpdate = { on: GcsLocationQueryBindValues, fields: IGcsLocationFieldsPartial, };
+export type IGcsLocationUpdate = IGcsLocationUpdateArgs;
+
+export type IGcsLocationUpdateArgs = { on: GcsLocationQueryBindValues, fields: IGcsLocationFieldsPartial, };
 
 export type IGcsLocationUpdateResolve = IResult<GcsLocation>;
 
@@ -220,9 +240,11 @@ export type ILogErrorFields = { error: string, message: string, stack_trace?: st
 
 export type ILogErrorFieldsFilter = { id?: string, created_at?: string, updated_at?: string, error?: string, message?: string, stack_trace?: string, cause?: string, app_system?: string, app_version?: string, nostr_pubkey?: string, data?: string, };
 
-export type ILogErrorFieldsPartial = { error?: string | null, message?: string | null, stack_trace?: string | null, cause?: string | null, app_system?: string | null, app_version?: string | null, nostr_pubkey?: string | null, data?: string | null, };
+export type ILogErrorFieldsPartial = { error?: ReplicaDbJsonValue | null, message?: ReplicaDbJsonValue | null, stack_trace?: ReplicaDbJsonValue | null, cause?: ReplicaDbJsonValue | null, app_system?: ReplicaDbJsonValue | null, app_version?: ReplicaDbJsonValue | null, nostr_pubkey?: ReplicaDbJsonValue | null, data?: ReplicaDbJsonValue | null, };
 
-export type ILogErrorFindMany = { filter: ILogErrorFieldsFilter | null, };
+export type ILogErrorFindMany = ILogErrorFindManyArgs;
+
+export type ILogErrorFindManyArgs = { filter: ILogErrorFieldsFilter | null, };
 
 export type ILogErrorFindManyResolve = IResultList<LogError>;
 
@@ -230,9 +252,11 @@ export type ILogErrorFindOne = ILogErrorFindOneArgs;
 
 export type ILogErrorFindOneArgs = { on: LogErrorQueryBindValues, };
 
-export type ILogErrorFindOneResolve = IResult<LogError>;
+export type ILogErrorFindOneResolve = IResult<LogError | null>;
 
-export type ILogErrorUpdate = { on: LogErrorQueryBindValues, fields: ILogErrorFieldsPartial, };
+export type ILogErrorUpdate = ILogErrorUpdateArgs;
+
+export type ILogErrorUpdateArgs = { on: LogErrorQueryBindValues, fields: ILogErrorFieldsPartial, };
 
 export type ILogErrorUpdateResolve = IResult<LogError>;
 
@@ -248,9 +272,7 @@ export type IMediaImageFields = { file_path: string, mime_type: string, res_base
 
 export type IMediaImageFieldsFilter = { id?: string, created_at?: string, updated_at?: string, file_path?: string, mime_type?: string, res_base?: string, res_path?: string, label?: string, description?: string, };
 
-export type IMediaImageFieldsPartial = { file_path?: string | null, mime_type?: string | null, res_base?: string | null, res_path?: string | null, label?: string | null, description?: string | null, };
-
-export type IMediaImageFindMany = { filter: IMediaImageFieldsFilter | null, } | { rel: MediaImageFindManyRel, };
+export type IMediaImageFieldsPartial = { file_path?: ReplicaDbJsonValue | null, mime_type?: ReplicaDbJsonValue | null, res_base?: ReplicaDbJsonValue | null, res_path?: ReplicaDbJsonValue | null, label?: ReplicaDbJsonValue | null, description?: ReplicaDbJsonValue | null, };
 
 export type IMediaImageFindManyResolve = IResultList<MediaImage>;
 
@@ -260,39 +282,45 @@ export type IMediaImageFindOneArgs = { on: MediaImageQueryBindValues, };
 
 export type IMediaImageFindOneRelArgs = { rel: MediaImageFindManyRel, };
 
-export type IMediaImageFindOneResolve = IResult<MediaImage>;
+export type IMediaImageFindOneResolve = IResult<MediaImage | null>;
 
-export type IMediaImageUpdate = { on: MediaImageQueryBindValues, fields: IMediaImageFieldsPartial, };
+export type IMediaImageUpdate = IMediaImageUpdateArgs;
+
+export type IMediaImageUpdateArgs = { on: MediaImageQueryBindValues, fields: IMediaImageFieldsPartial, };
 
 export type IMediaImageUpdateResolve = IResult<MediaImage>;
 
-export type INostrEventStateCreate = INostrEventStateFields;
+export type INostrEventHeadCreate = INostrEventHeadFields;
 
-export type INostrEventStateCreateResolve = IResult<NostrEventState>;
+export type INostrEventHeadCreateResolve = IResult<NostrEventHead>;
 
-export type INostrEventStateDelete = INostrEventStateFindOne;
+export type INostrEventHeadDelete = INostrEventHeadFindOne;
 
-export type INostrEventStateDeleteResolve = IResult<string>;
+export type INostrEventHeadDeleteResolve = IResult<string>;
 
-export type INostrEventStateFields = { key: string, kind: number, pubkey: string, d_tag: string, last_event_id: string, last_created_at: number, content_hash: string, };
+export type INostrEventHeadFields = { key: string, kind: number, pubkey: string, d_tag: string, last_event_id: string, last_created_at: number, content_hash: string, };
 
-export type INostrEventStateFieldsFilter = { id?: string, created_at?: string, updated_at?: string, key?: string, kind?: number, pubkey?: string, d_tag?: string, last_event_id?: string, last_created_at?: number, content_hash?: string, };
+export type INostrEventHeadFieldsFilter = { id?: string, created_at?: string, updated_at?: string, key?: string, kind?: number, pubkey?: string, d_tag?: string, last_event_id?: string, last_created_at?: number, content_hash?: string, };
 
-export type INostrEventStateFieldsPartial = { key?: string | null, kind?: number | null, pubkey?: string | null, d_tag?: string | null, last_event_id?: string | null, last_created_at?: number | null, content_hash?: string | null, };
+export type INostrEventHeadFieldsPartial = { key?: ReplicaDbJsonValue | null, kind?: ReplicaDbJsonValue | null, pubkey?: ReplicaDbJsonValue | null, d_tag?: ReplicaDbJsonValue | null, last_event_id?: ReplicaDbJsonValue | null, last_created_at?: ReplicaDbJsonValue | null, content_hash?: ReplicaDbJsonValue | null, };
 
-export type INostrEventStateFindMany = { filter: INostrEventStateFieldsFilter | null, };
+export type INostrEventHeadFindMany = INostrEventHeadFindManyArgs;
 
-export type INostrEventStateFindManyResolve = IResultList<NostrEventState>;
+export type INostrEventHeadFindManyArgs = { filter: INostrEventHeadFieldsFilter | null, };
 
-export type INostrEventStateFindOne = INostrEventStateFindOneArgs;
+export type INostrEventHeadFindManyResolve = IResultList<NostrEventHead>;
 
-export type INostrEventStateFindOneArgs = { on: NostrEventStateQueryBindValues, };
+export type INostrEventHeadFindOne = INostrEventHeadFindOneArgs;
 
-export type INostrEventStateFindOneResolve = IResult<NostrEventState>;
+export type INostrEventHeadFindOneArgs = { on: NostrEventHeadQueryBindValues, };
 
-export type INostrEventStateUpdate = { on: NostrEventStateQueryBindValues, fields: INostrEventStateFieldsPartial, };
+export type INostrEventHeadFindOneResolve = IResult<NostrEventHead | null>;
 
-export type INostrEventStateUpdateResolve = IResult<NostrEventState>;
+export type INostrEventHeadUpdate = INostrEventHeadUpdateArgs;
+
+export type INostrEventHeadUpdateArgs = { on: NostrEventHeadQueryBindValues, fields: INostrEventHeadFieldsPartial, };
+
+export type INostrEventHeadUpdateResolve = IResult<NostrEventHead>;
 
 export type INostrProfileCreate = INostrProfileFields;
 
@@ -306,9 +334,7 @@ export type INostrProfileFields = { public_key: string, profile_type: string, na
 
 export type INostrProfileFieldsFilter = { id?: string, created_at?: string, updated_at?: string, public_key?: string, profile_type?: string, name?: string, display_name?: string, about?: string, website?: string, picture?: string, banner?: string, nip05?: string, lud06?: string, lud16?: string, };
 
-export type INostrProfileFieldsPartial = { public_key?: string | null, profile_type?: string | null, name?: string | null, display_name?: string | null, about?: string | null, website?: string | null, picture?: string | null, banner?: string | null, nip05?: string | null, lud06?: string | null, lud16?: string | null, };
-
-export type INostrProfileFindMany = { filter: INostrProfileFieldsFilter | null, } | { rel: NostrProfileFindManyRel, };
+export type INostrProfileFieldsPartial = { public_key?: ReplicaDbJsonValue | null, profile_type?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, display_name?: ReplicaDbJsonValue | null, about?: ReplicaDbJsonValue | null, website?: ReplicaDbJsonValue | null, picture?: ReplicaDbJsonValue | null, banner?: ReplicaDbJsonValue | null, nip05?: ReplicaDbJsonValue | null, lud06?: ReplicaDbJsonValue | null, lud16?: ReplicaDbJsonValue | null, };
 
 export type INostrProfileFindManyResolve = IResultList<NostrProfile>;
 
@@ -318,13 +344,15 @@ export type INostrProfileFindOneArgs = { on: NostrProfileQueryBindValues, };
 
 export type INostrProfileFindOneRelArgs = { rel: NostrProfileFindManyRel, };
 
-export type INostrProfileFindOneResolve = IResult<NostrProfile>;
+export type INostrProfileFindOneResolve = IResult<NostrProfile | null>;
 
 export type INostrProfileRelayRelation = { nostr_profile: NostrProfileQueryBindValues, nostr_relay: NostrRelayQueryBindValues, };
 
 export type INostrProfileRelayResolve = IResultPass;
 
-export type INostrProfileUpdate = { on: NostrProfileQueryBindValues, fields: INostrProfileFieldsPartial, };
+export type INostrProfileUpdate = INostrProfileUpdateArgs;
+
+export type INostrProfileUpdateArgs = { on: NostrProfileQueryBindValues, fields: INostrProfileFieldsPartial, };
 
 export type INostrProfileUpdateResolve = IResult<NostrProfile>;
 
@@ -340,9 +368,7 @@ export type INostrRelayFields = { url: string, relay_id?: string | null, name?: 
 
 export type INostrRelayFieldsFilter = { id?: string, created_at?: string, updated_at?: string, url?: string, relay_id?: string, name?: string, description?: string, pubkey?: string, contact?: string, supported_nips?: string, software?: string, version?: string, data?: string, };
 
-export type INostrRelayFieldsPartial = { url?: string | null, relay_id?: string | null, name?: string | null, description?: string | null, pubkey?: string | null, contact?: string | null, supported_nips?: string | null, software?: string | null, version?: string | null, data?: string | null, };
-
-export type INostrRelayFindMany = { filter: INostrRelayFieldsFilter | null, } | { rel: NostrRelayFindManyRel, };
+export type INostrRelayFieldsPartial = { url?: ReplicaDbJsonValue | null, relay_id?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, description?: ReplicaDbJsonValue | null, pubkey?: ReplicaDbJsonValue | null, contact?: ReplicaDbJsonValue | null, supported_nips?: ReplicaDbJsonValue | null, software?: ReplicaDbJsonValue | null, version?: ReplicaDbJsonValue | null, data?: ReplicaDbJsonValue | null, };
 
 export type INostrRelayFindManyResolve = IResultList<NostrRelay>;
 
@@ -352,9 +378,11 @@ export type INostrRelayFindOneArgs = { on: NostrRelayQueryBindValues, };
 
 export type INostrRelayFindOneRelArgs = { rel: NostrRelayFindManyRel, };
 
-export type INostrRelayFindOneResolve = IResult<NostrRelay>;
+export type INostrRelayFindOneResolve = IResult<NostrRelay | null>;
 
-export type INostrRelayUpdate = { on: NostrRelayQueryBindValues, fields: INostrRelayFieldsPartial, };
+export type INostrRelayUpdate = INostrRelayUpdateArgs;
+
+export type INostrRelayUpdateArgs = { on: NostrRelayQueryBindValues, fields: INostrRelayFieldsPartial, };
 
 export type INostrRelayUpdateResolve = IResult<NostrRelay>;
 
@@ -370,9 +398,11 @@ export type IPlotFields = { d_tag: string, farm_id: string, name: string, about?
 
 export type IPlotFieldsFilter = { id?: string, created_at?: string, updated_at?: string, d_tag?: string, farm_id?: string, name?: string, about?: string, location_primary?: string, location_city?: string, location_region?: string, location_country?: string, };
 
-export type IPlotFieldsPartial = { d_tag?: string | null, farm_id?: string | null, name?: string | null, about?: string | null, location_primary?: string | null, location_city?: string | null, location_region?: string | null, location_country?: string | null, };
+export type IPlotFieldsPartial = { d_tag?: ReplicaDbJsonValue | null, farm_id?: ReplicaDbJsonValue | null, name?: ReplicaDbJsonValue | null, about?: ReplicaDbJsonValue | null, location_primary?: ReplicaDbJsonValue | null, location_city?: ReplicaDbJsonValue | null, location_region?: ReplicaDbJsonValue | null, location_country?: ReplicaDbJsonValue | null, };
 
-export type IPlotFindMany = { filter: IPlotFieldsFilter | null, };
+export type IPlotFindMany = IPlotFindManyArgs;
+
+export type IPlotFindManyArgs = { filter: IPlotFieldsFilter | null, };
 
 export type IPlotFindManyResolve = IResultList<Plot>;
 
@@ -380,7 +410,7 @@ export type IPlotFindOne = IPlotFindOneArgs;
 
 export type IPlotFindOneArgs = { on: PlotQueryBindValues, };
 
-export type IPlotFindOneResolve = IResult<Plot>;
+export type IPlotFindOneResolve = IResult<Plot | null>;
 
 export type IPlotGcsLocationCreate = IPlotGcsLocationFields;
 
@@ -394,9 +424,11 @@ export type IPlotGcsLocationFields = { plot_id: string, gcs_location_id: string,
 
 export type IPlotGcsLocationFieldsFilter = { id?: string, created_at?: string, updated_at?: string, plot_id?: string, gcs_location_id?: string, role?: string, };
 
-export type IPlotGcsLocationFieldsPartial = { plot_id?: string | null, gcs_location_id?: string | null, role?: string | null, };
+export type IPlotGcsLocationFieldsPartial = { plot_id?: ReplicaDbJsonValue | null, gcs_location_id?: ReplicaDbJsonValue | null, role?: ReplicaDbJsonValue | null, };
 
-export type IPlotGcsLocationFindMany = { filter: IPlotGcsLocationFieldsFilter | null, };
+export type IPlotGcsLocationFindMany = IPlotGcsLocationFindManyArgs;
+
+export type IPlotGcsLocationFindManyArgs = { filter: IPlotGcsLocationFieldsFilter | null, };
 
 export type IPlotGcsLocationFindManyResolve = IResultList<PlotGcsLocation>;
 
@@ -404,9 +436,11 @@ export type IPlotGcsLocationFindOne = IPlotGcsLocationFindOneArgs;
 
 export type IPlotGcsLocationFindOneArgs = { on: PlotGcsLocationQueryBindValues, };
 
-export type IPlotGcsLocationFindOneResolve = IResult<PlotGcsLocation>;
+export type IPlotGcsLocationFindOneResolve = IResult<PlotGcsLocation | null>;
 
-export type IPlotGcsLocationUpdate = { on: PlotGcsLocationQueryBindValues, fields: IPlotGcsLocationFieldsPartial, };
+export type IPlotGcsLocationUpdate = IPlotGcsLocationUpdateArgs;
+
+export type IPlotGcsLocationUpdateArgs = { on: PlotGcsLocationQueryBindValues, fields: IPlotGcsLocationFieldsPartial, };
 
 export type IPlotGcsLocationUpdateResolve = IResult<PlotGcsLocation>;
 
@@ -422,9 +456,11 @@ export type IPlotTagFields = { plot_id: string, tag: string, };
 
 export type IPlotTagFieldsFilter = { id?: string, created_at?: string, updated_at?: string, plot_id?: string, tag?: string, };
 
-export type IPlotTagFieldsPartial = { plot_id?: string | null, tag?: string | null, };
+export type IPlotTagFieldsPartial = { plot_id?: ReplicaDbJsonValue | null, tag?: ReplicaDbJsonValue | null, };
 
-export type IPlotTagFindMany = { filter: IPlotTagFieldsFilter | null, };
+export type IPlotTagFindMany = IPlotTagFindManyArgs;
+
+export type IPlotTagFindManyArgs = { filter: IPlotTagFieldsFilter | null, };
 
 export type IPlotTagFindManyResolve = IResultList<PlotTag>;
 
@@ -432,13 +468,17 @@ export type IPlotTagFindOne = IPlotTagFindOneArgs;
 
 export type IPlotTagFindOneArgs = { on: PlotTagQueryBindValues, };
 
-export type IPlotTagFindOneResolve = IResult<PlotTag>;
+export type IPlotTagFindOneResolve = IResult<PlotTag | null>;
 
-export type IPlotTagUpdate = { on: PlotTagQueryBindValues, fields: IPlotTagFieldsPartial, };
+export type IPlotTagUpdate = IPlotTagUpdateArgs;
+
+export type IPlotTagUpdateArgs = { on: PlotTagQueryBindValues, fields: IPlotTagFieldsPartial, };
 
 export type IPlotTagUpdateResolve = IResult<PlotTag>;
 
-export type IPlotUpdate = { on: PlotQueryBindValues, fields: IPlotFieldsPartial, };
+export type IPlotUpdate = IPlotUpdateArgs;
+
+export type IPlotUpdateArgs = { on: PlotQueryBindValues, fields: IPlotFieldsPartial, };
 
 export type IPlotUpdateResolve = IResult<Plot>;
 
@@ -450,13 +490,15 @@ export type ITradeProductDelete = ITradeProductFindOne;
 
 export type ITradeProductDeleteResolve = IResult<string>;
 
-export type ITradeProductFields = { key: string, category: string, title: string, summary: string, process: string, lot: string, profile: string, year: bigint, qty_amt: number, qty_amt_exact: string, qty_unit: string, qty_label?: string | null, qty_avail?: number | null, price_amt: number, price_amt_exact: string, price_currency: string, price_qty_amt: number, price_qty_amt_exact: string, price_qty_unit: string, listing_addr?: string | null, primary_bin_id?: string | null, verified_primary_bin_id?: string | null, notes?: string | null, };
+export type ITradeProductFields = { key: string, category: string, title: string, summary: string, process: string, lot: string, profile: string, year: bigint, qty_amt: number, qty_amt_exact: string, qty_unit: string, qty_label?: string | null, qty_avail?: bigint | null, price_amt: number, price_amt_exact: string, price_currency: string, price_qty_amt: number, price_qty_amt_exact: string, price_qty_unit: string, listing_addr?: string | null, primary_bin_id?: string | null, verified_primary_bin_id?: string | null, notes?: string | null, };
 
 export type ITradeProductFieldsFilter = { id?: string, created_at?: string, updated_at?: string, key?: string, category?: string, title?: string, summary?: string, process?: string, lot?: string, profile?: string, year?: bigint, qty_amt?: number, qty_amt_exact?: string, qty_unit?: string, qty_label?: string, qty_avail?: bigint, price_amt?: number, price_amt_exact?: string, price_currency?: string, price_qty_amt?: number, price_qty_amt_exact?: string, price_qty_unit?: string, listing_addr?: string, primary_bin_id?: string, verified_primary_bin_id?: string, notes?: string, };
 
-export type ITradeProductFieldsPartial = { key?: string | null, category?: string | null, title?: string | null, summary?: string | null, process?: string | null, lot?: string | null, profile?: string | null, year?: number | null, qty_amt?: number | null, qty_amt_exact?: string | null, qty_unit?: string | null, qty_label?: string | null, qty_avail?: number | null, price_amt?: number | null, price_amt_exact?: string | null, price_currency?: string | null, price_qty_amt?: number | null, price_qty_amt_exact?: string | null, price_qty_unit?: string | null, listing_addr?: string | null, primary_bin_id?: string | null, verified_primary_bin_id?: string | null, notes?: string | null, };
+export type ITradeProductFieldsPartial = { key?: ReplicaDbJsonValue | null, category?: ReplicaDbJsonValue | null, title?: ReplicaDbJsonValue | null, summary?: ReplicaDbJsonValue | null, process?: ReplicaDbJsonValue | null, lot?: ReplicaDbJsonValue | null, profile?: ReplicaDbJsonValue | null, year?: ReplicaDbJsonValue | null, qty_amt?: ReplicaDbJsonValue | null, qty_amt_exact?: ReplicaDbJsonValue | null, qty_unit?: ReplicaDbJsonValue | null, qty_label?: ReplicaDbJsonValue | null, qty_avail?: ReplicaDbJsonValue | null, price_amt?: ReplicaDbJsonValue | null, price_amt_exact?: ReplicaDbJsonValue | null, price_currency?: ReplicaDbJsonValue | null, price_qty_amt?: ReplicaDbJsonValue | null, price_qty_amt_exact?: ReplicaDbJsonValue | null, price_qty_unit?: ReplicaDbJsonValue | null, listing_addr?: ReplicaDbJsonValue | null, primary_bin_id?: ReplicaDbJsonValue | null, verified_primary_bin_id?: ReplicaDbJsonValue | null, notes?: ReplicaDbJsonValue | null, };
 
-export type ITradeProductFindMany = { filter: ITradeProductFieldsFilter | null, };
+export type ITradeProductFindMany = ITradeProductFindManyArgs;
+
+export type ITradeProductFindManyArgs = { filter: ITradeProductFieldsFilter | null, };
 
 export type ITradeProductFindManyResolve = IResultList<TradeProduct>;
 
@@ -464,7 +506,7 @@ export type ITradeProductFindOne = ITradeProductFindOneArgs;
 
 export type ITradeProductFindOneArgs = { on: TradeProductQueryBindValues, };
 
-export type ITradeProductFindOneResolve = IResult<TradeProduct>;
+export type ITradeProductFindOneResolve = IResult<TradeProduct | null>;
 
 export type ITradeProductLocationRelation = { trade_product: TradeProductQueryBindValues, gcs_location: GcsLocationQueryBindValues, };
 
@@ -474,7 +516,9 @@ export type ITradeProductMediaRelation = { trade_product: TradeProductQueryBindV
 
 export type ITradeProductMediaResolve = IResultPass;
 
-export type ITradeProductUpdate = { on: TradeProductQueryBindValues, fields: ITradeProductFieldsPartial, };
+export type ITradeProductUpdate = ITradeProductUpdateArgs;
+
+export type ITradeProductUpdateArgs = { on: TradeProductQueryBindValues, fields: ITradeProductFieldsPartial, };
 
 export type ITradeProductUpdateResolve = IResult<TradeProduct>;
 
@@ -490,9 +534,9 @@ export type MediaImageQueryBindValues = { id: string, } | { file_path: string, }
 
 export type MediaImageTradeProductArgs = { id: string, };
 
-export type NostrEventState = { id: string, created_at: string, updated_at: string, key: string, kind: number, pubkey: string, d_tag: string, last_event_id: string, last_created_at: number, content_hash: string, };
+export type NostrEventHead = { id: string, created_at: string, updated_at: string, key: string, kind: number, pubkey: string, d_tag: string, last_event_id: string, last_created_at: number, content_hash: string, };
 
-export type NostrEventStateQueryBindValues = { id: string, } | { key: string, };
+export type NostrEventHeadQueryBindValues = { id: string, } | { key: string, };
 
 export type NostrProfile = { id: string, created_at: string, updated_at: string, public_key: string, profile_type: string, name: string, display_name: string | null, about: string | null, website: string | null, picture: string | null, banner: string | null, nip05: string | null, lud06: string | null, lud16: string | null, };
 
@@ -521,6 +565,8 @@ export type PlotQueryBindValues = { id: string, } | { d_tag: string, } | { farm_
 export type PlotTag = { id: string, created_at: string, updated_at: string, plot_id: string, tag: string, };
 
 export type PlotTagQueryBindValues = { id: string, } | { plot_id: string, } | { tag: string, };
+
+export type ReplicaDbJsonValue = null | boolean | number | string | Array<ReplicaDbJsonValue> | { [key: string]: ReplicaDbJsonValue };
 
 export type TradeProduct = { id: string, created_at: string, updated_at: string, key: string, category: string, title: string, summary: string, process: string, lot: string, profile: string, year: bigint, qty_amt: number, qty_amt_exact: string | null, qty_unit: string, qty_label: string | null, qty_avail: bigint | null, price_amt: number, price_amt_exact: string | null, price_currency: string, price_qty_amt: number, price_qty_amt_exact: string | null, price_qty_unit: string, listing_addr: string | null, primary_bin_id: string | null, verified_primary_bin_id: string | null, notes: string | null, };
 

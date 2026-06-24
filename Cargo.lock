@@ -1939,6 +1939,7 @@ dependencies = [
 name = "radroots_replica_db_schema"
 version = "0.1.0-alpha.2"
 dependencies = [
+ "dto_bindgen_core",
  "radroots_types",
  "serde",
  "serde_json",
@@ -1948,8 +1949,8 @@ dependencies = [
 name = "radroots_replica_db_schema_bindings"
 version = "0.1.0"
 dependencies = [
+ "dto_bindgen_core",
  "radroots_replica_db_schema",
- "radroots_sdk_binding_model",
 ]
 
 [[package]]
