@@ -1783,13 +1783,17 @@ dependencies = [
 [[package]]
 name = "radroots_events_indexed"
 version = "0.1.0-alpha.2"
+dependencies = [
+ "dto_bindgen",
+ "dto_bindgen_core",
+ "serde",
+]
 
 [[package]]
 name = "radroots_events_indexed_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_events_indexed",
- "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -2087,7 +2091,7 @@ dependencies = [
  "radroots_core",
  "radroots_events",
  "radroots_events_bindings",
- "radroots_events_indexed_bindings",
+ "radroots_events_indexed",
  "radroots_identity_bindings",
  "radroots_replica_db_schema_bindings",
  "radroots_sdk_binding_model",
