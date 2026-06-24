@@ -2049,7 +2049,6 @@ version = "0.1.0"
 dependencies = [
  "dto_bindgen_core",
  "radroots_core",
- "radroots_core_bindings",
  "radroots_events",
  "radroots_events_bindings",
  "radroots_events_indexed_bindings",
