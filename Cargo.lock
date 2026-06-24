@@ -1674,6 +1674,7 @@ dependencies = [
 name = "radroots_core"
 version = "0.1.0-alpha.2"
 dependencies = [
+ "dto_bindgen_core",
  "rust_decimal",
  "rust_decimal_macros",
  "serde",
@@ -1703,6 +1704,7 @@ dependencies = [
 name = "radroots_events"
 version = "0.1.0-alpha.2"
 dependencies = [
+ "dto_bindgen_core",
  "hex",
  "radroots_core",
  "serde",
@@ -2046,7 +2048,9 @@ name = "radroots_sdk_xtask"
 version = "0.1.0"
 dependencies = [
  "dto_bindgen_core",
+ "radroots_core",
  "radroots_core_bindings",
+ "radroots_events",
  "radroots_events_bindings",
  "radroots_events_indexed_bindings",
  "radroots_identity_bindings",
