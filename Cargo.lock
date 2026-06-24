@@ -2157,7 +2157,7 @@ dependencies = [
 name = "radroots_types_bindings"
 version = "0.1.0"
 dependencies = [
- "radroots_sdk_binding_model",
+ "dto_bindgen_core",
  "radroots_types",
 ]
 
