@@ -7,34 +7,26 @@ import type {
     RadrootsCoreDiscountValue,
     RadrootsCoreMoney,
     RadrootsCoreQuantity,
-    RadrootsCoreQuantityPrice,
     RadrootsCoreUnit,
 } from "@radroots/core-bindings";
 import type {
+    RadrootsFarmRef,
+    RadrootsListing,
+    RadrootsListingAvailability,
+    RadrootsListingBin,
+    RadrootsListingDeliveryMethod,
     RadrootsListingImage,
+    RadrootsListingLocation,
+    RadrootsListingProduct,
     RadrootsNostrEventPtr,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
     RadrootsTradeMessagePayload,
+    RadrootsTradeMessageType,
     RadrootsTradeOrderEconomicLine,
     RadrootsTradeOrderItem,
+    RadrootsTradeOrderStatus,
 } from "@radroots/events-bindings";
-
-export type RadrootsFarmRef = { pubkey: string, d_tag: string, };
-
-export type RadrootsListing = { d_tag: string, farm: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsListingBin>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: RadrootsCoreDecimal | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingLocation | null, images?: Array<RadrootsListingImage> | null, };
-
-export type RadrootsListingAvailability = { kind: "window", amount: { start?: number | null, end?: number | null, }, } | { kind: "status", amount: { status: RadrootsListingStatus, }, };
-
-export type RadrootsListingBin = { bin_id: string, quantity: RadrootsCoreQuantity, price_per_canonical_unit: RadrootsCoreQuantityPrice, display_amount?: RadrootsCoreDecimal | null, display_unit?: RadrootsCoreUnit | null, display_label?: string | null, display_price?: RadrootsCoreMoney | null, display_price_unit?: RadrootsCoreUnit | null, };
-
-export type RadrootsListingDeliveryMethod = { kind: "pickup", } | { kind: "local_delivery", } | { kind: "shipping", } | { kind: "other", amount: { method: string, }, };
-
-export type RadrootsListingLocation = { primary: string, city?: string | null, region?: string | null, country?: string | null, lat?: number | null, lng?: number | null, geohash?: string | null, };
-
-export type RadrootsListingProduct = { key: string, title: string, category: string, summary?: string | null, process?: string | null, lot?: string | null, location?: string | null, profile?: string | null, year?: string | null, };
-
-export type RadrootsListingStatus = { kind: "active", } | { kind: "sold", } | { kind: "other", amount: { value: string, }, };
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
@@ -68,8 +60,6 @@ export type RadrootsTradeMarketplaceListingSummary = { listing_addr: string, sel
 
 export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsTradeOrderStatus, last_message_type: RadrootsTradeMessageType, item_count: number, total_bin_count: number, has_requested_discounts: boolean, last_reason?: string | null, };
 
-export type RadrootsTradeMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel";
-
 export type RadrootsTradeModerationFlag = { code: string, severity: RadrootsTradeModerationSeverity, status: RadrootsTradeModerationStatus, source?: string | null, reason?: string | null, };
 
 export type RadrootsTradeModerationSeverity = "notice" | "warning" | "block";
@@ -89,8 +79,6 @@ export type RadrootsTradeOrderQuery = { listing_addr?: string | null, buyer_pubk
 export type RadrootsTradeOrderSort = { field: RadrootsTradeOrderSortField, direction: RadrootsTradeSortDirection, };
 
 export type RadrootsTradeOrderSortField = "order_id" | "listing_addr" | "buyer_pubkey" | "seller_pubkey" | "status" | "last_message_type" | "total_bin_count";
-
-export type RadrootsTradeOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled";
 
 export type RadrootsTradeOrderWorkflowMessage = { event_id: string, actor_pubkey: string, counterparty_pubkey: string, listing_addr: string, order_id?: string | null, listing_event?: RadrootsNostrEventPtr | null, root_event_id?: string | null, prev_event_id?: string | null, payload: RadrootsTradeMessagePayload, };
 
