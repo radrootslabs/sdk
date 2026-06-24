@@ -1755,7 +1755,6 @@ name = "radroots_events_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_events",
- "radroots_sdk_binding_model",
 ]
 
 [[package]]
@@ -1814,7 +1813,6 @@ name = "radroots_identity_bindings"
 version = "0.1.0"
 dependencies = [
  "radroots_identity",
- "radroots_sdk_binding_model",
 ]
 
 [[package]]
