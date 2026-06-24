@@ -75,7 +75,7 @@ export type RadrootsListEntry = { tag: string, values: Array<string>, };
 
 export type RadrootsListSet = { d_tag: string, content: string, entries: Array<RadrootsListEntry>, title?: string | null, description?: string | null, image?: string | null, };
 
-export type RadrootsListing = { d_tag: string, farm: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsListingBin>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: RadrootsCoreDecimal | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingLocation | null, images?: Array<RadrootsListingImage> | null, };
+export type RadrootsListing = { d_tag: string, published_at?: number | null, farm: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsListingBin>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: RadrootsCoreDecimal | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingLocation | null, images?: Array<RadrootsListingImage> | null, };
 
 export type RadrootsListingAvailability = { kind: "window", amount: { start?: number | null, end?: number | null, }, } | { kind: "status", amount: { status: RadrootsListingStatus, }, };
 

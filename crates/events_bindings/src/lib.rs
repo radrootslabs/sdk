@@ -2,19 +2,11 @@ pub use radroots_events as upstream;
 
 mod model;
 
-pub use model::{constants_module, kinds_module, types_module};
+pub use model::{constants_module, kinds_module};
 
 #[cfg(test)]
 mod tests {
-    use super::{constants_module, kinds_module, types_module};
-
-    #[test]
-    fn preserves_event_type_exports() {
-        let rendered = types_module().render();
-        assert!(rendered.contains("export type RadrootsListing"));
-        assert!(rendered.contains("export type RadrootsJobInput"));
-        assert!(rendered.contains("export type RadrootsTradeOrderRequested"));
-    }
+    use super::{constants_module, kinds_module};
 
     #[test]
     fn preserves_event_constant_exports() {
