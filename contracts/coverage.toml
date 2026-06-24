@@ -10,7 +10,7 @@ wasm_target = "wasm32-unknown-unknown"
 
 [report]
 output = "target/sdk-coverage/summary.json"
-ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/crates/.+_bindings/|/crates/binding_model/|/crates/replica_db_wasm/src/wasm_impl.rs|/tools/xtask/src/(check|contracts|coverage|fs|generate|main|output|package_matrix|wasm)\\.rs)"
+ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/crates/.+_bindings/|/crates/replica_db_wasm/src/wasm_impl.rs|/tools/xtask/src/(check|contracts|coverage|fs|generate|main|output|package_matrix|wasm)\\.rs)"
 
 [scopes.radroots_sdk]
 paths = ["crates/sdk/src/**"]
@@ -46,7 +46,7 @@ paths = ["packages/*/src/generated/**", "packages/*/dist/**"]
 reason = "generated package output is checked through cargo xtask check, cargo xtask generate ts, cargo xtask generate wasm, and pnpm typecheck"
 
 [exclusions.generated_binding_crates]
-paths = ["crates/*_bindings/**", "crates/binding_model/**"]
+paths = ["crates/*_bindings/**"]
 reason = "binding crates are generator-owned source facades with behavior covered by xtask generator tests"
 
 [exclusions.wasm_glue_bootstrap]

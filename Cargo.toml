@@ -1,6 +1,5 @@
 [workspace]
 members = [
-  "crates/binding_model",
   "crates/core_bindings",
   "crates/events_codec_wasm",
   "crates/events_bindings",
