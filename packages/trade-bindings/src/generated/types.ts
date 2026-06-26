@@ -16,8 +16,8 @@ import type {
     RadrootsListingBin,
     RadrootsListingDeliveryMethod,
     RadrootsListingImage,
-    RadrootsListingLocation,
     RadrootsListingProduct,
+    RadrootsListingPublicLocation,
     RadrootsNostrEventPtr,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
@@ -30,7 +30,7 @@ import type {
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
-export type RadrootsTradeListing = { listing_id: string, listing_addr: string, seller_pubkey: string, title: string, description: string, product_type: string, primary_bin_id: string, bin_quantity: RadrootsCoreQuantity, unit: RadrootsCoreUnit, unit_price: RadrootsCoreMoney, inventory_available: RadrootsCoreDecimal, availability: RadrootsListingAvailability, location: RadrootsListingLocation, delivery_method: RadrootsListingDeliveryMethod, listing: RadrootsListing, };
+export type RadrootsTradeListing = { listing_id: string, listing_addr: string, seller_pubkey: string, title: string, description: string, product_type: string, primary_bin_id: string, bin_quantity: RadrootsCoreQuantity, unit: RadrootsCoreUnit, unit_price: RadrootsCoreMoney, inventory_available: RadrootsCoreDecimal, availability: RadrootsListingAvailability, location: RadrootsListingPublicLocation, delivery_method: RadrootsListingDeliveryMethod, listing: RadrootsListing, };
 
 export type RadrootsTradeListingBackofficeOverlay = { listing_addr: string, review_queue?: RadrootsTradeReviewQueueEntry | null, moderation_flags: Array<RadrootsTradeModerationFlag>, };
 
@@ -44,7 +44,7 @@ export type RadrootsTradeListingFacets = { seller_pubkeys: Array<RadrootsTradeFa
 
 export type RadrootsTradeListingMarketStatus = "unknown" | "window" | "active" | "sold" | { other: { value: string, }, };
 
-export type RadrootsTradeListingProjection = { listing_addr: string, seller_pubkey: string, listing_id: string, farm: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsTradeListingBinProjection>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: RadrootsCoreDecimal | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingLocation | null, images?: Array<RadrootsListingImage> | null, order_count: number, open_order_count: number, terminal_order_count: number, };
+export type RadrootsTradeListingProjection = { listing_addr: string, seller_pubkey: string, listing_id: string, farm: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsTradeListingBinProjection>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: RadrootsCoreDecimal | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingPublicLocation | null, images?: Array<RadrootsListingImage> | null, order_count: number, open_order_count: number, terminal_order_count: number, };
 
 export type RadrootsTradeListingQuery = { seller_pubkey?: string | null, farm_pubkey?: string | null, farm_id?: string | null, product_key?: string | null, product_category?: string | null, listing_status?: RadrootsTradeListingMarketStatus | null, };
 
