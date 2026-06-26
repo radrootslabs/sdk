@@ -49,6 +49,7 @@ radroots_replica_db_schema = { path = "../lib/crates/replica_db_schema", version
 radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "0.1.0-alpha.2", default-features = false }
 radroots_runtime_paths = { path = "../lib/crates/runtime_paths", version = "0.1.0-alpha.2", default-features = false }
 radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "0.1.0-alpha.2" }
+radroots_sp1_guest_trade = { path = "../lib/crates/sp1_guest_trade", version = "0.1.0-alpha.2", default-features = false }
 radroots_sql_core = { path = "../lib/crates/sql_core", version = "0.1.0-alpha.2", default-features = false }
 radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
   "serde_json",
