@@ -101,3 +101,5 @@ export type RadrootsTradeReviewQueueEntry = { queue: string, priority: RadrootsT
 export type RadrootsTradeReviewStatus = "queued" | "in_progress" | "blocked" | "resolved";
 
 export type RadrootsTradeSortDirection = "asc" | "desc";
+
+export type RadrootsTradeWorkflowState = "missing" | "requested" | "revision_proposed" | "agreed_pending_rhi" | "committed" | "declined" | "cancelled" | "invalid";
