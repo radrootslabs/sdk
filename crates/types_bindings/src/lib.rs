@@ -80,7 +80,7 @@ fn field(name: &str, ty: TypeRef) -> FieldDef {
 }
 
 fn rust_id(name: &'static str) -> RustTypeId {
-    RustTypeId::new(env!("CARGO_PKG_NAME"), name)
+    RustTypeId::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_NAME"), name)
 }
 
 fn source_span() -> SourceSpan {

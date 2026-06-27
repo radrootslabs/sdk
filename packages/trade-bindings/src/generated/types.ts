@@ -10,8 +10,6 @@ import type {
     RadrootsCoreUnit,
 } from "@radroots/core-bindings";
 import type {
-    RadrootsCommercialMessagePayload,
-    RadrootsCommercialMessageType,
     RadrootsFarmRef,
     RadrootsListing,
     RadrootsListingAvailability,
@@ -21,12 +19,24 @@ import type {
     RadrootsListingProduct,
     RadrootsListingPublicLocation,
     RadrootsNostrEventPtr,
+    RadrootsOrderCancellation,
+    RadrootsOrderDecision,
     RadrootsOrderEconomicLine,
     RadrootsOrderItem,
-    RadrootsOrderStatus,
+    RadrootsOrderRequest,
+    RadrootsOrderRevisionDecision,
+    RadrootsOrderRevisionProposal,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
+    RadrootsTradeListingValidateRequest,
+    RadrootsTradeListingValidateResult,
 } from "@radroots/events-bindings";
+
+export type RadrootsCommercialMessagePayload = { listing_validate_request: RadrootsTradeListingValidateRequest, } | { listing_validate_result: RadrootsTradeListingValidateResult, } | { trade_order_requested: RadrootsOrderRequest, } | { order_response: RadrootsOrderDecision, } | { order_revision: RadrootsOrderRevisionProposal, } | { order_revision_accept: RadrootsOrderRevisionDecision, } | { order_revision_decline: RadrootsOrderRevisionDecision, } | { cancel: RadrootsOrderCancellation, };
+
+export type RadrootsCommercialMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel";
+
+export type RadrootsOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled";
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
