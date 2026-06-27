@@ -4,7 +4,6 @@ import type {
     RadrootsCoreCurrency,
     RadrootsCoreDecimal,
     RadrootsCoreDiscount,
-    RadrootsCoreDiscountValue,
     RadrootsCoreMoney,
     RadrootsCoreQuantity,
     RadrootsCoreUnit,
@@ -18,13 +17,14 @@ import type {
     RadrootsListingImage,
     RadrootsListingProduct,
     RadrootsListingPublicLocation,
-    RadrootsNostrEventPtr,
-    RadrootsOrderEconomicLine,
+    RadrootsOrderEconomics,
     RadrootsOrderEventType,
-    RadrootsOrderItem,
+    RadrootsOrderInventoryCommitment,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
 } from "@radroots/events-bindings";
+
+export type RadrootsOrderIssue = "missing_request" | { multiple_requests: { event_ids: Array<string>, }, } | { request_payload_invalid: { event_id: string, }, } | { request_order_id_mismatch: { event_id: string, }, } | { request_author_mismatch: { event_id: string, }, } | { request_listing_address_invalid: { event_id: string, }, } | { request_seller_listing_mismatch: { event_id: string, }, } | { decision_payload_invalid: { event_id: string, }, } | { decision_order_id_mismatch: { event_id: string, }, } | { decision_author_mismatch: { event_id: string, }, } | { decision_counterparty_mismatch: { event_id: string, }, } | { decision_buyer_mismatch: { event_id: string, }, } | { decision_seller_mismatch: { event_id: string, }, } | { decision_listing_address_invalid: { event_id: string, }, } | { decision_listing_mismatch: { event_id: string, }, } | { decision_root_mismatch: { event_id: string, }, } | { decision_previous_mismatch: { event_id: string, }, } | { decision_missing_inventory_commitments: { event_id: string, }, } | { decision_inventory_commitment_mismatch: { event_id: string, }, } | { decision_missing_reason: { event_id: string, }, } | { conflicting_decisions: { event_ids: Array<string>, }, } | { revision_proposal_payload_invalid: { event_id: string, }, } | { revision_proposal_order_id_mismatch: { event_id: string, }, } | { revision_proposal_author_mismatch: { event_id: string, }, } | { revision_proposal_counterparty_mismatch: { event_id: string, }, } | { revision_proposal_buyer_mismatch: { event_id: string, }, } | { revision_proposal_seller_mismatch: { event_id: string, }, } | { revision_proposal_listing_address_invalid: { event_id: string, }, } | { revision_proposal_listing_mismatch: { event_id: string, }, } | { revision_proposal_root_mismatch: { event_id: string, }, } | { revision_proposal_previous_mismatch: { event_id: string, }, } | { revision_decision_without_proposal: { event_id: string, }, } | { revision_decision_payload_invalid: { event_id: string, }, } | { revision_decision_order_id_mismatch: { event_id: string, }, } | { revision_decision_author_mismatch: { event_id: string, }, } | { revision_decision_counterparty_mismatch: { event_id: string, }, } | { revision_decision_buyer_mismatch: { event_id: string, }, } | { revision_decision_seller_mismatch: { event_id: string, }, } | { revision_decision_listing_address_invalid: { event_id: string, }, } | { revision_decision_listing_mismatch: { event_id: string, }, } | { revision_decision_root_mismatch: { event_id: string, }, } | { revision_decision_previous_mismatch: { event_id: string, }, } | { revision_decision_revision_id_mismatch: { event_id: string, }, } | { cancellation_without_cancellable_order: { event_id: string, }, } | { cancellation_payload_invalid: { event_id: string, }, } | { cancellation_order_id_mismatch: { event_id: string, }, } | { cancellation_author_mismatch: { event_id: string, }, } | { cancellation_counterparty_mismatch: { event_id: string, }, } | { cancellation_buyer_mismatch: { event_id: string, }, } | { cancellation_seller_mismatch: { event_id: string, }, } | { cancellation_listing_address_invalid: { event_id: string, }, } | { cancellation_listing_mismatch: { event_id: string, }, } | { cancellation_root_mismatch: { event_id: string, }, } | { cancellation_previous_mismatch: { event_id: string, }, } | { forked_lifecycle: { event_ids: Array<string>, }, } | { validation_receipt_without_pending_agreement: { event_id: string, }, } | { validation_receipt_order_id_mismatch: { event_id: string, }, } | { validation_receipt_type_mismatch: { event_id: string, }, } | { validation_receipt_root_mismatch: { event_id: string, }, } | { validation_receipt_target_mismatch: { event_id: string, }, } | { validation_receipt_listing_mismatch: { event_id: string, }, } | { conflicting_validation_receipts: { event_ids: Array<string>, }, } | { deterministic_validation_failure: { event_id: string, reason: string, }, } | { stale_listing_event: { expected_event_id: string, current_event_id: string, }, };
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
@@ -56,7 +56,7 @@ export type RadrootsTradeListingTotal = { price_amount: RadrootsCoreMoney, price
 
 export type RadrootsTradeMarketplaceListingSummary = { listing_addr: string, seller_pubkey: string, farm_pubkey: string, farm_id: string, product_key: string, product_title: string, product_category: string, product_summary?: string | null, listing_status: RadrootsTradeListingMarketStatus, location_primary?: string | null, inventory_available?: RadrootsCoreDecimal | null, primary_bin_id: string, primary_bin_label?: string | null, primary_bin_total: RadrootsTradeListingTotal, order_count: number, open_order_count: number, terminal_order_count: number, };
 
-export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsTradeWorkflowState, last_message_type: RadrootsOrderEventType, item_count: number, total_bin_count: number, has_requested_discounts: boolean, last_reason?: string | null, };
+export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsTradeWorkflowState, last_message_type: RadrootsOrderEventType, item_count: number, total_bin_count: number, last_reason?: string | null, };
 
 export type RadrootsTradeModerationFlag = { code: string, severity: RadrootsTradeModerationSeverity, status: RadrootsTradeModerationStatus, source?: string | null, reason?: string | null, };
 
@@ -78,7 +78,7 @@ export type RadrootsTradeOrderSort = { field: RadrootsTradeOrderSortField, direc
 
 export type RadrootsTradeOrderSortField = "order_id" | "listing_addr" | "buyer_pubkey" | "seller_pubkey" | "status" | "last_message_type" | "total_bin_count";
 
-export type RadrootsTradeOrderWorkflowProjection = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsOrderItem>, requested_discounts?: Array<RadrootsOrderEconomicLine> | null, status: RadrootsTradeWorkflowState, listing_snapshot?: RadrootsNostrEventPtr | null, root_event_id: string, last_event_id: string, last_discount_request?: RadrootsCoreDiscountValue | null, last_discount_offer?: RadrootsCoreDiscountValue | null, accepted_discount?: RadrootsCoreDiscountValue | null, last_reason?: string | null, last_discount_decline_reason?: string | null, revision_count: number, cancellation_count: number, last_message_type: RadrootsOrderEventType, last_actor_pubkey: string, };
+export type RadrootsTradeOrderWorkflowProjection = { order_id: string, status: RadrootsTradeWorkflowState, request_event_id?: string | null, decision_event_id?: string | null, cancellation_event_id?: string | null, validation_receipt_event_id?: string | null, lifecycle_terminal: boolean, economics?: RadrootsOrderEconomics | null, agreement_event_id?: string | null, pending_revision_event_id?: string | null, pending_inventory_reservations: Array<RadrootsOrderInventoryCommitment>, committed_inventory_reservations: Array<RadrootsOrderInventoryCommitment>, listing_addr?: string | null, buyer_pubkey?: string | null, seller_pubkey?: string | null, last_event_id?: string | null, issues: Array<RadrootsOrderIssue>, };
 
 export type RadrootsTradeReviewPriority = "low" | "normal" | "high" | "critical";
 
