@@ -19,24 +19,12 @@ import type {
     RadrootsListingProduct,
     RadrootsListingPublicLocation,
     RadrootsNostrEventPtr,
-    RadrootsOrderCancellation,
-    RadrootsOrderDecision,
     RadrootsOrderEconomicLine,
+    RadrootsOrderEventType,
     RadrootsOrderItem,
-    RadrootsOrderRequest,
-    RadrootsOrderRevisionDecision,
-    RadrootsOrderRevisionProposal,
     RadrootsPlotRef,
     RadrootsResourceAreaRef,
-    RadrootsTradeListingValidateRequest,
-    RadrootsTradeListingValidateResult,
 } from "@radroots/events-bindings";
-
-export type RadrootsCommercialMessagePayload = { listing_validate_request: RadrootsTradeListingValidateRequest, } | { listing_validate_result: RadrootsTradeListingValidateResult, } | { trade_order_requested: RadrootsOrderRequest, } | { order_response: RadrootsOrderDecision, } | { order_revision: RadrootsOrderRevisionProposal, } | { order_revision_accept: RadrootsOrderRevisionDecision, } | { order_revision_decline: RadrootsOrderRevisionDecision, } | { cancel: RadrootsOrderCancellation, };
-
-export type RadrootsCommercialMessageType = "listing_validate_request" | "listing_validate_result" | "order_request" | "order_response" | "order_revision" | "order_revision_accept" | "order_revision_decline" | "question" | "answer" | "discount_request" | "discount_offer" | "discount_accept" | "discount_decline" | "cancel";
-
-export type RadrootsOrderStatus = "draft" | "validated" | "requested" | "questioned" | "revised" | "accepted" | "declined" | "cancelled";
 
 export type RadrootsTradeFacetCount = { key: string, count: number, };
 
@@ -68,7 +56,7 @@ export type RadrootsTradeListingTotal = { price_amount: RadrootsCoreMoney, price
 
 export type RadrootsTradeMarketplaceListingSummary = { listing_addr: string, seller_pubkey: string, farm_pubkey: string, farm_id: string, product_key: string, product_title: string, product_category: string, product_summary?: string | null, listing_status: RadrootsTradeListingMarketStatus, location_primary?: string | null, inventory_available?: RadrootsCoreDecimal | null, primary_bin_id: string, primary_bin_label?: string | null, primary_bin_total: RadrootsTradeListingTotal, order_count: number, open_order_count: number, terminal_order_count: number, };
 
-export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsOrderStatus, last_message_type: RadrootsCommercialMessageType, item_count: number, total_bin_count: number, has_requested_discounts: boolean, last_reason?: string | null, };
+export type RadrootsTradeMarketplaceOrderSummary = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, status: RadrootsTradeWorkflowState, last_message_type: RadrootsOrderEventType, item_count: number, total_bin_count: number, has_requested_discounts: boolean, last_reason?: string | null, };
 
 export type RadrootsTradeModerationFlag = { code: string, severity: RadrootsTradeModerationSeverity, status: RadrootsTradeModerationStatus, source?: string | null, reason?: string | null, };
 
@@ -84,15 +72,13 @@ export type RadrootsTradeOrderBackofficeView = { order: RadrootsTradeOrderWorkfl
 
 export type RadrootsTradeOrderFacets = { buyer_pubkeys: Array<RadrootsTradeFacetCount>, seller_pubkeys: Array<RadrootsTradeFacetCount>, listing_addrs: Array<RadrootsTradeFacetCount>, statuses: Array<RadrootsTradeFacetCount>, };
 
-export type RadrootsTradeOrderQuery = { listing_addr?: string | null, buyer_pubkey?: string | null, seller_pubkey?: string | null, status?: RadrootsOrderStatus | null, };
+export type RadrootsTradeOrderQuery = { listing_addr?: string | null, buyer_pubkey?: string | null, seller_pubkey?: string | null, status?: RadrootsTradeWorkflowState | null, };
 
 export type RadrootsTradeOrderSort = { field: RadrootsTradeOrderSortField, direction: RadrootsTradeSortDirection, };
 
 export type RadrootsTradeOrderSortField = "order_id" | "listing_addr" | "buyer_pubkey" | "seller_pubkey" | "status" | "last_message_type" | "total_bin_count";
 
-export type RadrootsTradeOrderWorkflowMessage = { event_id: string, actor_pubkey: string, counterparty_pubkey: string, listing_addr: string, order_id?: string | null, listing_event?: RadrootsNostrEventPtr | null, root_event_id?: string | null, prev_event_id?: string | null, payload: RadrootsCommercialMessagePayload, };
-
-export type RadrootsTradeOrderWorkflowProjection = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsOrderItem>, requested_discounts?: Array<RadrootsOrderEconomicLine> | null, status: RadrootsOrderStatus, listing_snapshot?: RadrootsNostrEventPtr | null, root_event_id: string, last_event_id: string, last_discount_request?: RadrootsCoreDiscountValue | null, last_discount_offer?: RadrootsCoreDiscountValue | null, accepted_discount?: RadrootsCoreDiscountValue | null, last_reason?: string | null, last_discount_decline_reason?: string | null, question_count: number, answer_count: number, revision_count: number, discount_request_count: number, discount_offer_count: number, discount_accept_count: number, discount_decline_count: number, cancellation_count: number, last_message_type: RadrootsCommercialMessageType, last_actor_pubkey: string, };
+export type RadrootsTradeOrderWorkflowProjection = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsOrderItem>, requested_discounts?: Array<RadrootsOrderEconomicLine> | null, status: RadrootsTradeWorkflowState, listing_snapshot?: RadrootsNostrEventPtr | null, root_event_id: string, last_event_id: string, last_discount_request?: RadrootsCoreDiscountValue | null, last_discount_offer?: RadrootsCoreDiscountValue | null, accepted_discount?: RadrootsCoreDiscountValue | null, last_reason?: string | null, last_discount_decline_reason?: string | null, revision_count: number, cancellation_count: number, last_message_type: RadrootsOrderEventType, last_actor_pubkey: string, };
 
 export type RadrootsTradeReviewPriority = "low" | "normal" | "high" | "critical";
 
