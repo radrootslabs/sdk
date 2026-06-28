@@ -3,11 +3,87 @@ id = "ts"
 repository = "sdk-typescript"
 
 [sdk]
-package = "@radroots/sdk"
+package_family = "@radroots"
 module_format = "esm"
 deterministic_codec = "wasm"
 signing = "native"
 networking = "native"
+
+[npm_packages.core]
+kind = "bindings"
+crate_name = "radroots_core_bindings"
+crate_dir = "crates/core_bindings"
+package = "@radroots/core-bindings"
+package_dir = "packages/core-bindings"
+
+[npm_packages.events]
+kind = "bindings"
+crate_name = "radroots_events_bindings"
+crate_dir = "crates/events_bindings"
+package = "@radroots/events-bindings"
+package_dir = "packages/events-bindings"
+
+[npm_packages.events_indexed]
+kind = "bindings"
+crate_name = "radroots_events_indexed_bindings"
+crate_dir = "crates/events_indexed_bindings"
+package = "@radroots/events-indexed-bindings"
+package_dir = "packages/events-indexed-bindings"
+
+[npm_packages.identity]
+kind = "bindings"
+crate_name = "radroots_identity_bindings"
+crate_dir = "crates/identity_bindings"
+package = "@radroots/identity-bindings"
+package_dir = "packages/identity-bindings"
+
+[npm_packages.replica_db_schema]
+kind = "bindings"
+crate_name = "radroots_replica_db_schema_bindings"
+crate_dir = "crates/replica_db_schema_bindings"
+package = "@radroots/replica-db-schema-bindings"
+package_dir = "packages/replica-db-schema-bindings"
+
+[npm_packages.trade]
+kind = "bindings"
+crate_name = "radroots_trade_bindings"
+crate_dir = "crates/trade_bindings"
+package = "@radroots/trade-bindings"
+package_dir = "packages/trade-bindings"
+
+[npm_packages.types]
+kind = "bindings"
+crate_name = "radroots_types_bindings"
+crate_dir = "crates/types_bindings"
+package = "@radroots/types-bindings"
+package_dir = "packages/types-bindings"
+
+[npm_packages.events_codec]
+kind = "wasm"
+crate_name = "radroots_events_codec_wasm"
+crate_dir = "crates/events_codec_wasm"
+package = "@radroots/events-codec-wasm"
+package_dir = "packages/events-codec-wasm"
+out_name = "radroots_events_codec_wasm"
+out_dir = "../../packages/events-codec-wasm/dist"
+
+[npm_packages.replica_db]
+kind = "wasm"
+crate_name = "radroots_replica_db_wasm"
+crate_dir = "crates/replica_db_wasm"
+package = "@radroots/replica-db-wasm"
+package_dir = "packages/replica-db-wasm"
+out_name = "radroots_replica_db_wasm"
+out_dir = "../../packages/replica-db-wasm/dist"
+
+[npm_packages.replica_sync]
+kind = "wasm"
+crate_name = "radroots_replica_sync_wasm"
+crate_dir = "crates/replica_sync_wasm"
+package = "@radroots/replica-sync-wasm"
+package_dir = "packages/replica-sync-wasm"
+out_name = "radroots_replica_sync_wasm"
+out_dir = "../../packages/replica-sync-wasm/dist"
 
 [rollout]
 stage = "active"
