@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "cd ../.. && cargo xtask generate wasm --package replica_sync",
-    "typecheck": "node -e \"require('fs').accessSync('dist/radroots_replica_sync_wasm.d.ts')\""
+    "typecheck": "tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 dist/radroots_replica_sync_wasm.d.ts dist/radroots_replica_sync_wasm_bg.wasm.d.ts"
   },
   "sideEffects": false
 }
