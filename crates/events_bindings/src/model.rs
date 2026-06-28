@@ -1,14 +1,37 @@
+use dto_bindgen_backend_ts::{
+    TypeScriptDeclaration, TypeScriptImport, TypeScriptModule, TypeScriptType, TypeScriptValue,
+};
 use radroots_events::{kinds, listing::RADROOTS_LISTING_PRODUCT_TAG_KEYS};
 
-pub fn constants_module() -> String {
-    format!(
-        "import type {{ RadrootsListingProductTagKeys }} from \"./types.js\";\n\nexport const RADROOTS_LISTING_PRODUCT_TAG_KEYS: RadrootsListingProductTagKeys = {};",
-        render_string_array(&RADROOTS_LISTING_PRODUCT_TAG_KEYS)
-    )
+pub fn constants_module() -> TypeScriptModule {
+    TypeScriptModule::new("src/generated/constants.ts")
+        .with_import(TypeScriptImport::type_only(
+            ["RadrootsListingProductTagKeys"],
+            "./types.js",
+        ))
+        .with_declaration(TypeScriptDeclaration::constant(
+            "RADROOTS_LISTING_PRODUCT_TAG_KEYS",
+            Some(TypeScriptType::named("RadrootsListingProductTagKeys")),
+            TypeScriptValue::array(
+                RADROOTS_LISTING_PRODUCT_TAG_KEYS
+                    .iter()
+                    .map(|value| TypeScriptValue::string(*value))
+                    .collect::<Vec<_>>(),
+            ),
+        ))
 }
 
-pub fn kinds_module() -> String {
-    render_number_constants(EVENT_KIND_EXPORTS)
+pub fn kinds_module() -> TypeScriptModule {
+    EVENT_KIND_EXPORTS.iter().fold(
+        TypeScriptModule::new("src/generated/kinds.ts"),
+        |module, (name, value)| {
+            module.with_declaration(TypeScriptDeclaration::constant(
+                *name,
+                None,
+                TypeScriptValue::number(i64::from(*value)),
+            ))
+        },
+    )
 }
 
 const EVENT_KIND_EXPORTS: &[(&str, u32)] = &[
@@ -147,24 +170,3 @@ const EVENT_KIND_EXPORTS: &[(&str, u32)] = &[
     ("KIND_JOB_RESULT_MAX", kinds::KIND_JOB_RESULT_MAX),
     ("KIND_JOB_FEEDBACK", kinds::KIND_JOB_FEEDBACK),
 ];
-
-fn render_number_constants(exports: &[(&str, u32)]) -> String {
-    let mut rendered = String::new();
-    for (name, value) in exports {
-        rendered.push_str("export const ");
-        rendered.push_str(name);
-        rendered.push_str(" = ");
-        rendered.push_str(&value.to_string());
-        rendered.push_str(";\n");
-    }
-    rendered
-}
-
-fn render_string_array(values: &[&str]) -> String {
-    let items = values
-        .iter()
-        .map(|value| format!("{value:?}"))
-        .collect::<Vec<_>>()
-        .join(", ");
-    format!("[{items}]")
-}

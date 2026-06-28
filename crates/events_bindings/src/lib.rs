@@ -12,8 +12,8 @@ mod tests {
 
     #[test]
     fn preserves_event_constant_exports() {
-        let constants = constants_module();
-        let kinds_ts = kinds_module();
+        let constants = constants_module().render_source();
+        let kinds_ts = kinds_module().render_source();
         assert!(constants.contains("RADROOTS_LISTING_PRODUCT_TAG_KEYS"));
         assert!(constants.contains(RADROOTS_LISTING_PRODUCT_TAG_KEYS[0]));
         assert!(kinds_ts.contains("KIND_LISTING"));

@@ -1753,6 +1753,7 @@ dependencies = [
 name = "radroots_events_bindings"
 version = "0.1.0"
 dependencies = [
+ "dto_bindgen_backend_ts",
  "radroots_events",
 ]
 
@@ -1830,6 +1831,7 @@ dependencies = [
 name = "radroots_identity_bindings"
 version = "0.1.0"
 dependencies = [
+ "dto_bindgen_backend_ts",
  "radroots_identity",
 ]
 
