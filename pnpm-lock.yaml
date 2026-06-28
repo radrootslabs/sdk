@@ -17,7 +17,7 @@ importers:
   packages/events-bindings:
     dependencies:
       '@radroots/core-bindings':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core-bindings
 
   packages/events-codec-wasm: {}
@@ -29,7 +29,7 @@ importers:
   packages/replica-db-schema-bindings:
     dependencies:
       '@radroots/types-bindings':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../types-bindings
 
   packages/replica-db-wasm: {}
@@ -39,10 +39,10 @@ importers:
   packages/trade-bindings:
     dependencies:
       '@radroots/core-bindings':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core-bindings
       '@radroots/events-bindings':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../events-bindings
 
   packages/types-bindings: {}
