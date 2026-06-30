@@ -2119,7 +2119,6 @@ dependencies = [
  "radroots_replica_db_schema",
  "radroots_replica_sync",
  "radroots_runtime_paths",
- "radroots_sp1_guest_trade",
  "radroots_sql_core",
  "radroots_trade",
  "reqwest",
@@ -2169,16 +2168,6 @@ dependencies = [
 [[package]]
 name = "radroots_secret_vault"
 version = "0.1.0-alpha.2"
-
-[[package]]
-name = "radroots_sp1_guest_trade"
-version = "0.1.0-alpha.2"
-dependencies = [
- "serde",
- "serde_json",
- "sha2",
- "thiserror 1.0.69",
-]
 
 [[package]]
 name = "radroots_sql_core"
