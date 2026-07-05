@@ -1819,6 +1819,7 @@ dependencies = [
 name = "radroots_events_codec_wasm"
 version = "0.1.0-alpha.2"
 dependencies = [
+ "nostr",
  "radroots_core",
  "radroots_events",
  "radroots_events_codec",

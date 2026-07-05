@@ -25,6 +25,11 @@ use radroots_events::http_auth::RadrootsHttpAuth;
 use radroots_events::job_feedback::RadrootsJobFeedback;
 use radroots_events::job_request::RadrootsJobRequest;
 use radroots_events::job_result::RadrootsJobResult;
+use radroots_events::knowledge::{
+    RadrootsKnowledgeClaim, RadrootsKnowledgeFieldReport, RadrootsKnowledgeRelation,
+    RadrootsKnowledgeReview, RadrootsKnowledgeSource, RadrootsWikiArticle,
+    RadrootsWikiMergeRequest, RadrootsWikiRedirect,
+};
 use radroots_events::list::RadrootsList;
 use radroots_events::list_set::RadrootsListSet;
 use radroots_events::listing::RadrootsListing;
@@ -63,6 +68,11 @@ use radroots_events_codec::http_auth::encode::http_auth_build_tags;
 use radroots_events_codec::job::feedback::encode::job_feedback_build_tags;
 use radroots_events_codec::job::request::encode::job_request_build_tags;
 use radroots_events_codec::job::result::encode::job_result_build_tags;
+use radroots_events_codec::knowledge::{
+    knowledge_claim_build_tags, knowledge_field_report_build_tags, knowledge_relation_build_tags,
+    knowledge_review_build_tags, knowledge_source_build_tags, wiki_article_build_tags,
+    wiki_merge_request_build_tags, wiki_redirect_build_tags,
+};
 use radroots_events_codec::list::encode::list_build_tags;
 use radroots_events_codec::list_set::encode::list_set_build_tags;
 use radroots_events_codec::listing::tags::{
@@ -77,6 +87,8 @@ use radroots_events_codec::relay_auth::encode::relay_auth_build_tags;
 use radroots_events_codec::report::encode::report_build_tags;
 use radroots_events_codec::repost::encode::{generic_repost_build_tags, repost_build_tags};
 use radroots_events_codec::seal::encode::seal_build_tags;
+use radroots_events_codec::verification::{RadrootsDecodeError, RadrootsDecodedEvent};
+use serde::Serialize;
 use serde::de::DeserializeOwned;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::JsValue;
@@ -100,6 +112,14 @@ fn err_js<E: ToString>(err: E) -> RadrootsJsValue {
     }
 }
 
+fn error_json(code: &str, inner_code: Option<&str>) -> RadrootsJsValue {
+    let value = serde_json::json!({
+        "code": code,
+        "inner_code": inner_code,
+    });
+    err_js(value)
+}
+
 fn normalized_payload(input: &str) -> &str {
     if input.is_empty() { "{}" } else { input }
 }
@@ -110,6 +130,10 @@ fn parse_json<T: DeserializeOwned>(input: &str) -> Result<T, RadrootsJsValue> {
 
 fn tags_to_json(tags: Vec<Vec<String>>) -> Result<String, RadrootsJsValue> {
     serde_json::to_string(&tags).map_err(err_js)
+}
+
+fn parse_event_json(input: &str) -> Result<radroots_events::RadrootsNostrEvent, RadrootsJsValue> {
+    serde_json::from_str(input).map_err(|_| error_json("invalid_json", Some("event_json")))
 }
 
 fn build_tags_json<T, E, F>(input: &str, build: F) -> Result<String, RadrootsJsValue>
@@ -131,6 +155,94 @@ where
     let value = parse_json::<T>(input)?;
     let tags = build(&value);
     tags_to_json(tags)
+}
+
+#[derive(Serialize)]
+struct DecodedEventJson<'a, T>
+where
+    T: Serialize,
+{
+    event_type: &'static str,
+    contract_id: &'static str,
+    event: &'a radroots_events::RadrootsNostrEvent,
+    payload: &'a T,
+}
+
+fn decoded_event_to_json(decoded: RadrootsDecodedEvent) -> Result<String, RadrootsJsValue> {
+    match decoded {
+        RadrootsDecodedEvent::WikiArticle(parsed) => {
+            decoded_payload_to_json("wiki_article", "radroots.wiki.article.v1", &parsed)
+        }
+        RadrootsDecodedEvent::WikiRedirect(parsed) => {
+            decoded_payload_to_json("wiki_redirect", "radroots.wiki.redirect.v1", &parsed)
+        }
+        RadrootsDecodedEvent::WikiMergeRequest(parsed) => decoded_payload_to_json(
+            "wiki_merge_request",
+            "radroots.wiki.merge_request.v1",
+            &parsed,
+        ),
+        RadrootsDecodedEvent::KnowledgeSource(parsed) => {
+            decoded_payload_to_json("knowledge_source", "radroots.knowledge.source.v1", &parsed)
+        }
+        RadrootsDecodedEvent::KnowledgeClaim(parsed) => {
+            decoded_payload_to_json("knowledge_claim", "radroots.knowledge.claim.v1", &parsed)
+        }
+        RadrootsDecodedEvent::KnowledgeRelation(parsed) => decoded_payload_to_json(
+            "knowledge_relation",
+            "radroots.knowledge.relation.v1",
+            &parsed,
+        ),
+        RadrootsDecodedEvent::KnowledgeReview(parsed) => {
+            decoded_payload_to_json("knowledge_review", "radroots.knowledge.review.v1", &parsed)
+        }
+        RadrootsDecodedEvent::KnowledgeFieldReport(parsed) => decoded_payload_to_json(
+            "knowledge_field_report",
+            "radroots.knowledge.field_report.v1",
+            &parsed,
+        ),
+        RadrootsDecodedEvent::EvidenceBounty(parsed) => decoded_payload_to_json(
+            "evidence_bounty",
+            "radroots.knowledge.evidence_bounty.v1",
+            &parsed,
+        ),
+        RadrootsDecodedEvent::KnowledgeChangeProposal(parsed) => decoded_payload_to_json(
+            "knowledge_change_proposal",
+            "radroots.knowledge.change_proposal.v1",
+            &parsed,
+        ),
+        RadrootsDecodedEvent::ContributionAttestation(parsed) => decoded_payload_to_json(
+            "contribution_attestation",
+            "radroots.knowledge.contribution_attestation.v1",
+            &parsed,
+        ),
+    }
+}
+
+fn decoded_payload_to_json<T>(
+    event_type: &'static str,
+    contract_id: &'static str,
+    parsed: &radroots_events_codec::parsed::RadrootsParsedEvent<T>,
+) -> Result<String, RadrootsJsValue>
+where
+    T: Serialize,
+{
+    serde_json::to_string(&DecodedEventJson {
+        event_type,
+        contract_id,
+        event: &parsed.event,
+        payload: &parsed.data.data,
+    })
+    .map_err(err_js)
+}
+
+fn decode_error_json(error: RadrootsDecodeError) -> RadrootsJsValue {
+    let inner = match &error {
+        RadrootsDecodeError::Nip01Verification(error) => Some(error.code()),
+        RadrootsDecodeError::ContractValidation(error) => Some(error.code()),
+        RadrootsDecodeError::EventParse(error) => Some(error.code()),
+        RadrootsDecodeError::UnsupportedContract { .. } => None,
+    };
+    error_json(error.code(), inner)
 }
 
 #[derive(serde::Deserialize)]
@@ -162,6 +274,62 @@ pub fn comment_tags(comment_json: &str) -> Result<String, RadrootsJsValue> {
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = article_tags))]
 pub fn article_tags(article_json: &str) -> Result<String, RadrootsJsValue> {
     build_tags_json::<RadrootsArticle, _, _>(article_json, article_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = wiki_article_tags))]
+pub fn wiki_article_tags(article_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsWikiArticle, _, _>(article_json, wiki_article_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = wiki_redirect_tags))]
+pub fn wiki_redirect_tags(redirect_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsWikiRedirect, _, _>(redirect_json, wiki_redirect_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = wiki_merge_request_tags))]
+pub fn wiki_merge_request_tags(request_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsWikiMergeRequest, _, _>(request_json, wiki_merge_request_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = knowledge_source_tags))]
+pub fn knowledge_source_tags(source_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsKnowledgeSource, _, _>(source_json, knowledge_source_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = knowledge_claim_tags))]
+pub fn knowledge_claim_tags(claim_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsKnowledgeClaim, _, _>(claim_json, knowledge_claim_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = knowledge_relation_tags))]
+pub fn knowledge_relation_tags(relation_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsKnowledgeRelation, _, _>(relation_json, knowledge_relation_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = knowledge_review_tags))]
+pub fn knowledge_review_tags(review_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsKnowledgeReview, _, _>(review_json, knowledge_review_build_tags)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = knowledge_field_report_tags))]
+pub fn knowledge_field_report_tags(report_json: &str) -> Result<String, RadrootsJsValue> {
+    build_tags_json::<RadrootsKnowledgeFieldReport, _, _>(
+        report_json,
+        knowledge_field_report_build_tags,
+    )
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = verify_and_decode_event_json))]
+pub fn verify_and_decode_event_json(event_json: &str) -> Result<String, RadrootsJsValue> {
+    let event = parse_event_json(event_json)?;
+    let decoded = radroots_events_codec::verify_and_decode_radroots_event(event)
+        .map_err(decode_error_json)?;
+    decoded_event_to_json(decoded)
+}
+
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = contract_manifest_json))]
+pub fn contract_manifest_json() -> Result<String, RadrootsJsValue> {
+    radroots_events_codec::contract_manifest_json().map_err(err_js)
 }
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = file_metadata_tags))]
@@ -417,7 +585,19 @@ mod tests {
     use radroots_events::http_auth::RadrootsHttpAuth;
     use radroots_events::job::JobInputType;
     use radroots_events::job_request::{RadrootsJobInput, RadrootsJobParam};
-    use radroots_events::kinds::KIND_FARM_FILE_METADATA;
+    use radroots_events::kinds::{
+        KIND_FARM_FILE_METADATA, KIND_FILE_METADATA, KIND_KNOWLEDGE_CLAIM, KIND_KNOWLEDGE_SOURCE,
+        KIND_WIKI_ARTICLE,
+    };
+    use radroots_events::knowledge::{
+        RADROOTS_KNOWLEDGE_CLAIM_SCHEMA, RADROOTS_KNOWLEDGE_FIELD_REPORT_SCHEMA,
+        RADROOTS_KNOWLEDGE_RELATION_SCHEMA, RADROOTS_KNOWLEDGE_REVIEW_SCHEMA,
+        RADROOTS_KNOWLEDGE_SCHEMA_VERSION, RADROOTS_KNOWLEDGE_SOURCE_SCHEMA,
+        RadrootsAddressableRef, RadrootsKnowledgeCitationSpan, RadrootsKnowledgeFieldContext,
+        RadrootsKnowledgeLocation, RadrootsKnowledgeLocationPrecision, RadrootsKnowledgeNodeRef,
+        RadrootsKnowledgeObservation, RadrootsKnowledgeObservationValue,
+        RadrootsKnowledgeReviewScope, RadrootsKnowledgeReviewScore, RadrootsKnowledgeReviewTarget,
+    };
     use radroots_events::listing::{RadrootsListingBin, RadrootsListingProduct};
     use radroots_events::relay_auth::RadrootsRelayAuth;
     use radroots_events::social::{
@@ -510,6 +690,221 @@ mod tests {
             event_kind: Some(kind),
             relays: Some(vec!["wss://relay2.example.test".to_string()]),
         }
+    }
+
+    fn knowledge_event_ref(seed: char, kind: u32) -> radroots_events::RadrootsNostrEventRef {
+        radroots_events::RadrootsNostrEventRef {
+            id: synthetic_event_id(seed),
+            author: synthetic_pubkey('a'),
+            kind,
+            d_tag: None,
+            relays: Some(vec!["wss://relay.example.test".to_string()]),
+        }
+    }
+
+    fn knowledge_address_ref() -> RadrootsAddressableRef {
+        RadrootsAddressableRef {
+            kind: KIND_WIKI_ARTICLE,
+            pubkey: synthetic_pubkey('a'),
+            d_tag: "soil-health".to_string(),
+            relays: vec!["wss://relay.example.test".to_string()],
+        }
+    }
+
+    fn sample_wiki_article() -> RadrootsWikiArticle {
+        RadrootsWikiArticle {
+            d_tag: "soil-health".to_string(),
+            title: "Soil health".to_string(),
+            content_djot: "# Soil health".to_string(),
+            summary: Some("Living soil basics".to_string()),
+            topics: vec!["soil".to_string()],
+            references: vec![knowledge_event_ref('1', KIND_KNOWLEDGE_SOURCE)],
+            forked_from: Vec::new(),
+            deferred_to: None,
+        }
+    }
+
+    fn sample_wiki_redirect() -> RadrootsWikiRedirect {
+        RadrootsWikiRedirect {
+            d_tag: "soil".to_string(),
+            target: radroots_events::RadrootsNostrEventRef {
+                id: synthetic_event_id('b'),
+                author: synthetic_pubkey('a'),
+                kind: KIND_WIKI_ARTICLE,
+                d_tag: Some("soil-health".to_string()),
+                relays: Some(vec!["wss://relay.example.test".to_string()]),
+            },
+        }
+    }
+
+    fn sample_wiki_merge_request() -> RadrootsWikiMergeRequest {
+        RadrootsWikiMergeRequest {
+            target_article: knowledge_address_ref(),
+            destination_pubkey: synthetic_pubkey('a'),
+            base_version_event_id: Some(synthetic_event_id('e')),
+            source_version_event_id: synthetic_event_id('f'),
+            explanation: Some("Merge synthetic soil article updates".to_string()),
+        }
+    }
+
+    fn sample_knowledge_source() -> RadrootsKnowledgeSource {
+        RadrootsKnowledgeSource {
+            schema: RADROOTS_KNOWLEDGE_SOURCE_SCHEMA.to_string(),
+            schema_version: RADROOTS_KNOWLEDGE_SCHEMA_VERSION,
+            d_tag: "soil-source".to_string(),
+            title: "Soil Source".to_string(),
+            source_type: "book".to_string(),
+            authors: vec!["A. Example".to_string()],
+            publisher: Some("Radroots Synthetic Press".to_string()),
+            publication_year: Some(2026),
+            edition: None,
+            canonical_url: Some("https://source.example.test/soil-source".to_string()),
+            artifact_refs: vec![knowledge_event_ref('3', KIND_FILE_METADATA)],
+            author_asserted_rights: None,
+            topics: vec!["soil".to_string()],
+            summary: Some("Synthetic source for wasm coverage".to_string()),
+        }
+    }
+
+    fn sample_knowledge_claim() -> RadrootsKnowledgeClaim {
+        RadrootsKnowledgeClaim {
+            schema: RADROOTS_KNOWLEDGE_CLAIM_SCHEMA.to_string(),
+            schema_version: RADROOTS_KNOWLEDGE_SCHEMA_VERSION,
+            claim_type: "practice_effect".to_string(),
+            text: "Cover crops improve soil structure.".to_string(),
+            citation_spans: vec![RadrootsKnowledgeCitationSpan {
+                source_ref: knowledge_event_ref('4', KIND_KNOWLEDGE_SOURCE),
+                artifact_ref: None,
+                page_start: Some(12),
+                page_end: Some(13),
+                section_path: vec!["chapter-1".to_string()],
+                quote_hash: Some(synthetic_event_id('5')),
+                chunk_id: Some("chunk-1".to_string()),
+            }],
+            topics: vec!["cover-crops".to_string()],
+            applies_to: vec!["local-food".to_string()],
+            author_asserted_confidence: Some("medium".to_string()),
+            supersedes: Vec::new(),
+        }
+    }
+
+    fn sample_knowledge_node_ref(label: &str) -> RadrootsKnowledgeNodeRef {
+        RadrootsKnowledgeNodeRef {
+            node_type: "event".to_string(),
+            event_ref: Some(knowledge_event_ref('6', KIND_KNOWLEDGE_CLAIM)),
+            address_ref: None,
+            external_id: None,
+            label: Some(label.to_string()),
+        }
+    }
+
+    fn sample_knowledge_relation() -> RadrootsKnowledgeRelation {
+        RadrootsKnowledgeRelation {
+            schema: RADROOTS_KNOWLEDGE_RELATION_SCHEMA.to_string(),
+            schema_version: RADROOTS_KNOWLEDGE_SCHEMA_VERSION,
+            subject: sample_knowledge_node_ref("cover crops"),
+            predicate: "supports".to_string(),
+            object: sample_knowledge_node_ref("soil structure"),
+            support_refs: vec![knowledge_event_ref('7', KIND_KNOWLEDGE_CLAIM)],
+            author_asserted_confidence: Some("medium".to_string()),
+            supersedes: Vec::new(),
+        }
+    }
+
+    fn sample_knowledge_review() -> RadrootsKnowledgeReview {
+        RadrootsKnowledgeReview {
+            schema: RADROOTS_KNOWLEDGE_REVIEW_SCHEMA.to_string(),
+            schema_version: RADROOTS_KNOWLEDGE_SCHEMA_VERSION,
+            target: RadrootsKnowledgeReviewTarget {
+                event_id: synthetic_event_id('8'),
+                author_pubkey: synthetic_pubkey('a'),
+                kind: KIND_KNOWLEDGE_CLAIM,
+                address: None,
+                relays: vec!["wss://relay.example.test".to_string()],
+                review_scope: RadrootsKnowledgeReviewScope::SpecificVersion,
+            },
+            reviewer_role: "peer".to_string(),
+            verdict: "needs_more_evidence".to_string(),
+            scores: vec![RadrootsKnowledgeReviewScore {
+                dimension: "evidence".to_string(),
+                value: "partial".to_string(),
+                note: None,
+            }],
+            notes: Some("Synthetic review".to_string()),
+            evidence_refs: vec![knowledge_event_ref('9', KIND_KNOWLEDGE_SOURCE)],
+        }
+    }
+
+    fn sample_knowledge_field_report() -> RadrootsKnowledgeFieldReport {
+        RadrootsKnowledgeFieldReport {
+            schema: RADROOTS_KNOWLEDGE_FIELD_REPORT_SCHEMA.to_string(),
+            schema_version: RADROOTS_KNOWLEDGE_SCHEMA_VERSION,
+            report_type: "observation".to_string(),
+            title: "Field observation".to_string(),
+            summary: Some("Observed cover crop residue.".to_string()),
+            context: RadrootsKnowledgeFieldContext {
+                location_precision: RadrootsKnowledgeLocationPrecision::CoarseGeohash,
+                public_location: Some(RadrootsKnowledgeLocation {
+                    label: Some("watershed".to_string()),
+                    region: Some("synthetic-region".to_string()),
+                    locality: None,
+                    geohash: Some("c23".to_string()),
+                }),
+                private_location_ref: None,
+                topics: vec!["field".to_string()],
+                context_tags: vec!["observation".to_string()],
+            },
+            observations: vec![RadrootsKnowledgeObservation {
+                observation_type: "residue".to_string(),
+                text: "Residue was visible across beds.".to_string(),
+                observed_at: Some("2026-07-05".to_string()),
+                values: vec![RadrootsKnowledgeObservationValue {
+                    key: "coverage".to_string(),
+                    value: "medium".to_string(),
+                    unit: None,
+                }],
+            }],
+            artifact_refs: vec![knowledge_event_ref('c', KIND_FILE_METADATA)],
+            related_refs: vec![knowledge_event_ref('d', KIND_KNOWLEDGE_CLAIM)],
+            limitations: vec!["single observer".to_string()],
+        }
+    }
+
+    fn signed_claim_event_json() -> String {
+        let claim_json = serde_json::to_string(&sample_knowledge_claim()).expect("claim json");
+        let tags = serde_json::from_str::<Vec<Vec<String>>>(
+            &knowledge_claim_tags(&claim_json).expect("claim tags"),
+        )
+        .expect("tags");
+        let tags = tags
+            .into_iter()
+            .map(nostr::Tag::parse)
+            .collect::<Result<Vec<_>, _>>()
+            .expect("parsed tags");
+        let keys =
+            nostr::Keys::parse("0101010101010101010101010101010101010101010101010101010101010101")
+                .expect("keys");
+        let event =
+            nostr::EventBuilder::new(nostr::Kind::Custom(KIND_KNOWLEDGE_CLAIM as u16), claim_json)
+                .tags(tags)
+                .custom_created_at(nostr::Timestamp::from_secs(1_800_000_000))
+                .sign_with_keys(&keys)
+                .expect("signed event");
+        serde_json::to_string(&radroots_events::RadrootsNostrEvent {
+            id: event.id.to_hex(),
+            author: event.pubkey.to_hex(),
+            created_at: event.created_at.as_secs() as u32,
+            kind: u32::from(event.kind.as_u16()),
+            tags: event
+                .tags
+                .as_slice()
+                .iter()
+                .map(|tag| tag.as_slice().to_vec())
+                .collect(),
+            content: event.content,
+            sig: event.sig.to_string(),
+        })
+        .expect("event json")
     }
 
     fn social_location() -> RadrootsSocialLocation {
@@ -986,6 +1381,98 @@ mod tests {
         let mut report = sample_report();
         report.reported_pubkey.clear();
         assert!(report_tags(&serde_json::to_string(&report).expect("report json")).is_err());
+    }
+
+    #[test]
+    fn knowledge_bindings_encode_to_json_when_input_is_valid() {
+        let article_tags = tags_json(wiki_article_tags(
+            &serde_json::to_string(&sample_wiki_article()).expect("wiki article json"),
+        ));
+        assert!(has_tag(&article_tags, "title", "Soil health"));
+
+        let redirect_tags = tags_json(wiki_redirect_tags(
+            &serde_json::to_string(&sample_wiki_redirect()).expect("wiki redirect json"),
+        ));
+        assert!(
+            redirect_tags
+                .iter()
+                .any(|tag| tag.first() == Some(&"a".to_string()))
+        );
+
+        assert_tags_json(wiki_merge_request_tags(
+            &serde_json::to_string(&sample_wiki_merge_request()).expect("merge request json"),
+        ));
+
+        let source_tags = tags_json(knowledge_source_tags(
+            &serde_json::to_string(&sample_knowledge_source()).expect("source json"),
+        ));
+        assert!(has_tag(
+            &source_tags,
+            "contract",
+            RADROOTS_KNOWLEDGE_SOURCE_SCHEMA
+        ));
+
+        let claim_tags = tags_json(knowledge_claim_tags(
+            &serde_json::to_string(&sample_knowledge_claim()).expect("claim json"),
+        ));
+        assert!(has_tag(
+            &claim_tags,
+            "contract",
+            RADROOTS_KNOWLEDGE_CLAIM_SCHEMA
+        ));
+
+        assert_tags_json(knowledge_relation_tags(
+            &serde_json::to_string(&sample_knowledge_relation()).expect("relation json"),
+        ));
+        assert_tags_json(knowledge_review_tags(
+            &serde_json::to_string(&sample_knowledge_review()).expect("review json"),
+        ));
+        assert_tags_json(knowledge_field_report_tags(
+            &serde_json::to_string(&sample_knowledge_field_report()).expect("field report json"),
+        ));
+    }
+
+    #[test]
+    fn knowledge_bindings_verify_decode_and_manifest_json() {
+        let decoded = verify_and_decode_event_json(&signed_claim_event_json()).expect("decoded");
+        let decoded: serde_json::Value = serde_json::from_str(&decoded).expect("decoded json");
+        assert_eq!(decoded["event_type"], "knowledge_claim");
+        assert_eq!(decoded["contract_id"], RADROOTS_KNOWLEDGE_CLAIM_SCHEMA);
+        assert_eq!(
+            decoded["payload"]["text"],
+            "Cover crops improve soil structure."
+        );
+
+        let manifest = contract_manifest_json().expect("manifest");
+        let manifest: serde_json::Value = serde_json::from_str(&manifest).expect("manifest json");
+        assert_eq!(manifest["schema_version"], 1);
+        assert_eq!(manifest["contract_count"], 11);
+        assert!(
+            manifest["contracts"]
+                .as_array()
+                .expect("contracts")
+                .iter()
+                .any(|contract| contract["contract_id"] == RADROOTS_KNOWLEDGE_CLAIM_SCHEMA)
+        );
+    }
+
+    #[test]
+    fn knowledge_bindings_verify_decode_errors_are_coded_json() {
+        let invalid_json = verify_and_decode_event_json("not json").expect_err("invalid json");
+        let invalid_json: serde_json::Value =
+            serde_json::from_str(&invalid_json).expect("error json");
+        assert_eq!(invalid_json["code"], "invalid_json");
+        assert_eq!(invalid_json["inner_code"], "event_json");
+
+        let mut event: serde_json::Value =
+            serde_json::from_str(&signed_claim_event_json()).expect("event json");
+        event["sig"] = serde_json::Value::String("0".repeat(128));
+        let signature_error =
+            verify_and_decode_event_json(&event.to_string()).expect_err("signature error");
+        let signature_error: serde_json::Value =
+            serde_json::from_str(&signature_error).expect("signature error json");
+        assert_eq!(signature_error["code"], "nip01_verification");
+        assert_eq!(signature_error["inner_code"], "signature_invalid");
     }
 
     #[test]

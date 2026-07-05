@@ -18,16 +18,21 @@ crate-type = ["cdylib", "rlib"]
 radroots_events = { workspace = true, default-features = false, features = [
   "std",
   "serde",
+  "knowledge-nip54",
 ] }
 radroots_events_codec = { workspace = true, default-features = false, features = [
   "std",
   "serde_json",
+  "nostr",
+  "knowledge-nip54",
+  "contract-manifest",
 ] }
 serde = { workspace = true }
 serde_json = { workspace = true }
 wasm-bindgen = { workspace = true }
 
 [dev-dependencies]
+nostr = { workspace = true }
 radroots_core = { workspace = true, default-features = false, features = [
   "std",
 ] }

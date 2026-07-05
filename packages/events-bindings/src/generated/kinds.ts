@@ -20,6 +20,12 @@ export const KIND_COMMENT = 1111;
 
 export const KIND_GEOCHAT = 20000;
 
+export const KIND_WIKI_MERGE_REQUEST = 818;
+
+export const KIND_WIKI_ARTICLE = 30818;
+
+export const KIND_WIKI_REDIRECT = 30819;
+
 export const KIND_LIST_MUTE = 10000;
 
 export const KIND_LIST_PINNED_NOTES = 10001;
@@ -137,6 +143,22 @@ export const KIND_TRADE_FULFILLMENT_UPDATE = 3433;
 export const KIND_TRADE_RECEIPT = 3434;
 
 export const KIND_TRADE_VALIDATION_RECEIPT = 3440;
+
+export const KIND_KNOWLEDGE_CLAIM = 3460;
+
+export const KIND_KNOWLEDGE_RELATION = 3461;
+
+export const KIND_KNOWLEDGE_REVIEW = 3462;
+
+export const KIND_KNOWLEDGE_FIELD_REPORT = 3463;
+
+export const KIND_KNOWLEDGE_CHANGE_PROPOSAL = 3464;
+
+export const KIND_CONTRIBUTION_ATTESTATION = 3465;
+
+export const KIND_KNOWLEDGE_SOURCE = 30450;
+
+export const KIND_EVIDENCE_BOUNTY = 30451;
 
 export const KIND_JOB_REQUEST_MIN = 5000;
 
