@@ -1806,11 +1806,13 @@ dependencies = [
 name = "radroots_events_codec"
 version = "0.1.0-alpha.2"
 dependencies = [
+ "hex",
  "nostr",
  "radroots_core",
  "radroots_events",
  "serde",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]
