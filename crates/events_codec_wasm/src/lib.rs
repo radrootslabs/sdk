@@ -597,6 +597,7 @@ mod tests {
         RadrootsKnowledgeLocation, RadrootsKnowledgeLocationPrecision, RadrootsKnowledgeNodeRef,
         RadrootsKnowledgeObservation, RadrootsKnowledgeObservationValue,
         RadrootsKnowledgeReviewScope, RadrootsKnowledgeReviewScore, RadrootsKnowledgeReviewTarget,
+        RadrootsWikiArticleVersionRef,
     };
     use radroots_events::listing::{RadrootsListingBin, RadrootsListingProduct};
     use radroots_events::relay_auth::RadrootsRelayAuth;
@@ -719,7 +720,10 @@ mod tests {
             summary: Some("Living soil basics".to_string()),
             topics: vec!["soil".to_string()],
             references: vec![knowledge_event_ref('1', KIND_KNOWLEDGE_SOURCE)],
-            forked_from: Vec::new(),
+            forked_from: vec![RadrootsWikiArticleVersionRef {
+                event_id: synthetic_event_id('b'),
+                address_ref: knowledge_address_ref(),
+            }],
             deferred_to: None,
         }
     }
@@ -727,13 +731,7 @@ mod tests {
     fn sample_wiki_redirect() -> RadrootsWikiRedirect {
         RadrootsWikiRedirect {
             d_tag: "soil".to_string(),
-            target: radroots_events::RadrootsNostrEventRef {
-                id: synthetic_event_id('b'),
-                author: synthetic_pubkey('a'),
-                kind: KIND_WIKI_ARTICLE,
-                d_tag: Some("soil-health".to_string()),
-                relays: Some(vec!["wss://relay.example.test".to_string()]),
-            },
+            target: knowledge_address_ref(),
         }
     }
 
@@ -1241,6 +1239,14 @@ mod tests {
         })
     }
 
+    fn has_exact_tag(tags: &[Vec<String>], expected: &[&str]) -> bool {
+        tags.iter().any(|tag| {
+            tag.iter()
+                .map(|entry| entry.as_str())
+                .eq(expected.iter().copied())
+        })
+    }
+
     #[test]
     fn bindings_reject_invalid_json() {
         let bindings: [fn(&str) -> Result<String, RadrootsJsValue>; 46] = [
@@ -1389,18 +1395,56 @@ mod tests {
             &serde_json::to_string(&sample_wiki_article()).expect("wiki article json"),
         ));
         assert!(has_tag(&article_tags, "title", "Soil health"));
+        let fork_address = format!(
+            "{}:{}:soil-health",
+            KIND_WIKI_ARTICLE,
+            synthetic_pubkey('a')
+        );
+        let fork_event_id = synthetic_event_id('b');
+        assert!(has_exact_tag(
+            &article_tags,
+            &[
+                "a",
+                fork_address.as_str(),
+                "wss://relay.example.test",
+                "fork"
+            ]
+        ));
+        assert!(has_exact_tag(
+            &article_tags,
+            &[
+                "e",
+                fork_event_id.as_str(),
+                "wss://relay.example.test",
+                "fork"
+            ]
+        ));
 
         let redirect_tags = tags_json(wiki_redirect_tags(
             &serde_json::to_string(&sample_wiki_redirect()).expect("wiki redirect json"),
         ));
-        assert!(
-            redirect_tags
-                .iter()
-                .any(|tag| tag.first() == Some(&"a".to_string()))
+        let redirect_address = format!(
+            "{}:{}:soil-health",
+            KIND_WIKI_ARTICLE,
+            synthetic_pubkey('a')
         );
+        assert!(has_exact_tag(
+            &redirect_tags,
+            &["a", redirect_address.as_str(), "wss://relay.example.test"]
+        ));
 
-        assert_tags_json(wiki_merge_request_tags(
+        let merge_request = sample_wiki_merge_request();
+        let merge_parts =
+            radroots_events_codec::knowledge::wiki_merge_request_to_wire_parts(&merge_request)
+                .expect("merge request parts");
+        assert_eq!(merge_parts.content, "Merge synthetic soil article updates");
+        let merge_tags = tags_json(wiki_merge_request_tags(
             &serde_json::to_string(&sample_wiki_merge_request()).expect("merge request json"),
+        ));
+        let source_event_id = synthetic_event_id('f');
+        assert!(has_exact_tag(
+            &merge_tags,
+            &["e", source_event_id.as_str(), "", "source"]
         ));
 
         let source_tags = tags_json(knowledge_source_tags(
@@ -1445,15 +1489,18 @@ mod tests {
 
         let manifest = contract_manifest_json().expect("manifest");
         let manifest: serde_json::Value = serde_json::from_str(&manifest).expect("manifest json");
-        assert_eq!(manifest["schema_version"], 1);
+        assert_eq!(manifest["schema_version"], 2);
         assert_eq!(manifest["contract_count"], 11);
-        assert!(
-            manifest["contracts"]
-                .as_array()
-                .expect("contracts")
-                .iter()
-                .any(|contract| contract["contract_id"] == RADROOTS_KNOWLEDGE_CLAIM_SCHEMA)
-        );
+        let claim_contract = manifest["contracts"]
+            .as_array()
+            .expect("contracts")
+            .iter()
+            .find(|contract| contract["contract_id"] == RADROOTS_KNOWLEDGE_CLAIM_SCHEMA)
+            .expect("claim contract");
+        assert_eq!(claim_contract["sdk_builder_support"], true);
+        assert_eq!(claim_contract["sdk_draft_support"], true);
+        assert_eq!(claim_contract["wasm_tag_builder_support"], true);
+        assert_eq!(claim_contract["wasm_verified_decode_support"], true);
     }
 
     #[test]
