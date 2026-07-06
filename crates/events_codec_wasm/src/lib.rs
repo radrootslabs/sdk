@@ -715,7 +715,7 @@ mod tests {
     fn sample_wiki_article() -> RadrootsWikiArticle {
         RadrootsWikiArticle {
             d_tag: "soil-health".to_string(),
-            title: "Soil health".to_string(),
+            title: Some("Soil health".to_string()),
             content_djot: "# Soil health".to_string(),
             summary: Some("Living soil basics".to_string()),
             topics: vec!["soil".to_string()],
@@ -1474,6 +1474,20 @@ mod tests {
         assert_tags_json(knowledge_field_report_tags(
             &serde_json::to_string(&sample_knowledge_field_report()).expect("field report json"),
         ));
+    }
+
+    #[test]
+    fn wiki_article_tags_accept_missing_title() {
+        let mut article = sample_wiki_article();
+        article.title = None;
+        let tags = tags_json(wiki_article_tags(
+            &serde_json::to_string(&article).expect("wiki article json"),
+        ));
+        assert!(
+            !tags
+                .iter()
+                .any(|tag| tag.first().map(String::as_str) == Some("title"))
+        );
     }
 
     #[test]
