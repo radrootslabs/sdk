@@ -1477,6 +1477,30 @@ mod tests {
     }
 
     #[test]
+    fn knowledge_claim_tags_enforce_citation_rules() {
+        let mut claim = sample_knowledge_claim();
+        claim.citation_spans.clear();
+        let error = knowledge_claim_tags(
+            &serde_json::to_string(&claim).expect("uncited source-backed claim json"),
+        )
+        .expect_err("source-backed claim requires citations");
+        assert!(error.contains("citation_spans"));
+
+        assert_tags_json(knowledge_claim_tags(
+            &serde_json::to_string(&sample_knowledge_claim()).expect("claim json"),
+        ));
+
+        for claim_type in ["hypothesis", "observation", "question"] {
+            let mut uncited = sample_knowledge_claim();
+            uncited.claim_type = claim_type.to_string();
+            uncited.citation_spans.clear();
+            assert_tags_json(knowledge_claim_tags(
+                &serde_json::to_string(&uncited).expect("uncited claim json"),
+            ));
+        }
+    }
+
+    #[test]
     fn knowledge_bindings_verify_decode_and_manifest_json() {
         let decoded = verify_and_decode_event_json(&signed_claim_event_json()).expect("decoded");
         let decoded: serde_json::Value = serde_json::from_str(&decoded).expect("decoded json");
