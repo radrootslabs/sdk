@@ -51,13 +51,6 @@ crate_dir = "crates/trade_bindings"
 package = "@radroots/trade-bindings"
 package_dir = "packages/trade-bindings"
 
-[npm_packages.types]
-kind = "bindings"
-crate_name = "radroots_types_bindings"
-crate_dir = "crates/types_bindings"
-package = "@radroots/types-bindings"
-package_dir = "packages/types-bindings"
-
 [npm_packages.events_codec]
 kind = "wasm"
 crate_name = "radroots_events_codec_wasm"

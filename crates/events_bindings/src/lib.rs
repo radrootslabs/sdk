@@ -1,4 +1,4 @@
-pub use radroots_events as upstream;
+pub use radroots_event as upstream;
 
 mod model;
 
@@ -6,7 +6,7 @@ pub use model::{constants_module, kinds_module};
 
 #[cfg(test)]
 mod tests {
-    use radroots_events::{kinds, listing::RADROOTS_LISTING_PRODUCT_TAG_KEYS};
+    use radroots_event::{kinds, listing::RADROOTS_LISTING_PRODUCT_TAG_KEYS};
 
     use super::{constants_module, kinds_module};
 

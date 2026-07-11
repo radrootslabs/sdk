@@ -11,4 +11,4 @@ publish = false
 
 [dependencies]
 dto_bindgen_backend_ts = { workspace = true }
-radroots_events = { workspace = true }
+radroots_event = { workspace = true }

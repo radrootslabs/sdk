@@ -1,93 +1,93 @@
 #![forbid(unsafe_code)]
 
-use radroots_events::article::RadrootsArticle;
-use radroots_events::calendar::{
+use radroots_event::article::RadrootsArticle;
+use radroots_event::calendar::{
     RadrootsCalendar, RadrootsCalendarDateEvent, RadrootsCalendarEventRsvp,
     RadrootsCalendarTimeEvent,
 };
-use radroots_events::comment::RadrootsComment;
-use radroots_events::coop::RadrootsCoop;
-use radroots_events::document::RadrootsDocument;
-use radroots_events::farm::RadrootsFarm;
-use radroots_events::farm_crdt::RadrootsFarmCrdtChange;
-use radroots_events::farm_file::RadrootsFarmFileMetadata;
-use radroots_events::farm_workspace::RadrootsFarmWorkspaceManifest;
-use radroots_events::file_metadata::RadrootsFileMetadata;
-use radroots_events::follow::RadrootsFollow;
-use radroots_events::gift_wrap::RadrootsGiftWrap;
-use radroots_events::group::{
+use radroots_event::comment::RadrootsComment;
+use radroots_event::coop::RadrootsCoop;
+use radroots_event::document::RadrootsDocument;
+use radroots_event::farm::RadrootsFarm;
+use radroots_event::farm_crdt::RadrootsFarmCrdtChange;
+use radroots_event::farm_file::RadrootsFarmFileMetadata;
+use radroots_event::farm_workspace::RadrootsFarmWorkspaceManifest;
+use radroots_event::file_metadata::RadrootsFileMetadata;
+use radroots_event::follow::RadrootsFollow;
+use radroots_event::gift_wrap::RadrootsGiftWrap;
+use radroots_event::group::{
     RadrootsGroupAdmins, RadrootsGroupCreateGroup, RadrootsGroupCreateInvite,
     RadrootsGroupDeleteEvent, RadrootsGroupDeleteGroup, RadrootsGroupEditMetadata,
     RadrootsGroupJoinRequest, RadrootsGroupLeaveRequest, RadrootsGroupMembers,
     RadrootsGroupMetadata, RadrootsGroupPutUser, RadrootsGroupRemoveUser, RadrootsGroupRoles,
 };
-use radroots_events::http_auth::RadrootsHttpAuth;
-use radroots_events::job_feedback::RadrootsJobFeedback;
-use radroots_events::job_request::RadrootsJobRequest;
-use radroots_events::job_result::RadrootsJobResult;
-use radroots_events::knowledge::{
+use radroots_event::http_auth::RadrootsHttpAuth;
+use radroots_event::job_feedback::RadrootsJobFeedback;
+use radroots_event::job_request::RadrootsJobRequest;
+use radroots_event::job_result::RadrootsJobResult;
+use radroots_event::knowledge::{
     RadrootsKnowledgeClaim, RadrootsKnowledgeFieldReport, RadrootsKnowledgeRelation,
     RadrootsKnowledgeReview, RadrootsKnowledgeSource, RadrootsWikiArticle,
     RadrootsWikiMergeRequest, RadrootsWikiRedirect,
 };
-use radroots_events::list::RadrootsList;
-use radroots_events::list_set::RadrootsListSet;
-use radroots_events::listing::RadrootsListing;
-use radroots_events::message::RadrootsMessage;
-use radroots_events::message_file::RadrootsMessageFile;
-use radroots_events::plot::RadrootsPlot;
-use radroots_events::post::RadrootsPost;
-use radroots_events::reaction::RadrootsReaction;
-use radroots_events::relay_auth::RadrootsRelayAuth;
-use radroots_events::report::RadrootsReport;
-use radroots_events::repost::{RadrootsGenericRepost, RadrootsRepost};
-use radroots_events::seal::RadrootsSeal;
-use radroots_events_codec::article::encode::article_build_tags;
-use radroots_events_codec::calendar::encode::{
+use radroots_event::list::RadrootsList;
+use radroots_event::list_set::RadrootsListSet;
+use radroots_event::listing::RadrootsListing;
+use radroots_event::message::RadrootsMessage;
+use radroots_event::message_file::RadrootsMessageFile;
+use radroots_event::plot::RadrootsPlot;
+use radroots_event::post::RadrootsPost;
+use radroots_event::reaction::RadrootsReaction;
+use radroots_event::relay_auth::RadrootsRelayAuth;
+use radroots_event::report::RadrootsReport;
+use radroots_event::repost::{RadrootsGenericRepost, RadrootsRepost};
+use radroots_event::seal::RadrootsSeal;
+use radroots_event_codec::article::encode::article_build_tags;
+use radroots_event_codec::calendar::encode::{
     calendar_collection_build_tags, calendar_date_event_build_tags, calendar_time_event_build_tags,
     rsvp_build_tags,
 };
-use radroots_events_codec::comment::encode::comment_build_tags;
-use radroots_events_codec::coop::encode::coop_build_tags;
-use radroots_events_codec::document::encode::document_build_tags;
-use radroots_events_codec::farm::encode::farm_build_tags;
-use radroots_events_codec::farm_crdt::encode::farm_crdt_change_build_tags_with_author;
-use radroots_events_codec::farm_file::encode::farm_file_metadata_build_tags;
-use radroots_events_codec::farm_workspace::encode::farm_workspace_build_tags;
-use radroots_events_codec::file_metadata::encode::file_metadata_build_tags;
-use radroots_events_codec::follow::encode::follow_build_tags;
-use radroots_events_codec::gift_wrap::encode::gift_wrap_build_tags;
-use radroots_events_codec::group::encode::{
+use radroots_event_codec::comment::encode::comment_build_tags;
+use radroots_event_codec::coop::encode::coop_build_tags;
+use radroots_event_codec::document::encode::document_build_tags;
+use radroots_event_codec::farm::encode::farm_build_tags;
+use radroots_event_codec::farm_crdt::encode::farm_crdt_change_build_tags_with_author;
+use radroots_event_codec::farm_file::encode::farm_file_metadata_build_tags;
+use radroots_event_codec::farm_workspace::encode::farm_workspace_build_tags;
+use radroots_event_codec::file_metadata::encode::file_metadata_build_tags;
+use radroots_event_codec::follow::encode::follow_build_tags;
+use radroots_event_codec::gift_wrap::encode::gift_wrap_build_tags;
+use radroots_event_codec::group::encode::{
     group_admins_build_tags, group_create_group_build_tags, group_create_invite_build_tags,
     group_delete_event_build_tags, group_delete_group_build_tags, group_edit_metadata_build_tags,
     group_join_request_build_tags, group_leave_request_build_tags, group_members_build_tags,
     group_metadata_build_tags, group_put_user_build_tags, group_remove_user_build_tags,
     group_roles_build_tags,
 };
-use radroots_events_codec::http_auth::encode::http_auth_build_tags;
-use radroots_events_codec::job::feedback::encode::job_feedback_build_tags;
-use radroots_events_codec::job::request::encode::job_request_build_tags;
-use radroots_events_codec::job::result::encode::job_result_build_tags;
-use radroots_events_codec::knowledge::{
+use radroots_event_codec::http_auth::encode::http_auth_build_tags;
+use radroots_event_codec::job::feedback::encode::job_feedback_build_tags;
+use radroots_event_codec::job::request::encode::job_request_build_tags;
+use radroots_event_codec::job::result::encode::job_result_build_tags;
+use radroots_event_codec::knowledge::{
     knowledge_claim_build_tags, knowledge_field_report_build_tags, knowledge_relation_build_tags,
     knowledge_review_build_tags, knowledge_source_build_tags, wiki_article_build_tags,
     wiki_merge_request_build_tags, wiki_redirect_build_tags,
 };
-use radroots_events_codec::list::encode::list_build_tags;
-use radroots_events_codec::list_set::encode::list_set_build_tags;
-use radroots_events_codec::listing::tags::{
+use radroots_event_codec::list::encode::list_build_tags;
+use radroots_event_codec::list_set::encode::list_set_build_tags;
+use radroots_event_codec::listing::tags::{
     listing_tags as listing_tags_impl, listing_tags_full as listing_tags_full_impl,
 };
-use radroots_events_codec::message::encode::message_build_tags;
-use radroots_events_codec::message_file::encode::message_file_build_tags;
-use radroots_events_codec::plot::encode::plot_build_tags;
-use radroots_events_codec::post::encode::post_build_tags;
-use radroots_events_codec::reaction::encode::reaction_build_tags;
-use radroots_events_codec::relay_auth::encode::relay_auth_build_tags;
-use radroots_events_codec::report::encode::report_build_tags;
-use radroots_events_codec::repost::encode::{generic_repost_build_tags, repost_build_tags};
-use radroots_events_codec::seal::encode::seal_build_tags;
-use radroots_events_codec::verification::{RadrootsDecodeError, RadrootsDecodedEvent};
+use radroots_event_codec::message::encode::message_build_tags;
+use radroots_event_codec::message_file::encode::message_file_build_tags;
+use radroots_event_codec::plot::encode::plot_build_tags;
+use radroots_event_codec::post::encode::post_build_tags;
+use radroots_event_codec::reaction::encode::reaction_build_tags;
+use radroots_event_codec::relay_auth::encode::relay_auth_build_tags;
+use radroots_event_codec::report::encode::report_build_tags;
+use radroots_event_codec::repost::encode::{generic_repost_build_tags, repost_build_tags};
+use radroots_event_codec::seal::encode::seal_build_tags;
+use radroots_event_codec::verification::{RadrootsDecodeError, RadrootsDecodedEvent};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 #[cfg(target_arch = "wasm32")]
@@ -132,9 +132,7 @@ fn tags_to_json(tags: Vec<Vec<String>>) -> Result<String, RadrootsJsValue> {
     serde_json::to_string(&tags).map_err(err_js)
 }
 
-fn parse_event_json(
-    input: &str,
-) -> Result<radroots_events::RadrootsEventEnvelope, RadrootsJsValue> {
+fn parse_event_json(input: &str) -> Result<radroots_event::RadrootsEventEnvelope, RadrootsJsValue> {
     serde_json::from_str(input).map_err(|_| error_json("invalid_json", Some("event_json")))
 }
 
@@ -166,7 +164,7 @@ where
 {
     event_type: &'static str,
     contract_id: &'static str,
-    event: &'a radroots_events::RadrootsEventEnvelope,
+    event: &'a radroots_event::RadrootsEventEnvelope,
     payload: &'a T,
 }
 
@@ -223,7 +221,7 @@ fn decoded_event_to_json(decoded: RadrootsDecodedEvent) -> Result<String, Radroo
 fn decoded_payload_to_json<T>(
     event_type: &'static str,
     contract_id: &'static str,
-    parsed: &radroots_events_codec::parsed::RadrootsParsedEvent<T>,
+    parsed: &radroots_event_codec::parsed::RadrootsParsedEvent<T>,
 ) -> Result<String, RadrootsJsValue>
 where
     T: Serialize,
@@ -324,14 +322,14 @@ pub fn knowledge_field_report_tags(report_json: &str) -> Result<String, Radroots
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = verify_and_decode_event_json))]
 pub fn verify_and_decode_event_json(event_json: &str) -> Result<String, RadrootsJsValue> {
     let event = parse_event_json(event_json)?;
-    let decoded = radroots_events_codec::verify_and_decode_radroots_event(event)
-        .map_err(decode_error_json)?;
+    let decoded =
+        radroots_event_codec::verify_and_decode_radroots_event(event).map_err(decode_error_json)?;
     decoded_event_to_json(decoded)
 }
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = contract_manifest_json))]
 pub fn contract_manifest_json() -> Result<String, RadrootsJsValue> {
-    radroots_events_codec::contract_manifest_json().map_err(err_js)
+    radroots_event_codec::contract_manifest_json().map_err(err_js)
 }
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(js_name = file_metadata_tags))]
@@ -564,34 +562,34 @@ mod tests {
         RadrootsCoreCurrency, RadrootsCoreDecimal, RadrootsCoreMoney, RadrootsCoreQuantity,
         RadrootsCoreQuantityPrice, RadrootsCoreUnit,
     };
-    use radroots_events::farm::RadrootsFarmRef;
-    use radroots_events::farm_crdt::{
+    use radroots_event::farm::RadrootsFarmRef;
+    use radroots_event::farm_crdt::{
         RADROOTS_FARM_CRDT_CHANGE_SCHEMA, RadrootsCrdtBackend, RadrootsFarmCrdtDocumentKind,
         RadrootsFarmSemanticKind,
     };
-    use radroots_events::farm_file::{
+    use radroots_event::farm_file::{
         RadrootsFarmFileDimensions, RadrootsFarmFileMetadata, RadrootsFarmFileSource,
     };
-    use radroots_events::farm_workspace::{
+    use radroots_event::farm_workspace::{
         RADROOTS_FARM_WORKSPACE_PROTOCOL_VERSION, RADROOTS_FARM_WORKSPACE_SCHEMA,
         RadrootsFarmWorkspaceManifest, RadrootsFarmWorkspaceMediaServer, RadrootsFarmWorkspaceRef,
         RadrootsFarmWorkspaceRelay, RadrootsFarmWorkspaceRelayMode,
     };
-    use radroots_events::group::{
+    use radroots_event::group::{
         RadrootsGroupAdmins, RadrootsGroupCreateGroup, RadrootsGroupCreateInvite,
         RadrootsGroupDeleteEvent, RadrootsGroupDeleteGroup, RadrootsGroupEditMetadata,
         RadrootsGroupEditableMetadata, RadrootsGroupJoinRequest, RadrootsGroupLeaveRequest,
         RadrootsGroupMembers, RadrootsGroupMetadata, RadrootsGroupPutUser, RadrootsGroupRemoveUser,
         RadrootsGroupRole, RadrootsGroupRoles, RadrootsGroupUserRef,
     };
-    use radroots_events::http_auth::RadrootsHttpAuth;
-    use radroots_events::job::JobInputType;
-    use radroots_events::job_request::{RadrootsJobInput, RadrootsJobParam};
-    use radroots_events::kinds::{
+    use radroots_event::http_auth::RadrootsHttpAuth;
+    use radroots_event::job::JobInputType;
+    use radroots_event::job_request::{RadrootsJobInput, RadrootsJobParam};
+    use radroots_event::kinds::{
         KIND_FARM_FILE_METADATA, KIND_FILE_METADATA, KIND_KNOWLEDGE_CLAIM, KIND_KNOWLEDGE_SOURCE,
         KIND_WIKI_ARTICLE,
     };
-    use radroots_events::knowledge::{
+    use radroots_event::knowledge::{
         RADROOTS_KNOWLEDGE_CLAIM_SCHEMA, RADROOTS_KNOWLEDGE_FIELD_REPORT_SCHEMA,
         RADROOTS_KNOWLEDGE_RELATION_SCHEMA, RADROOTS_KNOWLEDGE_REVIEW_SCHEMA,
         RADROOTS_KNOWLEDGE_SCHEMA_VERSION, RADROOTS_KNOWLEDGE_SOURCE_SCHEMA,
@@ -601,9 +599,9 @@ mod tests {
         RadrootsKnowledgeReviewScope, RadrootsKnowledgeReviewScore, RadrootsKnowledgeReviewTarget,
         RadrootsWikiArticleVersionRef,
     };
-    use radroots_events::listing::{RadrootsListingBin, RadrootsListingProduct};
-    use radroots_events::relay_auth::RadrootsRelayAuth;
-    use radroots_events::social::{
+    use radroots_event::listing::{RadrootsListingBin, RadrootsListingProduct};
+    use radroots_event::relay_auth::RadrootsRelayAuth;
+    use radroots_event::social::{
         RadrootsCalendarDateValue, RadrootsCalendarEventFreeBusy, RadrootsCalendarEventRsvpStatus,
         RadrootsCalendarParticipant, RadrootsReportFileTarget, RadrootsReportType,
         RadrootsSocialFarmAnchor, RadrootsSocialLocation, RadrootsSocialMediaDimensions,
@@ -695,8 +693,8 @@ mod tests {
         }
     }
 
-    fn knowledge_event_ref(seed: char, kind: u32) -> radroots_events::RadrootsEventRef {
-        radroots_events::RadrootsEventRef {
+    fn knowledge_event_ref(seed: char, kind: u32) -> radroots_event::RadrootsEventRef {
+        radroots_event::RadrootsEventRef {
             id: synthetic_event_id(seed),
             author: synthetic_pubkey('a'),
             kind,
@@ -890,7 +888,7 @@ mod tests {
                 .custom_created_at(nostr::Timestamp::from_secs(1_800_000_000))
                 .sign_with_keys(&keys)
                 .expect("signed event");
-        serde_json::to_string(&radroots_events::RadrootsEventEnvelope {
+        serde_json::to_string(&radroots_event::RadrootsEventEnvelope {
             id: event.id.to_hex(),
             author: event.pubkey.to_hex(),
             created_at: event.created_at.as_secs() as u32,
@@ -1437,7 +1435,7 @@ mod tests {
 
         let merge_request = sample_wiki_merge_request();
         let merge_parts =
-            radroots_events_codec::knowledge::wiki_merge_request_to_wire_parts(&merge_request)
+            radroots_event_codec::knowledge::wiki_merge_request_to_wire_parts(&merge_request)
                 .expect("merge request parts");
         assert_eq!(merge_parts.content, "Merge synthetic soil article updates");
         let merge_tags = tags_json(wiki_merge_request_tags(

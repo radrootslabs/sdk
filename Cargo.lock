@@ -1749,7 +1749,7 @@ checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
 name = "radroots_authority"
 version = "0.1.0-alpha.2"
 dependencies = [
- "radroots_events",
+ "radroots_event",
  "radroots_nostr",
 ]
 
@@ -1771,10 +1771,44 @@ dependencies = [
 ]
 
 [[package]]
+name = "radroots_event"
+version = "0.1.0-alpha.2"
+dependencies = [
+ "dto_bindgen",
+ "hex",
+ "radroots_core",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "radroots_event_codec"
+version = "0.1.0-alpha.2"
+dependencies = [
+ "hex",
+ "nostr",
+ "radroots_core",
+ "radroots_event",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "radroots_event_index"
+version = "0.1.0-alpha.2"
+dependencies = [
+ "dto_bindgen",
+ "dto_bindgen_core",
+ "serde",
+]
+
+[[package]]
 name = "radroots_event_store"
 version = "0.1.0-alpha.2"
 dependencies = [
- "radroots_events",
+ "radroots_event",
  "radroots_nostr",
  "radroots_transport",
  "serde",
@@ -1784,36 +1818,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "radroots_events"
-version = "0.1.0-alpha.2"
-dependencies = [
- "dto_bindgen",
- "hex",
- "radroots_core",
- "serde",
- "serde_json",
- "sha2",
-]
-
-[[package]]
 name = "radroots_events_bindings"
 version = "0.1.0"
 dependencies = [
  "dto_bindgen_backend_ts",
- "radroots_events",
-]
-
-[[package]]
-name = "radroots_events_codec"
-version = "0.1.0-alpha.2"
-dependencies = [
- "hex",
- "nostr",
- "radroots_core",
- "radroots_events",
- "serde",
- "serde_json",
- "sha2",
+ "radroots_event",
 ]
 
 [[package]]
@@ -1822,27 +1831,18 @@ version = "0.1.0-alpha.2"
 dependencies = [
  "nostr",
  "radroots_core",
- "radroots_events",
- "radroots_events_codec",
+ "radroots_event",
+ "radroots_event_codec",
  "serde",
  "serde_json",
  "wasm-bindgen",
 ]
 
 [[package]]
-name = "radroots_events_indexed"
-version = "0.1.0-alpha.2"
-dependencies = [
- "dto_bindgen",
- "dto_bindgen_core",
- "serde",
-]
-
-[[package]]
 name = "radroots_events_indexed_bindings"
 version = "0.1.0"
 dependencies = [
- "radroots_events_indexed",
+ "radroots_event_index",
 ]
 
 [[package]]
@@ -1865,7 +1865,7 @@ name = "radroots_identity"
 version = "0.1.0-alpha.2"
 dependencies = [
  "nostr",
- "radroots_events",
+ "radroots_event",
  "radroots_protected_store",
  "radroots_runtime",
  "radroots_runtime_paths",
@@ -1901,8 +1901,8 @@ version = "0.1.0-alpha.2"
 dependencies = [
  "nostr",
  "nostr-sdk",
- "radroots_events",
- "radroots_events_codec",
+ "radroots_event",
+ "radroots_event_codec",
  "radroots_identity",
  "serde",
  "serde_json",
@@ -1943,8 +1943,8 @@ name = "radroots_outbox"
 version = "0.1.0-alpha.2"
 dependencies = [
  "hex",
+ "radroots_event",
  "radroots_event_store",
- "radroots_events",
  "radroots_transport",
  "serde",
  "serde_json",
@@ -1972,7 +1972,6 @@ dependencies = [
  "hex",
  "radroots_replica_db_schema",
  "radroots_sql_core",
- "radroots_types",
  "serde",
  "serde_json",
  "sha2",
@@ -1983,7 +1982,6 @@ name = "radroots_replica_db_schema"
 version = "0.1.0-alpha.2"
 dependencies = [
  "dto_bindgen_core",
- "radroots_types",
  "serde",
  "serde_json",
 ]
@@ -2020,12 +2018,11 @@ dependencies = [
  "base64 0.22.1",
  "hex",
  "radroots_core",
- "radroots_events",
- "radroots_events_codec",
+ "radroots_event",
+ "radroots_event_codec",
  "radroots_replica_db",
  "radroots_replica_db_schema",
  "radroots_sql_core",
- "radroots_types",
  "serde",
  "serde_json",
  "sha2",
@@ -2037,7 +2034,7 @@ name = "radroots_replica_sync_wasm"
 version = "0.1.0-alpha.2"
 dependencies = [
  "base64 0.22.1",
- "radroots_events",
+ "radroots_event",
  "radroots_replica_sync",
  "radroots_sdk_sql_wasm_runtime",
  "serde",
@@ -2086,9 +2083,9 @@ dependencies = [
  "nostr",
  "radroots_authority",
  "radroots_core",
+ "radroots_event",
+ "radroots_event_codec",
  "radroots_event_store",
- "radroots_events",
- "radroots_events_codec",
  "radroots_geocoder",
  "radroots_identity",
  "radroots_nostr",
@@ -2135,13 +2132,12 @@ dependencies = [
  "dto_bindgen_core",
  "flate2",
  "radroots_core",
- "radroots_events",
+ "radroots_event",
+ "radroots_event_index",
  "radroots_events_bindings",
- "radroots_events_indexed",
  "radroots_identity_bindings",
  "radroots_replica_db_schema_bindings",
  "radroots_trade_bindings",
- "radroots_types_bindings",
  "serde",
  "serde_json",
  "tar",
@@ -2174,9 +2170,9 @@ dependencies = [
  "hex",
  "radroots_authority",
  "radroots_core",
+ "radroots_event",
+ "radroots_event_codec",
  "radroots_event_store",
- "radroots_events",
- "radroots_events_codec",
  "serde",
  "serde_json",
  "sha2",
@@ -2207,8 +2203,8 @@ version = "0.1.0-alpha.2"
 dependencies = [
  "futures",
  "nostr",
+ "radroots_event",
  "radroots_event_store",
- "radroots_events",
  "radroots_nostr",
  "radroots_outbox",
  "radroots_transport",
@@ -2232,22 +2228,6 @@ name = "radroots_transport_reticulum"
 version = "0.1.0-alpha.2"
 dependencies = [
  "radroots_transport",
-]
-
-[[package]]
-name = "radroots_types"
-version = "0.1.0-alpha.2"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "radroots_types_bindings"
-version = "0.1.0"
-dependencies = [
- "dto_bindgen_core",
- "radroots_types",
 ]
 
 [[package]]

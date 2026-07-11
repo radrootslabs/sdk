@@ -1,4 +1,4 @@
-pub use radroots_events_indexed as upstream;
+pub use radroots_event_index as upstream;
 
 pub const TYPE_EXPORTS: &[&str] = &[
     "RadrootsEventsIndexedShardId",

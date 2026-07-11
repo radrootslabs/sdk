@@ -1,7 +1,7 @@
 use dto_bindgen_backend_ts::{
     TypeScriptDeclaration, TypeScriptImport, TypeScriptModule, TypeScriptType, TypeScriptValue,
 };
-use radroots_events::{kinds, listing::RADROOTS_LISTING_PRODUCT_TAG_KEYS};
+use radroots_event::{kinds, listing::RADROOTS_LISTING_PRODUCT_TAG_KEYS};
 
 pub fn constants_module() -> TypeScriptModule {
     TypeScriptModule::new("src/generated/constants.ts")

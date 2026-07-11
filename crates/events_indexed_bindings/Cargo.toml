@@ -10,4 +10,4 @@ homepage.workspace = true
 publish = false
 
 [dependencies]
-radroots_events_indexed = { workspace = true }
+radroots_event_index = { workspace = true }

@@ -11,7 +11,6 @@ members = [
   "crates/sdk",
   "crates/sql_wasm_runtime",
   "crates/trade_bindings",
-  "crates/types_bindings",
   "tools/xtask",
 ]
 resolver = "2"
@@ -32,9 +31,9 @@ dto_bindgen_core = { git = "https://github.com/triesap/dto_bindgen", rev = "d323
 radroots_core = { path = "../lib/crates/core", version = "0.1.0-alpha.2", default-features = false }
 radroots_authority = { path = "../lib/crates/authority", version = "0.1.0-alpha.2", default-features = false }
 radroots_event_store = { path = "../lib/crates/event_store", version = "0.1.0-alpha.2", default-features = false }
-radroots_events = { path = "../lib/crates/events", version = "0.1.0-alpha.2", default-features = false }
-radroots_events_codec = { path = "../lib/crates/events_codec", version = "0.1.0-alpha.2", default-features = false }
-radroots_events_indexed = { path = "../lib/crates/events_indexed", version = "0.1.0-alpha.2", default-features = false }
+radroots_event = { path = "../lib/crates/event", version = "0.1.0-alpha.2", default-features = false }
+radroots_event_codec = { path = "../lib/crates/event_codec", version = "0.1.0-alpha.2", default-features = false }
+radroots_event_index = { path = "../lib/crates/event_index", version = "0.1.0-alpha.2", default-features = false }
 radroots_geocoder = { path = "../lib/crates/geocoder", version = "0.1.0-alpha.2" }
 radroots_identity = { path = "../lib/crates/identity", version = "0.1.0-alpha.2", default-features = false, features = [
   "std",
@@ -58,7 +57,6 @@ radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", defa
   "serde_json",
   "std",
 ] }
-radroots_types = { path = "../lib/crates/types", version = "0.1.0-alpha.2", default-features = false }
 
 base64 = { version = "0.22", default-features = false, features = ["alloc"] }
 futures = { version = "0.3" }
