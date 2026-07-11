@@ -132,7 +132,9 @@ fn tags_to_json(tags: Vec<Vec<String>>) -> Result<String, RadrootsJsValue> {
     serde_json::to_string(&tags).map_err(err_js)
 }
 
-fn parse_event_json(input: &str) -> Result<radroots_events::RadrootsNostrEvent, RadrootsJsValue> {
+fn parse_event_json(
+    input: &str,
+) -> Result<radroots_events::RadrootsEventEnvelope, RadrootsJsValue> {
     serde_json::from_str(input).map_err(|_| error_json("invalid_json", Some("event_json")))
 }
 
@@ -164,7 +166,7 @@ where
 {
     event_type: &'static str,
     contract_id: &'static str,
-    event: &'a radroots_events::RadrootsNostrEvent,
+    event: &'a radroots_events::RadrootsEventEnvelope,
     payload: &'a T,
 }
 
@@ -693,8 +695,8 @@ mod tests {
         }
     }
 
-    fn knowledge_event_ref(seed: char, kind: u32) -> radroots_events::RadrootsNostrEventRef {
-        radroots_events::RadrootsNostrEventRef {
+    fn knowledge_event_ref(seed: char, kind: u32) -> radroots_events::RadrootsEventRef {
+        radroots_events::RadrootsEventRef {
             id: synthetic_event_id(seed),
             author: synthetic_pubkey('a'),
             kind,
@@ -888,7 +890,7 @@ mod tests {
                 .custom_created_at(nostr::Timestamp::from_secs(1_800_000_000))
                 .sign_with_keys(&keys)
                 .expect("signed event");
-        serde_json::to_string(&radroots_events::RadrootsNostrEvent {
+        serde_json::to_string(&radroots_events::RadrootsEventEnvelope {
             id: event.id.to_hex(),
             author: event.pubkey.to_hex(),
             created_at: event.created_at.as_secs() as u32,

@@ -111,11 +111,11 @@ order = 1
 
 [shared_types]
 "WireEventParts" = "WireEventParts"
-"RadrootsFrozenEventDraft" = "RadrootsFrozenEventDraft"
-"RadrootsSignedNostrEvent" = "RadrootsSignedNostrEvent"
-"RadrootsNostrEvent" = "RadrootsNostrEvent"
-"RadrootsNostrEventRef" = "RadrootsNostrEventRef"
-"RadrootsNostrEventPtr" = "RadrootsNostrEventPtr"
+"RadrootsEventDraft" = "RadrootsEventDraft"
+"RadrootsSignedEvent" = "RadrootsSignedEvent"
+"RadrootsEventEnvelope" = "RadrootsEventEnvelope"
+"RadrootsEventRef" = "RadrootsEventRef"
+"RadrootsEventPtr" = "RadrootsEventPtr"
 "RadrootsListingAddress" = "ListingAddress"
 "RadrootsProfile" = "RadrootsProfile"
 "RadrootsFarm" = "RadrootsFarm"

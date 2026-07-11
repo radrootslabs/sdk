@@ -18,7 +18,7 @@ export type RadrootsComment = { root: RadrootsSocialTarget, parent: RadrootsSoci
 
 export type RadrootsCommercialDomain = "trade:listing";
 
-export type RadrootsContributionAttestation = { schema: string, schema_version: number, contributor_pubkey: string, contribution_type: string, subject_refs: Array<RadrootsNostrEventRef>, summary: string, evidence_refs: Array<RadrootsNostrEventRef>, };
+export type RadrootsContributionAttestation = { schema: string, schema_version: number, contributor_pubkey: string, contribution_type: string, subject_refs: Array<RadrootsEventRef>, summary: string, evidence_refs: Array<RadrootsEventRef>, };
 
 export type RadrootsCoop = { d_tag: string, name: string, about?: string | null, website?: string | null, picture?: string | null, banner?: string | null, location?: RadrootsCoopLocation | null, tags?: Array<string> | null, };
 
@@ -30,7 +30,13 @@ export type RadrootsDocument = { d_tag: string, doc_type: string, title: string,
 
 export type RadrootsDocumentSubject = { pubkey: string, address?: string | null, };
 
-export type RadrootsEvidenceBounty = { schema: string, schema_version: number, d_tag: string, title: string, summary?: string | null, topics: Array<string>, target_refs: Array<RadrootsNostrEventRef>, reward_note?: string | null, closes_at?: string | null, };
+export type RadrootsEventEnvelope = { id: string, author: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, };
+
+export type RadrootsEventPtr = { id: string, relays?: string | null, };
+
+export type RadrootsEventRef = { id: string, author: string, kind: number, d_tag?: string | null, relays?: Array<string> | null, };
+
+export type RadrootsEvidenceBounty = { schema: string, schema_version: number, d_tag: string, title: string, summary?: string | null, topics: Array<string>, target_refs: Array<RadrootsEventRef>, reward_note?: string | null, closes_at?: string | null, };
 
 export type RadrootsFarm = { d_tag: string, name: string, about?: string | null, website?: string | null, picture?: string | null, banner?: string | null, location?: RadrootsFarmPublicLocation | null, tags?: Array<string> | null, };
 
@@ -54,7 +60,7 @@ export type RadrootsGiftWrap = { recipient: RadrootsGiftWrapRecipient, content: 
 
 export type RadrootsGiftWrapRecipient = { public_key: string, relay_url?: string | null, };
 
-export type RadrootsJobFeedback = { kind: number, status: JobFeedbackStatus, extra_info?: string | null, request_event: RadrootsNostrEventPtr, customer_pubkey?: string | null, payment?: JobPaymentRequest | null, content?: string | null, encrypted: boolean, };
+export type RadrootsJobFeedback = { kind: number, status: JobFeedbackStatus, extra_info?: string | null, request_event: RadrootsEventPtr, customer_pubkey?: string | null, payment?: JobPaymentRequest | null, content?: string | null, encrypted: boolean, };
 
 export type RadrootsJobInput = { data: string, input_type: JobInputType, relay?: string | null, marker?: string | null, };
 
@@ -62,31 +68,31 @@ export type RadrootsJobParam = { key: string, value: string, };
 
 export type RadrootsJobRequest = { kind: number, inputs: Array<RadrootsJobInput>, output?: string | null, params: Array<RadrootsJobParam>, bid_sat?: number | null, relays: Array<string>, providers: Array<string>, topics: Array<string>, encrypted: boolean, };
 
-export type RadrootsJobResult = { kind: number, request_event: RadrootsNostrEventPtr, request_json?: string | null, inputs: Array<RadrootsJobInput>, customer_pubkey?: string | null, payment?: JobPaymentRequest | null, content?: string | null, encrypted: boolean, };
+export type RadrootsJobResult = { kind: number, request_event: RadrootsEventPtr, request_json?: string | null, inputs: Array<RadrootsJobInput>, customer_pubkey?: string | null, payment?: JobPaymentRequest | null, content?: string | null, encrypted: boolean, };
 
-export type RadrootsKnowledgeChangeProposal = { schema: string, schema_version: number, target: RadrootsNostrEventRef, proposal_type: string, summary: string, rationale?: string | null, evidence_refs: Array<RadrootsNostrEventRef>, supersedes: Array<RadrootsNostrEventRef>, };
+export type RadrootsKnowledgeChangeProposal = { schema: string, schema_version: number, target: RadrootsEventRef, proposal_type: string, summary: string, rationale?: string | null, evidence_refs: Array<RadrootsEventRef>, supersedes: Array<RadrootsEventRef>, };
 
-export type RadrootsKnowledgeCitationSpan = { source_ref: RadrootsNostrEventRef, artifact_ref?: RadrootsNostrEventRef | null, page_start?: number | null, page_end?: number | null, section_path: Array<string>, quote_hash?: string | null, chunk_id?: string | null, };
+export type RadrootsKnowledgeCitationSpan = { source_ref: RadrootsEventRef, artifact_ref?: RadrootsEventRef | null, page_start?: number | null, page_end?: number | null, section_path: Array<string>, quote_hash?: string | null, chunk_id?: string | null, };
 
-export type RadrootsKnowledgeClaim = { schema: string, schema_version: number, claim_type: string, text: string, citation_spans: Array<RadrootsKnowledgeCitationSpan>, topics: Array<string>, applies_to: Array<string>, author_asserted_confidence?: string | null, supersedes: Array<RadrootsNostrEventRef>, };
+export type RadrootsKnowledgeClaim = { schema: string, schema_version: number, claim_type: string, text: string, citation_spans: Array<RadrootsKnowledgeCitationSpan>, topics: Array<string>, applies_to: Array<string>, author_asserted_confidence?: string | null, supersedes: Array<RadrootsEventRef>, };
 
-export type RadrootsKnowledgeFieldContext = { location_precision: RadrootsKnowledgeLocationPrecision, public_location?: RadrootsKnowledgeLocation | null, private_location_ref?: RadrootsNostrEventRef | null, topics: Array<string>, context_tags: Array<string>, };
+export type RadrootsKnowledgeFieldContext = { location_precision: RadrootsKnowledgeLocationPrecision, public_location?: RadrootsKnowledgeLocation | null, private_location_ref?: RadrootsEventRef | null, topics: Array<string>, context_tags: Array<string>, };
 
-export type RadrootsKnowledgeFieldReport = { schema: string, schema_version: number, report_type: string, title: string, summary?: string | null, context: RadrootsKnowledgeFieldContext, observations: Array<RadrootsKnowledgeObservation>, artifact_refs: Array<RadrootsNostrEventRef>, related_refs: Array<RadrootsNostrEventRef>, limitations: Array<string>, };
+export type RadrootsKnowledgeFieldReport = { schema: string, schema_version: number, report_type: string, title: string, summary?: string | null, context: RadrootsKnowledgeFieldContext, observations: Array<RadrootsKnowledgeObservation>, artifact_refs: Array<RadrootsEventRef>, related_refs: Array<RadrootsEventRef>, limitations: Array<string>, };
 
 export type RadrootsKnowledgeLocation = { label?: string | null, region?: string | null, locality?: string | null, geohash?: string | null, };
 
 export type RadrootsKnowledgeLocationPrecision = "none" | "region" | "locality" | "coarse_geohash" | "exact_public" | "exact_private_reference";
 
-export type RadrootsKnowledgeNodeRef = { node_type: string, event_ref?: RadrootsNostrEventRef | null, address_ref?: RadrootsAddressableRef | null, external_id?: string | null, label?: string | null, };
+export type RadrootsKnowledgeNodeRef = { node_type: string, event_ref?: RadrootsEventRef | null, address_ref?: RadrootsAddressableRef | null, external_id?: string | null, label?: string | null, };
 
 export type RadrootsKnowledgeObservation = { observation_type: string, text: string, observed_at?: string | null, values: Array<RadrootsKnowledgeObservationValue>, };
 
 export type RadrootsKnowledgeObservationValue = { key: string, value: string, unit?: string | null, };
 
-export type RadrootsKnowledgeRelation = { schema: string, schema_version: number, subject: RadrootsKnowledgeNodeRef, predicate: string, object: RadrootsKnowledgeNodeRef, support_refs: Array<RadrootsNostrEventRef>, author_asserted_confidence?: string | null, supersedes: Array<RadrootsNostrEventRef>, };
+export type RadrootsKnowledgeRelation = { schema: string, schema_version: number, subject: RadrootsKnowledgeNodeRef, predicate: string, object: RadrootsKnowledgeNodeRef, support_refs: Array<RadrootsEventRef>, author_asserted_confidence?: string | null, supersedes: Array<RadrootsEventRef>, };
 
-export type RadrootsKnowledgeReview = { schema: string, schema_version: number, target: RadrootsKnowledgeReviewTarget, reviewer_role: string, verdict: string, scores: Array<RadrootsKnowledgeReviewScore>, notes?: string | null, evidence_refs: Array<RadrootsNostrEventRef>, };
+export type RadrootsKnowledgeReview = { schema: string, schema_version: number, target: RadrootsKnowledgeReviewTarget, reviewer_role: string, verdict: string, scores: Array<RadrootsKnowledgeReviewScore>, notes?: string | null, evidence_refs: Array<RadrootsEventRef>, };
 
 export type RadrootsKnowledgeReviewScope = "specific_version" | "addressable_coordinate_at_published_at" | "policy_latest";
 
@@ -94,7 +100,7 @@ export type RadrootsKnowledgeReviewScore = { dimension: string, value: string, n
 
 export type RadrootsKnowledgeReviewTarget = { event_id: string, author_pubkey: string, kind: number, address?: string | null, relays: Array<string>, review_scope: RadrootsKnowledgeReviewScope, };
 
-export type RadrootsKnowledgeSource = { schema: string, schema_version: number, d_tag: string, title: string, source_type: string, authors: Array<string>, publisher?: string | null, publication_year?: number | null, edition?: string | null, canonical_url?: string | null, artifact_refs: Array<RadrootsNostrEventRef>, author_asserted_rights?: RadrootsRightsAssertion | null, topics: Array<string>, summary?: string | null, };
+export type RadrootsKnowledgeSource = { schema: string, schema_version: number, d_tag: string, title: string, source_type: string, authors: Array<string>, publisher?: string | null, publication_year?: number | null, edition?: string | null, canonical_url?: string | null, artifact_refs: Array<RadrootsEventRef>, author_asserted_rights?: RadrootsRightsAssertion | null, topics: Array<string>, summary?: string | null, };
 
 export type RadrootsList = { content: string, entries: Array<RadrootsListEntry>, };
 
@@ -124,19 +130,13 @@ export type RadrootsListingPublicLocation = { primary: string, city?: string | n
 
 export type RadrootsListingStatus = { kind: "active", } | { kind: "sold", } | { kind: "other", amount: { value: string, }, };
 
-export type RadrootsMessage = { recipients: Array<RadrootsMessageRecipient>, content: string, reply_to?: RadrootsNostrEventPtr | null, subject?: string | null, };
+export type RadrootsMessage = { recipients: Array<RadrootsMessageRecipient>, content: string, reply_to?: RadrootsEventPtr | null, subject?: string | null, };
 
-export type RadrootsMessageFile = { recipients: Array<RadrootsMessageRecipient>, file_url: string, reply_to?: RadrootsNostrEventPtr | null, subject?: string | null, file_type: string, encryption_algorithm: string, decryption_key: string, decryption_nonce: string, encrypted_hash: string, original_hash?: string | null, size?: string | null, dimensions?: RadrootsMessageFileDimensions | null, blurhash?: string | null, thumb?: string | null, fallbacks: Array<string>, };
+export type RadrootsMessageFile = { recipients: Array<RadrootsMessageRecipient>, file_url: string, reply_to?: RadrootsEventPtr | null, subject?: string | null, file_type: string, encryption_algorithm: string, decryption_key: string, decryption_nonce: string, encrypted_hash: string, original_hash?: string | null, size?: string | null, dimensions?: RadrootsMessageFileDimensions | null, blurhash?: string | null, thumb?: string | null, fallbacks: Array<string>, };
 
 export type RadrootsMessageFileDimensions = { w: number, h: number, };
 
 export type RadrootsMessageRecipient = { public_key: string, relay_url?: string | null, };
-
-export type RadrootsNostrEvent = { id: string, author: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, };
-
-export type RadrootsNostrEventPtr = { id: string, relays?: string | null, };
-
-export type RadrootsNostrEventRef = { id: string, author: string, kind: number, d_tag?: string | null, relays?: Array<string> | null, };
 
 export type RadrootsOrderCancellation = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, reason: string, };
 
@@ -216,13 +216,13 @@ export type RadrootsSocialMediaThumbnail = { url: string, dimensions?: RadrootsS
 
 export type RadrootsSocialTarget = { kind: "event", id: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "address", address: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "external", id: string, external_kind: string, hint?: string | null, };
 
-export type RadrootsTradeListingValidateRequest = { listing_event?: RadrootsNostrEventPtr | null, };
+export type RadrootsTradeListingValidateRequest = { listing_event?: RadrootsEventPtr | null, };
 
 export type RadrootsTradeListingValidateResult = { valid: boolean, errors: Array<RadrootsTradeValidationListingError>, };
 
 export type RadrootsTradeValidationListingError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_location_locality", } | { kind: "missing_location_geohash", } | { kind: "invalid_location_geohash", } | { kind: "missing_delivery_method", };
 
-export type RadrootsWikiArticle = { d_tag: string, title?: string | null, content_djot: string, summary?: string | null, topics: Array<string>, references: Array<RadrootsNostrEventRef>, forked_from: Array<RadrootsWikiArticleVersionRef>, deferred_to?: RadrootsWikiArticleVersionRef | null, };
+export type RadrootsWikiArticle = { d_tag: string, title?: string | null, content_djot: string, summary?: string | null, topics: Array<string>, references: Array<RadrootsEventRef>, forked_from: Array<RadrootsWikiArticleVersionRef>, deferred_to?: RadrootsWikiArticleVersionRef | null, };
 
 export type RadrootsWikiArticleVersionRef = { event_id: string, address_ref: RadrootsAddressableRef, };
 
