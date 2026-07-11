@@ -1,0 +1,6 @@
+{
+  "crate": "radroots_replica_schema_bindings",
+  "generated": true,
+  "generator": "radroots_sdk_xtask",
+  "package": "@radroots/replica-schema-bindings"
+}

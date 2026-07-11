@@ -1,0 +1,36 @@
+{
+  "name": "@radroots/event-codec-wasm",
+  "version": "0.1.0",
+  "description": "WebAssembly bindings for radroots_event_codec",
+  "license": "MIT OR Apache-2.0",
+  "homepage": "https://radroots.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radrootslabs/sdk.git",
+    "directory": "packages/event-codec-wasm"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
+  ],
+  "main": "./dist/radroots_event_codec_wasm.js",
+  "types": "./dist/radroots_event_codec_wasm.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/radroots_event_codec_wasm.d.ts",
+      "import": "./dist/radroots_event_codec_wasm.js",
+      "default": "./dist/radroots_event_codec_wasm.js"
+    }
+  },
+  "scripts": {
+    "build": "cd ../.. && cargo xtask generate wasm --package event_codec",
+    "typecheck": "tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 dist/radroots_event_codec_wasm.d.ts dist/radroots_event_codec_wasm_bg.wasm.d.ts"
+  }
+}

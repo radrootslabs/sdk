@@ -4,7 +4,7 @@ repository = "sdk-go"
 
 [packages]
 "radroots_core" = "github.com/radrootslabs/sdk-go"
-"radroots_events" = "github.com/radrootslabs/sdk-go"
+"radroots_event" = "github.com/radrootslabs/sdk-go"
 "radroots_trade" = "github.com/radrootslabs/sdk-go"
 "radroots_identity" = "github.com/radrootslabs/sdk-go"
 

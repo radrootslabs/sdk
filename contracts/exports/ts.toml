@@ -4,13 +4,13 @@ repository = "sdk-typescript"
 
 [packages]
 "radroots_core" = "@radroots/core-bindings"
-"radroots_events" = "@radroots/events-bindings"
-"radroots_events_indexed" = "@radroots/events-indexed-bindings"
+"radroots_event" = "@radroots/event-bindings"
+"radroots_event_index" = "@radroots/event-index-bindings"
 "radroots_identity" = "@radroots/identity-bindings"
-"radroots_replica_db_schema" = "@radroots/replica-db-schema-bindings"
+"radroots_replica_schema" = "@radroots/replica-schema-bindings"
 "radroots_trade" = "@radroots/trade-bindings"
-"radroots_events_codec_wasm" = "@radroots/events-codec-wasm"
-"radroots_replica_db_wasm" = "@radroots/replica-db-wasm"
+"radroots_event_codec_wasm" = "@radroots/event-codec-wasm"
+"radroots_replica_store_wasm" = "@radroots/replica-store-wasm"
 "radroots_replica_sync_wasm" = "@radroots/replica-sync-wasm"
 
 [artifacts]

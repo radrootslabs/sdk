@@ -4,7 +4,7 @@ repository = "sdk-swift"
 
 [packages]
 "radroots_core" = "RadrootsSDK"
-"radroots_events" = "RadrootsSDK"
+"radroots_event" = "RadrootsSDK"
 "radroots_trade" = "RadrootsSDK"
 "radroots_identity" = "RadrootsSDK"
 

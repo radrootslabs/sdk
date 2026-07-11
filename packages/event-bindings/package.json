@@ -1,13 +1,13 @@
 {
-  "name": "@radroots/trade-bindings",
+  "name": "@radroots/event-bindings",
   "version": "0.1.0",
-  "description": "TypeScript bindings for radroots_trade",
+  "description": "TypeScript bindings for radroots_event",
   "license": "MIT OR Apache-2.0",
   "homepage": "https://radroots.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/radrootslabs/sdk.git",
-    "directory": "packages/trade-bindings"
+    "directory": "packages/event-bindings"
   },
   "publishConfig": {
     "access": "public"
@@ -34,7 +34,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@radroots/core-bindings": "workspace:^",
-    "@radroots/event-bindings": "workspace:^"
+    "@radroots/core-bindings": "workspace:^"
   }
 }

@@ -1,13 +1,13 @@
 {
-  "name": "@radroots/trade-bindings",
+  "name": "@radroots/event-index-bindings",
   "version": "0.1.0",
-  "description": "TypeScript bindings for radroots_trade",
+  "description": "TypeScript bindings for radroots_event_index",
   "license": "MIT OR Apache-2.0",
   "homepage": "https://radroots.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/radrootslabs/sdk.git",
-    "directory": "packages/trade-bindings"
+    "directory": "packages/event-index-bindings"
   },
   "publishConfig": {
     "access": "public"
@@ -32,9 +32,5 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "@radroots/core-bindings": "workspace:^",
-    "@radroots/event-bindings": "workspace:^"
   }
 }

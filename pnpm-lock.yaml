@@ -14,21 +14,21 @@ importers:
 
   packages/core-bindings: {}
 
-  packages/events-bindings:
+  packages/event-bindings:
     dependencies:
       '@radroots/core-bindings':
         specifier: workspace:^
         version: link:../core-bindings
 
-  packages/events-codec-wasm: {}
+  packages/event-codec-wasm: {}
 
-  packages/events-indexed-bindings: {}
+  packages/event-index-bindings: {}
 
   packages/identity-bindings: {}
 
-  packages/replica-db-schema-bindings: {}
+  packages/replica-schema-bindings: {}
 
-  packages/replica-db-wasm: {}
+  packages/replica-store-wasm: {}
 
   packages/replica-sync-wasm: {}
 
@@ -37,9 +37,9 @@ importers:
       '@radroots/core-bindings':
         specifier: workspace:^
         version: link:../core-bindings
-      '@radroots/events-bindings':
+      '@radroots/event-bindings':
         specifier: workspace:^
-        version: link:../events-bindings
+        version: link:../event-bindings
 
 packages:
 

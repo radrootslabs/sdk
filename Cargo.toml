@@ -1,12 +1,12 @@
 [workspace]
 members = [
   "crates/core_bindings",
-  "crates/events_codec_wasm",
-  "crates/events_bindings",
-  "crates/events_indexed_bindings",
+  "crates/event_codec_wasm",
+  "crates/event_bindings",
+  "crates/event_index_bindings",
   "crates/identity_bindings",
-  "crates/replica_db_wasm",
-  "crates/replica_db_schema_bindings",
+  "crates/replica_store_wasm",
+  "crates/replica_schema_bindings",
   "crates/replica_sync_wasm",
   "crates/sdk",
   "crates/sql_wasm_runtime",
@@ -46,12 +46,12 @@ radroots_transport = { path = "../lib/crates/transport", version = "0.1.0-alpha.
 radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol", version = "0.1.0-alpha.2", default-features = false }
 radroots_transport_nostr = { path = "../lib/crates/transport_nostr", version = "0.1.0-alpha.2", default-features = false }
 radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum", version = "0.1.0-alpha.2", default-features = false }
-radroots_replica_db = { path = "../lib/crates/replica_db", version = "0.1.0-alpha.2", default-features = false }
-radroots_replica_db_schema = { path = "../lib/crates/replica_db_schema", version = "0.1.0-alpha.2", default-features = false }
+radroots_replica_store = { path = "../lib/crates/replica_store", version = "0.1.0-alpha.2", default-features = false }
+radroots_replica_schema = { path = "../lib/crates/replica_schema", version = "0.1.0-alpha.2", default-features = false }
 radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "0.1.0-alpha.2", default-features = false }
 radroots_runtime_paths = { path = "../lib/crates/runtime_paths", version = "0.1.0-alpha.2", default-features = false }
 radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "0.1.0-alpha.2" }
-radroots_sp1_guest_trade = { path = "../lib/crates/sp1_guest_trade", version = "0.1.0-alpha.2", default-features = false }
+radroots_trade_sp1_guest = { path = "../lib/crates/trade_sp1_guest", version = "0.1.0-alpha.2", default-features = false }
 radroots_sql_core = { path = "../lib/crates/sql_core", version = "0.1.0-alpha.2", default-features = false }
 radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
   "serde_json",

@@ -1,6 +1,0 @@
-{
-  "crate": "radroots_events_bindings",
-  "generated": true,
-  "generator": "radroots_sdk_xtask",
-  "package": "@radroots/events-bindings"
-}
