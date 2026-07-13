@@ -10,4 +10,4 @@ export type RadrootsEventIndexManifest = { country: string, total: number, shard
 
 export type RadrootsEventIndexShardCheckpoint = { shard_id: RadrootsEventIndexShardId, last_created_at: number, last_event_id?: string | null, cursor?: string | null, };
 
-export type RadrootsEventIndexIndexCheckpoint = { generated_at: number, shards: Array<RadrootsEventIndexShardCheckpoint>, };
+export type RadrootsEventIndexCheckpoint = { generated_at: number, shards: Array<RadrootsEventIndexShardCheckpoint>, };

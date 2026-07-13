@@ -6,7 +6,7 @@ pub const TYPE_EXPORTS: &[&str] = &[
     "RadrootsEventIndexShardMetadata",
     "RadrootsEventIndexManifest",
     "RadrootsEventIndexShardCheckpoint",
-    "RadrootsEventIndexIndexCheckpoint",
+    "RadrootsEventIndexCheckpoint",
 ];
 
 #[cfg(test)]
@@ -16,7 +16,7 @@ mod tests {
     #[test]
     fn exports_indexed_manifest_and_checkpoint_types() {
         assert!(TYPE_EXPORTS.contains(&"RadrootsEventIndexManifest"));
-        assert!(TYPE_EXPORTS.contains(&"RadrootsEventIndexIndexCheckpoint"));
+        assert!(TYPE_EXPORTS.contains(&"RadrootsEventIndexCheckpoint"));
         assert!(TYPE_EXPORTS.contains(&"RadrootsEventIndexShardId"));
     }
 }
