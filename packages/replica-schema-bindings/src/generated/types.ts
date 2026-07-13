@@ -568,7 +568,7 @@ export type PlotTag = { id: string, created_at: string, updated_at: string, plot
 
 export type PlotTagQueryBindValues = { id: string, } | { plot_id: string, } | { tag: string, };
 
-export type ReplicaSchemaError<T> = { err: T, };
+export type ReplicaSchemaError<T> = { error: T, };
 
 export type ReplicaSchemaResult<T> = { result: T, };
 
