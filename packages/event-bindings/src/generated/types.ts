@@ -30,7 +30,7 @@ export type RadrootsDocument = { d_tag: string, doc_type: string, title: string,
 
 export type RadrootsDocumentSubject = { pubkey: string, address?: string | null, };
 
-export type RadrootsEventEnvelope = { id: string, author: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, };
+export type RadrootsEventEnvelopeDto = { id: string, author: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, };
 
 export type RadrootsEventPtr = { id: string, relays?: string | null, };
 
@@ -138,6 +138,8 @@ export type RadrootsMessageFileDimensions = { w: number, h: number, };
 
 export type RadrootsMessageRecipient = { public_key: string, relay_url?: string | null, };
 
+export type RadrootsNip01EventWireDto = { id: string, pubkey: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, extra: { [key: string]: unknown }, };
+
 export type RadrootsOrderCancellation = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, reason: string, };
 
 export type RadrootsOrderDecision = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, decision: RadrootsOrderDecisionOutcome, };
@@ -204,6 +206,10 @@ export type RadrootsRightsAssertion = { assertion: string, holder?: string | nul
 
 export type RadrootsSeal = { content: string, };
 
+export type RadrootsSignedEventDto = { state: RadrootsSignedEventVerificationStateDto, envelope: RadrootsEventEnvelopeDto, wire: RadrootsNip01EventWireDto, raw_json: string, };
+
+export type RadrootsSignedEventVerificationStateDto = "id_verified";
+
 export type RadrootsSocialFarmAnchor = { farm: RadrootsFarmRef, relays?: Array<string> | null, };
 
 export type RadrootsSocialLocation = { name?: string | null, geohash?: string | null, };
@@ -221,6 +227,10 @@ export type RadrootsTradeListingValidateRequest = { listing_event?: RadrootsEven
 export type RadrootsTradeListingValidateResult = { valid: boolean, errors: Array<RadrootsTradeValidationListingError>, };
 
 export type RadrootsTradeValidationListingError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_location_locality", } | { kind: "missing_location_geohash", } | { kind: "invalid_location_geohash", } | { kind: "missing_delivery_method", };
+
+export type RadrootsVerifiedSignedEventDto = { state: RadrootsVerifiedSignedEventVerificationStateDto, signed_event: RadrootsSignedEventDto, };
+
+export type RadrootsVerifiedSignedEventVerificationStateDto = "signature_verified";
 
 export type RadrootsWikiArticle = { d_tag: string, title?: string | null, content_djot: string, summary?: string | null, topics: Array<string>, references: Array<RadrootsEventRef>, forked_from: Array<RadrootsWikiArticleVersionRef>, deferred_to?: RadrootsWikiArticleVersionRef | null, };
 

@@ -103,10 +103,12 @@ order = 1
 "trade_validation.validate_listing_event" = "tradeValidation.validateListingEvent"
 
 [shared_types]
-"WireEventParts" = "WireEventParts"
+"RadrootsNip01EventWireParts" = "RadrootsNip01EventWireParts"
+"RadrootsNip01EventWireDto" = "RadrootsNip01EventWireDto"
 "RadrootsEventDraft" = "RadrootsEventDraft"
-"RadrootsSignedEvent" = "RadrootsSignedEvent"
-"RadrootsEventEnvelope" = "RadrootsEventEnvelope"
+"RadrootsSignedEventDto" = "RadrootsSignedEventDto"
+"RadrootsVerifiedSignedEventDto" = "RadrootsVerifiedSignedEventDto"
+"RadrootsEventEnvelopeDto" = "RadrootsEventEnvelopeDto"
 "RadrootsEventRef" = "RadrootsEventRef"
 "RadrootsEventPtr" = "RadrootsEventPtr"
 "RadrootsListingAddress" = "ListingAddress"
