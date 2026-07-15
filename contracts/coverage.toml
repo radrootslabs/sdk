@@ -5,7 +5,7 @@ require_functions = true
 require_lines = true
 
 [toolchain]
-rust = "1.92.0"
+rust = "1.97.0"
 wasm_target = "wasm32-unknown-unknown"
 
 [report]
