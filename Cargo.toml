@@ -8,6 +8,7 @@ members = [
   "crates/replica_store_wasm",
   "crates/replica_schema_bindings",
   "crates/replica_sync_wasm",
+  "crates/runtime_contract_v1",
   "crates/sdk",
   "crates/sql_wasm_runtime",
   "crates/trade_bindings",
@@ -25,9 +26,9 @@ homepage = "https://radroots.org"
 readme = "README"
 
 [workspace.dependencies]
-dto_bindgen = { git = "https://github.com/triesap/dto_bindgen", rev = "d323df81bba8aa2335c70c1fb039e5af5e40a98e" }
-dto_bindgen_backend_ts = { git = "https://github.com/triesap/dto_bindgen", rev = "d323df81bba8aa2335c70c1fb039e5af5e40a98e", package = "dto_bindgen_backend_ts" }
-dto_bindgen_core = { git = "https://github.com/triesap/dto_bindgen", rev = "d323df81bba8aa2335c70c1fb039e5af5e40a98e", package = "dto_bindgen_core" }
+dto_bindgen = { version = "0.1.0" }
+dto_bindgen_backend_ts = { version = "0.1.0" }
+dto_bindgen_core = { version = "0.1.0" }
 radroots_core = { path = "../lib/crates/core", version = "0.1.0-alpha.2", default-features = false }
 radroots_authority = { path = "../lib/crates/authority", version = "0.1.0-alpha.2", default-features = false }
 radroots_event_store = { path = "../lib/crates/event_store", version = "0.1.0-alpha.2", default-features = false }
@@ -42,6 +43,8 @@ radroots_nostr = { path = "../lib/crates/nostr", version = "0.1.0-alpha.2", defa
 radroots_nostr_connect = { path = "../lib/crates/nostr_connect", version = "0.1.0-alpha.2", default-features = false }
 radroots_nostr_signer = { path = "../lib/crates/nostr_signer", version = "0.1.0-alpha.2", default-features = false }
 radroots_outbox = { path = "../lib/crates/outbox", version = "0.1.0-alpha.2", default-features = false }
+radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1", version = "0.1.0-alpha.2", default-features = false }
+radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "0.1.0", default-features = false }
 radroots_transport = { path = "../lib/crates/transport", version = "0.1.0-alpha.2", default-features = false }
 radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol", version = "0.1.0-alpha.2", default-features = false }
 radroots_transport_nostr = { path = "../lib/crates/transport_nostr", version = "0.1.0-alpha.2", default-features = false }

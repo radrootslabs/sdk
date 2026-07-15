@@ -1,0 +1,22 @@
+[package]
+name = "radroots_runtime_contract_v1"
+description = "Runtime Contract V1 descriptors for Radroots SDK hosts"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "README"
+
+[features]
+default = ["std", "serde"]
+serde = ["dep:serde", "radroots_protocol_contract_v1/serde"]
+std = ["radroots_protocol_contract_v1/std"]
+
+[dependencies]
+radroots_protocol_contract_v1 = { workspace = true, default-features = false }
+serde = { workspace = true, default-features = false, features = [
+  "alloc",
+  "derive",
+], optional = true }
