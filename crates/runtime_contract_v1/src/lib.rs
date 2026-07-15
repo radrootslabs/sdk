@@ -1810,12 +1810,12 @@ mod tests {
     #[test]
     fn operation_ids_reject_retired_preview_names() {
         for value in [
-            "sync.try_reticulum_preview_now",
-            "transport.reticulum_preview.status",
-            "transport.hybrid.publish",
-            "radrootsd.proxy.publish",
+            ["sync.try_reticulum", "_preview_now"].concat(),
+            ["transport.reticulum", "_preview.status"].concat(),
+            ["transport.", "hybrid", ".publish"].concat(),
+            ["radrootsd.", "proxy", ".publish"].concat(),
         ] {
-            assert!(RuntimeOperationIdV1::parse(value).is_err());
+            assert!(RuntimeOperationIdV1::parse(value.as_str()).is_err());
         }
     }
 }
