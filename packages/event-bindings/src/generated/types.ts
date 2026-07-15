@@ -160,7 +160,7 @@ export type RadrootsOrderEconomicTotals = { subtotal: RadrootsCoreMoney, discoun
 
 export type RadrootsOrderEconomics = { quote_id: string, quote_version: number, pricing_basis: RadrootsOrderPricingBasis, currency: string, items: Array<RadrootsOrderEconomicItem>, discounts: Array<RadrootsOrderEconomicLine>, adjustments: Array<RadrootsOrderEconomicLine>, subtotal: RadrootsCoreMoney, discount_total: RadrootsCoreMoney, adjustment_total: RadrootsCoreMoney, total: RadrootsCoreMoney, };
 
-export type RadrootsOrderEventType = "TradeOrderRequested" | "TradeOrderDecision" | "TradeOrderRevisionProposed" | "TradeOrderRevisionDecision" | "TradeOrderCancelled";
+export type RadrootsOrderEventType = "TradeOrderRequested" | "TradeOrderDecision" | "TradeOrderCancelled";
 
 export type RadrootsOrderInventoryCommitment = { bin_id: string, bin_count: number, };
 
@@ -169,12 +169,6 @@ export type RadrootsOrderItem = { bin_id: string, bin_count: number, };
 export type RadrootsOrderPricingBasis = "listing_event";
 
 export type RadrootsOrderRequest = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsOrderItem>, economics: RadrootsOrderEconomics, };
-
-export type RadrootsOrderRevisionDecision = { revision_id: string, order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, root_event_id: string, prev_event_id: string, decision: RadrootsOrderRevisionOutcome, };
-
-export type RadrootsOrderRevisionOutcome = { decision: "accepted", } | { decision: "declined", reason: string, };
-
-export type RadrootsOrderRevisionProposal = { revision_id: string, order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, root_event_id: string, prev_event_id: string, items: Array<RadrootsOrderItem>, economics: RadrootsOrderEconomics, reason: string, };
 
 export type RadrootsPlot = { d_tag: string, farm: RadrootsFarmRef, name: string, about?: string | null, location?: RadrootsPlotLocation | null, tags?: Array<string> | null, };
 
@@ -221,10 +215,6 @@ export type RadrootsSocialMediaMetadata = { url?: string | null, mime_type?: str
 export type RadrootsSocialMediaThumbnail = { url: string, dimensions?: RadrootsSocialMediaDimensions | null, };
 
 export type RadrootsSocialTarget = { kind: "event", id: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "address", address: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "external", id: string, external_kind: string, hint?: string | null, };
-
-export type RadrootsTradeListingValidateRequest = { listing_event?: RadrootsEventPtr | null, };
-
-export type RadrootsTradeListingValidateResult = { valid: boolean, errors: Array<RadrootsTradeValidationListingError>, };
 
 export type RadrootsTradeValidationListingError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_location_locality", } | { kind: "missing_location_geohash", } | { kind: "invalid_location_geohash", } | { kind: "missing_delivery_method", };
 
