@@ -95,11 +95,6 @@ order = 1
 "social.file_metadata.build_tags" = "social.fileMetadata.buildTags"
 "social.calendar_date_event.build_tags" = "social.calendarDateEvent.buildTags"
 "social.calendar_time_event.build_tags" = "social.calendarTimeEvent.buildTags"
-"order.build_order_request_draft" = "order.buildOrderRequestDraft"
-"order.build_order_decision_draft" = "order.buildOrderDecisionDraft"
-"order.parse_order_request" = "order.parseOrderRequest"
-"order.parse_order_decision" = "order.parseOrderDecision"
-"order.parse_listing_address" = "order.parseListingAddress"
 "trade_validation.validate_listing_event" = "tradeValidation.validateListingEvent"
 
 [shared_types]
@@ -122,21 +117,6 @@ order = 1
 "RadrootsFileMetadata" = "RadrootsFileMetadata"
 "RadrootsCalendarDateEvent" = "RadrootsCalendarDateEvent"
 "RadrootsCalendarTimeEvent" = "RadrootsCalendarTimeEvent"
-"RadrootsOrderEnvelope" = "OrderEnvelope"
-"RadrootsOrderEventType" = "OrderEventType"
-"RadrootsOrderItem" = "OrderItem"
-"RadrootsOrderPricingBasis" = "OrderPricingBasis"
-"RadrootsOrderEconomicLineKind" = "OrderEconomicLineKind"
-"RadrootsOrderEconomicActor" = "OrderEconomicActor"
-"RadrootsOrderEconomicEffect" = "OrderEconomicEffect"
-"RadrootsOrderEconomicItem" = "OrderEconomicItem"
-"RadrootsOrderEconomicLine" = "OrderEconomicLine"
-"RadrootsOrderEconomicTotals" = "OrderEconomicTotals"
-"RadrootsOrderEconomics" = "OrderEconomics"
-"RadrootsOrderRequest" = "OrderRequest"
-"RadrootsOrderInventoryCommitment" = "OrderInventoryCommitment"
-"RadrootsOrderDecisionOutcome" = "OrderDecisionOutcome"
-"RadrootsOrderDecision" = "OrderDecision"
 
 [artifacts]
 models_dir = "src/generated"

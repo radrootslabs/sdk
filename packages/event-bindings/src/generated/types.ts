@@ -140,36 +140,6 @@ export type RadrootsMessageRecipient = { public_key: string, relay_url?: string 
 
 export type RadrootsNip01EventWireDto = { id: string, pubkey: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, extra: { [key: string]: unknown }, };
 
-export type RadrootsOrderCancellation = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, reason: string, };
-
-export type RadrootsOrderDecision = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, decision: RadrootsOrderDecisionOutcome, };
-
-export type RadrootsOrderDecisionOutcome = { decision: "accepted", inventory_commitments: Array<RadrootsOrderInventoryCommitment>, } | { decision: "declined", reason: string, };
-
-export type RadrootsOrderEconomicActor = "buyer" | "seller";
-
-export type RadrootsOrderEconomicEffect = "increase" | "decrease";
-
-export type RadrootsOrderEconomicItem = { bin_id: string, bin_count: number, quantity_amount: string, quantity_unit: RadrootsCoreUnit, unit_price_amount: string, unit_price_currency: string, line_subtotal: RadrootsCoreMoney, };
-
-export type RadrootsOrderEconomicLine = { id: string, kind: RadrootsOrderEconomicLineKind, actor: RadrootsOrderEconomicActor, effect: RadrootsOrderEconomicEffect, amount: RadrootsCoreMoney, reason: string, };
-
-export type RadrootsOrderEconomicLineKind = "listing_discount" | "basket_adjustment" | "revision_adjustment";
-
-export type RadrootsOrderEconomicTotals = { subtotal: RadrootsCoreMoney, discount_total: RadrootsCoreMoney, adjustment_total: RadrootsCoreMoney, total: RadrootsCoreMoney, };
-
-export type RadrootsOrderEconomics = { quote_id: string, quote_version: number, pricing_basis: RadrootsOrderPricingBasis, currency: string, items: Array<RadrootsOrderEconomicItem>, discounts: Array<RadrootsOrderEconomicLine>, adjustments: Array<RadrootsOrderEconomicLine>, subtotal: RadrootsCoreMoney, discount_total: RadrootsCoreMoney, adjustment_total: RadrootsCoreMoney, total: RadrootsCoreMoney, };
-
-export type RadrootsOrderEventType = "TradeOrderRequested" | "TradeOrderDecision" | "TradeOrderCancelled";
-
-export type RadrootsOrderInventoryCommitment = { bin_id: string, bin_count: number, };
-
-export type RadrootsOrderItem = { bin_id: string, bin_count: number, };
-
-export type RadrootsOrderPricingBasis = "listing_event";
-
-export type RadrootsOrderRequest = { order_id: string, listing_addr: string, buyer_pubkey: string, seller_pubkey: string, items: Array<RadrootsOrderItem>, economics: RadrootsOrderEconomics, };
-
 export type RadrootsPlot = { d_tag: string, farm: RadrootsFarmRef, name: string, about?: string | null, location?: RadrootsPlotLocation | null, tags?: Array<string> | null, };
 
 export type RadrootsPlotLocation = { primary?: string | null, city?: string | null, region?: string | null, country?: string | null, gcs: RadrootsGcsLocation, };
