@@ -123,8 +123,6 @@ runtime_operation_ids! {
     TradePrivateArtifactOpen => "trade.private_artifact.open",
     TradePrivateArtifactDelete => "trade.private_artifact.delete",
     ValidationStatus => "validation.status",
-    ValidationReceiptGet => "validation.receipt.get",
-    ValidationReceiptVerify => "validation.receipt.verify",
     SyncStatus => "sync.status",
     SyncPull => "sync.pull",
     SyncPush => "sync.push",
@@ -794,20 +792,6 @@ pub const RUNTIME_OPERATION_DESCRIPTORS_V1: &[RuntimeOperationDescriptorV1] = &[
         ProjectionEffectV1::ReadsProjection,
     ),
     read(
-        RuntimeOperationIdV1::ValidationReceiptGet,
-        OperationRiskV1::Low,
-        TransportCapabilityRouteV1::local(),
-        PrivacyEffectV1::None,
-        ProjectionEffectV1::ReadsProjection,
-    ),
-    read(
-        RuntimeOperationIdV1::ValidationReceiptVerify,
-        OperationRiskV1::Medium,
-        TransportCapabilityRouteV1::local(),
-        PrivacyEffectV1::None,
-        ProjectionEffectV1::ReadsProjection,
-    ),
-    read(
         RuntimeOperationIdV1::SyncStatus,
         OperationRiskV1::Low,
         TransportCapabilityRouteV1::diagnostics(),
@@ -1133,7 +1117,6 @@ runtime_error_codes! {
     PrivateDataUnavailable => "private_data_unavailable",
     ValidationPending => "validation_pending",
     ValidationExpired => "validation_expired",
-    ValidationReceiptConflict => "validation_receipt_conflict",
     ValidatorSetInvalid => "validator_set_invalid",
     MediaPolicyDenied => "media_policy_denied",
     BackupInvalid => "backup_invalid",
@@ -1164,7 +1147,6 @@ pub enum RuntimeErrorClassV1 {
     Privacy,
     Security,
     Maintenance,
-    ValidationReceipt,
     Internal,
 }
 
@@ -1413,22 +1395,17 @@ pub const RUNTIME_ERROR_DESCRIPTORS_V1: &[RuntimeErrorDescriptorV1] = &[
     ),
     error(
         RuntimeErrorCodeV1::ValidationPending,
-        RuntimeErrorClassV1::ValidationReceipt,
+        RuntimeErrorClassV1::Validation,
         true,
     ),
     error(
         RuntimeErrorCodeV1::ValidationExpired,
-        RuntimeErrorClassV1::ValidationReceipt,
-        false,
-    ),
-    error(
-        RuntimeErrorCodeV1::ValidationReceiptConflict,
-        RuntimeErrorClassV1::ValidationReceipt,
+        RuntimeErrorClassV1::Validation,
         false,
     ),
     error(
         RuntimeErrorCodeV1::ValidatorSetInvalid,
-        RuntimeErrorClassV1::ValidationReceipt,
+        RuntimeErrorClassV1::Validation,
         false,
     ),
     error(
