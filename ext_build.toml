@@ -1,0 +1,21 @@
+schema_version = 2
+
+[defaults]
+create_directories = true
+create_by_name_symlink = true
+node_modules = "repo"
+
+[tools.cargo]
+enabled = true
+workload_lock = "exclusive_cargo"
+
+[tools.sccache]
+enabled = true
+rustc_wrapper = "off"
+
+[tools.pnpm]
+enabled = true
+store = "external"
+cache = "external"
+node_modules = "repo"
+require_package_manager_field = true
