@@ -148,8 +148,6 @@ export type RadrootsPlotRef = { pubkey: string, d_tag: string, };
 
 export type RadrootsPost = { content: string, farm?: RadrootsSocialFarmAnchor | null, address_refs?: Array<RadrootsSocialTarget> | null, location?: RadrootsSocialLocation | null, topics?: Array<string> | null, quote_refs?: Array<RadrootsSocialTarget> | null, media?: Array<RadrootsSocialMediaMetadata> | null, };
 
-export type RadrootsProfile = { name: string, display_name?: string | null, nip05?: string | null, about?: string | null, website?: string | null, picture?: string | null, banner?: string | null, lud06?: string | null, lud16?: string | null, bot?: string | null, };
-
 export type RadrootsProfileType = "individual" | "farm" | "coop" | "any" | "radrootsd";
 
 export type RadrootsReaction = { target: RadrootsSocialTarget, content: string, };

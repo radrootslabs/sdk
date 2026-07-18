@@ -15,7 +15,7 @@ serde = ["dep:serde", "radroots_protocol_contract_v1/serde"]
 std = ["radroots_protocol_contract_v1/std"]
 
 [dependencies]
-radroots_protocol_contract_v1 = { path = "../../../lib/crates/protocol_contract_v1", version = "0.1.0-alpha.2", default-features = false }
+radroots_protocol_contract_v1 = { path = "../../../lib/crates/protocol_contract_v1", version = "=1.0.0-alpha.1", default-features = false }
 serde = { workspace = true, default-features = false, features = [
   "alloc",
   "derive",

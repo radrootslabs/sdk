@@ -13,7 +13,6 @@ stage = "next"
 order = 2
 
 [operations]
-"profile.build_draft" = "profile.buildDraft"
 "farm.build_draft" = "farm.buildDraft"
 "listing.build_tags" = "listing.buildTags"
 "listing.build_draft" = "listing.buildDraft"
@@ -23,8 +22,6 @@ order = 2
 "social.reaction.build_tags" = "social.reaction.buildTags"
 "social.article.build_tags" = "social.article.buildTags"
 "social.file_metadata.build_tags" = "social.fileMetadata.buildTags"
-"social.calendar_date_event.build_tags" = "social.calendarDateEvent.buildTags"
-"social.calendar_time_event.build_tags" = "social.calendarTimeEvent.buildTags"
 "trade_validation.validate_listing_event" = "tradeValidation.validateListingEvent"
 
 [shared_types]
@@ -37,7 +34,6 @@ order = 2
 "RadrootsEventRef" = "RadrootsEventRef"
 "RadrootsEventPtr" = "RadrootsEventPtr"
 "RadrootsListingAddress" = "ListingAddress"
-"RadrootsProfile" = "RadrootsProfile"
 "RadrootsFarm" = "RadrootsFarm"
 "RadrootsListing" = "RadrootsListing"
 "RadrootsPost" = "RadrootsPost"
@@ -45,5 +41,3 @@ order = 2
 "RadrootsReaction" = "RadrootsReaction"
 "RadrootsArticle" = "RadrootsArticle"
 "RadrootsFileMetadata" = "RadrootsFileMetadata"
-"RadrootsCalendarDateEvent" = "RadrootsCalendarDateEvent"
-"RadrootsCalendarTimeEvent" = "RadrootsCalendarTimeEvent"

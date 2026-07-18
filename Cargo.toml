@@ -29,35 +29,35 @@ readme = "README"
 dto_bindgen = { version = "0.1.0" }
 dto_bindgen_backend_ts = { version = "0.1.0" }
 dto_bindgen_core = { version = "0.1.0" }
-radroots_core = { path = "../lib/crates/core", version = "0.1.0-alpha.2", default-features = false }
-radroots_authority = { path = "../lib/crates/authority", version = "0.1.0-alpha.2", default-features = false }
-radroots_event_store = { path = "../lib/crates/event_store", version = "0.1.0-alpha.2", default-features = false }
-radroots_event = { path = "../lib/crates/event", version = "0.1.0-alpha.2", default-features = false }
-radroots_event_codec = { path = "../lib/crates/event_codec", version = "0.1.0-alpha.2", default-features = false }
-radroots_event_index = { path = "../lib/crates/event_index", version = "0.1.0-alpha.2", default-features = false }
-radroots_geocoder = { path = "../lib/crates/geocoder", version = "0.1.0-alpha.2" }
-radroots_identity = { path = "../lib/crates/identity", version = "0.1.0-alpha.2", default-features = false, features = [
+radroots_core = { path = "../lib/crates/core", version = "=1.0.0-alpha.1", default-features = false }
+radroots_authority = { path = "../lib/crates/authority", version = "=1.0.0-alpha.1", default-features = false }
+radroots_event_store = { path = "../lib/crates/event_store", version = "=1.0.0-alpha.1", default-features = false }
+radroots_event = { path = "../lib/crates/event", version = "=1.0.0-alpha.1", default-features = false }
+radroots_event_codec = { path = "../lib/crates/event_codec", version = "=1.0.0-alpha.1", default-features = false }
+radroots_event_index = { path = "../lib/crates/event_index", version = "=1.0.0-alpha.1", default-features = false }
+radroots_geocoder = { path = "../lib/crates/geocoder", version = "=1.0.0-alpha.1" }
+radroots_identity = { path = "../lib/crates/identity", version = "=1.0.0-alpha.1", default-features = false, features = [
   "std",
 ] }
-radroots_nostr = { path = "../lib/crates/nostr", version = "0.1.0-alpha.2", default-features = false }
-radroots_nostr_connect = { path = "../lib/crates/nostr_connect", version = "0.1.0-alpha.2", default-features = false }
-radroots_nostr_signer = { path = "../lib/crates/nostr_signer", version = "0.1.0-alpha.2", default-features = false }
-radroots_outbox = { path = "../lib/crates/outbox", version = "0.1.0-alpha.2", default-features = false }
-radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1", version = "0.1.0-alpha.2", default-features = false }
-radroots_protected_store = { path = "../lib/crates/protected_store", version = "0.1.0-alpha.2", default-features = false }
+radroots_nostr = { path = "../lib/crates/nostr", version = "=1.0.0-alpha.1", default-features = false }
+radroots_nostr_connect = { path = "../lib/crates/nostr_connect", version = "=1.0.0-alpha.1", default-features = false }
+radroots_nostr_signer = { path = "../lib/crates/nostr_signer", version = "=1.0.0-alpha.1", default-features = false }
+radroots_outbox = { path = "../lib/crates/outbox", version = "=1.0.0-alpha.1", default-features = false }
+radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1", version = "=1.0.0-alpha.1", default-features = false }
+radroots_protected_store = { path = "../lib/crates/protected_store", version = "=1.0.0-alpha.1", default-features = false }
 radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "0.1.0", default-features = false }
-radroots_secret_vault = { path = "../lib/crates/secret_vault", version = "0.1.0-alpha.2", default-features = false }
-radroots_transport = { path = "../lib/crates/transport", version = "0.1.0-alpha.2", default-features = false }
-radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol", version = "0.1.0-alpha.2", default-features = false }
-radroots_transport_nostr = { path = "../lib/crates/transport_nostr", version = "0.1.0-alpha.2", default-features = false }
-radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum", version = "0.1.0-alpha.2", default-features = false }
-radroots_replica_store = { path = "../lib/crates/replica_store", version = "0.1.0-alpha.2", default-features = false }
-radroots_replica_schema = { path = "../lib/crates/replica_schema", version = "0.1.0-alpha.2", default-features = false }
-radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "0.1.0-alpha.2", default-features = false }
-radroots_runtime_paths = { path = "../lib/crates/runtime_paths", version = "0.1.0-alpha.2", default-features = false }
+radroots_secret_vault = { path = "../lib/crates/secret_vault", version = "=1.0.0-alpha.1", default-features = false }
+radroots_transport = { path = "../lib/crates/transport", version = "=1.0.0-alpha.1", default-features = false }
+radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol", version = "=1.0.0-alpha.1", default-features = false }
+radroots_transport_nostr = { path = "../lib/crates/transport_nostr", version = "=1.0.0-alpha.1", default-features = false }
+radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum", version = "=1.0.0-alpha.1", default-features = false }
+radroots_replica_store = { path = "../lib/crates/replica_store", version = "=1.0.0-alpha.1", default-features = false }
+radroots_replica_schema = { path = "../lib/crates/replica_schema", version = "=1.0.0-alpha.1", default-features = false }
+radroots_replica_sync = { path = "../lib/crates/replica_sync", version = "=1.0.0-alpha.1", default-features = false }
+radroots_runtime_paths = { path = "../lib/crates/runtime_paths", version = "=1.0.0-alpha.1", default-features = false }
 radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "0.1.0-alpha.2" }
-radroots_sql_core = { path = "../lib/crates/sql_core", version = "0.1.0-alpha.2", default-features = false }
-radroots_trade = { path = "../lib/crates/trade", version = "0.1.0-alpha.2", default-features = false, features = [
+radroots_sql_core = { path = "../lib/crates/sql_core", version = "=1.0.0-alpha.1", default-features = false }
+radroots_trade = { path = "../lib/crates/trade", version = "=1.0.0-alpha.1", default-features = false, features = [
   "serde_json",
   "std",
 ] }

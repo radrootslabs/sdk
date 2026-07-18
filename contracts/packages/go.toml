@@ -13,7 +13,6 @@ stage = "deferred"
 order = 3
 
 [operations]
-"profile.build_draft" = "profile.BuildDraft"
 "farm.build_draft" = "farm.BuildDraft"
 "listing.build_tags" = "listing.BuildTags"
 "listing.build_draft" = "listing.BuildDraft"
@@ -23,8 +22,6 @@ order = 3
 "social.reaction.build_tags" = "social.ReactionBuildTags"
 "social.article.build_tags" = "social.ArticleBuildTags"
 "social.file_metadata.build_tags" = "social.FileMetadataBuildTags"
-"social.calendar_date_event.build_tags" = "social.CalendarDateEventBuildTags"
-"social.calendar_time_event.build_tags" = "social.CalendarTimeEventBuildTags"
 "trade_validation.validate_listing_event" = "tradevalidation.ValidateListingEvent"
 
 [shared_types]
@@ -37,7 +34,6 @@ order = 3
 "RadrootsEventRef" = "RadrootsEventRef"
 "RadrootsEventPtr" = "RadrootsEventPtr"
 "RadrootsListingAddress" = "ListingAddress"
-"RadrootsProfile" = "RadrootsProfile"
 "RadrootsFarm" = "RadrootsFarm"
 "RadrootsListing" = "RadrootsListing"
 "RadrootsPost" = "RadrootsPost"
@@ -45,5 +41,3 @@ order = 3
 "RadrootsReaction" = "RadrootsReaction"
 "RadrootsArticle" = "RadrootsArticle"
 "RadrootsFileMetadata" = "RadrootsFileMetadata"
-"RadrootsCalendarDateEvent" = "RadrootsCalendarDateEvent"
-"RadrootsCalendarTimeEvent" = "RadrootsCalendarTimeEvent"
