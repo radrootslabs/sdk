@@ -1834,6 +1834,7 @@ name = "radroots_event_codec_wasm"
 version = "0.1.0-alpha.2"
 dependencies = [
  "nostr",
+ "radroots_blossom",
  "radroots_core",
  "radroots_event",
  "radroots_event_codec",
@@ -1864,7 +1865,7 @@ version = "1.0.0-alpha.1"
 dependencies = [
  "hex",
  "radroots_event",
- "radroots_nostr",
+ "radroots_event_codec",
  "radroots_transport",
  "serde",
  "serde_json",

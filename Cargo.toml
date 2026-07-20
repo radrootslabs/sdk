@@ -29,8 +29,9 @@ readme = "README"
 dto_bindgen = { version = "0.1.0" }
 dto_bindgen_backend_ts = { version = "0.1.0" }
 dto_bindgen_core = { version = "0.1.0" }
-radroots_core = { path = "../lib/crates/core", version = "=1.0.0-alpha.1", default-features = false }
 radroots_authority = { path = "../lib/crates/authority", version = "=1.0.0-alpha.1", default-features = false }
+radroots_blossom = { path = "../lib/crates/blossom", version = "=1.0.0-alpha.1", default-features = false }
+radroots_core = { path = "../lib/crates/core", version = "=1.0.0-alpha.1", default-features = false }
 radroots_event_store = { path = "../lib/crates/event_store", version = "=1.0.0-alpha.1", default-features = false }
 radroots_event = { path = "../lib/crates/event", version = "=1.0.0-alpha.1", default-features = false }
 radroots_event_codec = { path = "../lib/crates/event_codec", version = "=1.0.0-alpha.1", default-features = false }

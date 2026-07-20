@@ -104,7 +104,7 @@ export const KIND_ACCOUNT_CLAIM = 30380;
 
 export const KIND_APP_DATA = 30078;
 
-export const KIND_LISTING = 30402;
+export const KIND_CLASSIFIED_LISTING = 30402;
 
 export const KIND_APPLICATION_HANDLER = 31990;
 

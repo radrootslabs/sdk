@@ -14,8 +14,6 @@ export type RadrootsAddressableRef = { kind: number, pubkey: string, d_tag: stri
 
 export type RadrootsAppData = { d_tag: string, content: string, };
 
-export type RadrootsComment = { root: RadrootsSocialTarget, parent: RadrootsSocialTarget, content: string, };
-
 export type RadrootsCommercialDomain = "trade:listing";
 
 export type RadrootsContributionAttestation = { schema: string, schema_version: number, contributor_pubkey: string, contribution_type: string, subject_refs: Array<RadrootsEventRef>, summary: string, evidence_refs: Array<RadrootsEventRef>, };
@@ -108,28 +106,6 @@ export type RadrootsListEntry = { tag: string, values: Array<string>, };
 
 export type RadrootsListSet = { d_tag: string, content: string, entries: Array<RadrootsListEntry>, title?: string | null, description?: string | null, image?: string | null, };
 
-export type RadrootsListing = { d_tag: string, published_at?: string | null, farm?: RadrootsFarmRef, product: RadrootsListingProduct, primary_bin_id: string, bins: Array<RadrootsListingBin>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: string | null, availability?: RadrootsListingAvailability | null, delivery_method?: RadrootsListingDeliveryMethod | null, location?: RadrootsListingPublicLocation | null, images?: Array<RadrootsListingImage> | null, };
-
-export type RadrootsListingAvailability = { kind: "window", amount: { start?: string | null, end?: string | null, }, } | { kind: "status", amount: { status: RadrootsListingStatus, }, };
-
-export type RadrootsListingBin = { bin_id: string, quantity: RadrootsCoreQuantity, price_per_canonical_unit: RadrootsCoreQuantityPrice, display_amount?: string | null, display_unit?: RadrootsCoreUnit | null, display_label?: string | null, display_price?: RadrootsCoreMoney | null, display_price_unit?: RadrootsCoreUnit | null, };
-
-export type RadrootsListingDeliveryMethod = { kind: "pickup", } | { kind: "local_delivery", } | { kind: "shipping", } | { kind: "other", amount: { method: string, }, };
-
-export type RadrootsListingImage = { url: string, size?: RadrootsListingImageSize | null, };
-
-export type RadrootsListingImageSize = { w: number, h: number, };
-
-export type RadrootsListingParseError = { InvalidKind: number, } | { MissingTag: string, } | { InvalidTag: string, } | { InvalidNumber: string, } | "InvalidUnit" | "InvalidCurrency" | { InvalidJson: string, } | { InvalidDiscount: string, };
-
-export type RadrootsListingProduct = { key: string, title: string, category: string, summary?: string | null, process?: string | null, lot?: string | null, location?: string | null, profile?: string | null, year?: string | null, };
-
-export type RadrootsListingProductTagKeys = readonly ["key", "title", "category", "summary", "process", "lot", "location", "profile", "year"];
-
-export type RadrootsListingPublicLocation = { primary: string, city?: string | null, region?: string | null, country?: string | null, geohash: string, };
-
-export type RadrootsListingStatus = { kind: "active", } | { kind: "sold", } | { kind: "other", amount: { value: string, }, };
-
 export type RadrootsMessage = { recipients: Array<RadrootsMessageRecipient>, content: string, reply_to?: RadrootsEventPtr | null, subject?: string | null, };
 
 export type RadrootsMessageFile = { recipients: Array<RadrootsMessageRecipient>, file_url: string, reply_to?: RadrootsEventPtr | null, subject?: string | null, file_type: string, encryption_algorithm: string, decryption_key: string, decryption_nonce: string, encrypted_hash: string, original_hash?: string | null, size?: string | null, dimensions?: RadrootsMessageFileDimensions | null, blurhash?: string | null, thumb?: string | null, fallbacks: Array<string>, };
@@ -139,6 +115,30 @@ export type RadrootsMessageFileDimensions = { w: number, h: number, };
 export type RadrootsMessageRecipient = { public_key: string, relay_url?: string | null, };
 
 export type RadrootsNip01EventWireDto = { id: string, pubkey: string, created_at: number, kind: number, tags: Array<Array<string>>, content: string, sig: string, extra: { [key: string]: unknown }, };
+
+export type RadrootsOperationalListing = { d_tag: string, published_at?: string | null, farm?: RadrootsFarmRef, product: RadrootsOperationalListingProduct, primary_bin_id: string, bins: Array<RadrootsOperationalListingBin>, resource_area?: RadrootsResourceAreaRef | null, plot?: RadrootsPlotRef | null, discounts?: Array<RadrootsCoreDiscount> | null, inventory_available?: string | null, availability?: RadrootsOperationalListingAvailability | null, delivery_method?: RadrootsOperationalListingDeliveryMethod | null, location?: RadrootsOperationalListingPublicLocation | null, images?: Array<RadrootsOperationalListingImage> | null, };
+
+export type RadrootsOperationalListingAvailability = { kind: "window", amount: { start?: string | null, end?: string | null, }, } | { kind: "status", amount: { status: RadrootsOperationalListingStatus, }, };
+
+export type RadrootsOperationalListingBin = { bin_id: string, quantity: RadrootsCoreQuantity, price_per_canonical_unit: RadrootsCoreQuantityPrice, display_amount?: string | null, display_unit?: RadrootsCoreUnit | null, display_label?: string | null, display_price?: RadrootsCoreMoney | null, display_price_unit?: RadrootsCoreUnit | null, };
+
+export type RadrootsOperationalListingDeliveryMethod = { kind: "pickup", } | { kind: "local_delivery", } | { kind: "shipping", } | { kind: "other", amount: { method: string, }, };
+
+export type RadrootsOperationalListingImage = { url: string, size?: RadrootsOperationalListingImageSize | null, };
+
+export type RadrootsOperationalListingImageSize = { w: number, h: number, };
+
+export type RadrootsOperationalListingParseError = { InvalidKind: number, } | { MissingTag: string, } | { InvalidTag: string, } | { InvalidNumber: string, } | "InvalidUnit" | "InvalidCurrency" | { InvalidJson: string, } | { InvalidDiscount: string, };
+
+export type RadrootsOperationalListingProduct = { key: string, title: string, category: string, summary?: string | null, process?: string | null, lot?: string | null, location?: string | null, profile?: string | null, year?: string | null, };
+
+export type RadrootsOperationalListingProductTagKeys = readonly ["key", "title", "category", "summary", "process", "lot", "location", "profile", "year"];
+
+export type RadrootsOperationalListingPublicLocation = { primary: string, city?: string | null, region?: string | null, country?: string | null, geohash: string, };
+
+export type RadrootsOperationalListingStatus = { kind: "active", } | { kind: "sold", } | { kind: "other", amount: { value: string, }, };
+
+export type RadrootsOperationalListingValidationError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "invalid_profile", } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsOperationalListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_location_locality", } | { kind: "missing_location_geohash", } | { kind: "invalid_location_geohash", } | { kind: "missing_delivery_method", };
 
 export type RadrootsPlot = { d_tag: string, farm: RadrootsFarmRef, name: string, about?: string | null, location?: RadrootsPlotLocation | null, tags?: Array<string> | null, };
 
@@ -183,8 +183,6 @@ export type RadrootsSocialMediaMetadata = { url?: string | null, mime_type?: str
 export type RadrootsSocialMediaThumbnail = { url: string, dimensions?: RadrootsSocialMediaDimensions | null, };
 
 export type RadrootsSocialTarget = { kind: "event", id: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "address", address: string, author?: string | null, event_kind?: number | null, relays?: Array<string> | null, } | { kind: "external", id: string, external_kind: string, hint?: string | null, };
-
-export type RadrootsTradeValidationListingError = { kind: "invalid_kind", amount: { kind: number, }, } | { kind: "missing_listing_id", } | { kind: "listing_event_not_found", amount: { listing_addr: string, }, } | { kind: "listing_event_fetch_failed", amount: { listing_addr: string, }, } | { kind: "parse_error", amount: { error: RadrootsListingParseError, }, } | { kind: "invalid_seller", } | { kind: "missing_farm_profile", } | { kind: "missing_farm_record", } | { kind: "missing_title", } | { kind: "missing_description", } | { kind: "missing_product_type", } | { kind: "missing_bins", } | { kind: "missing_primary_bin", } | { kind: "invalid_bin", } | { kind: "missing_price", } | { kind: "invalid_price", } | { kind: "missing_inventory", } | { kind: "invalid_inventory", } | { kind: "missing_availability", } | { kind: "missing_location", } | { kind: "missing_location_locality", } | { kind: "missing_location_geohash", } | { kind: "invalid_location_geohash", } | { kind: "missing_delivery_method", };
 
 export type RadrootsVerifiedSignedEventDto = { state: RadrootsVerifiedSignedEventVerificationStateDto, signed_event: RadrootsSignedEventDto, };
 
