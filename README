@@ -1,4 +1,4 @@
-# radroots_sdk
+# radroots-sdk
 
 This is the README for `sdk` which contains the Rad Roots SDK, including Rust runtime
 APIs, generated bindings, FFI layers, and package surfaces.
