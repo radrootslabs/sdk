@@ -9,6 +9,7 @@ members = [
   "crates/replica_schema_bindings",
   "crates/replica_sync_wasm",
   "crates/runtime_contract_v1",
+  "crates/radroots",
   "crates/sdk",
   "crates/sql_wasm_runtime",
   "crates/trade_bindings",
