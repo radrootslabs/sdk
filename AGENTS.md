@@ -68,7 +68,7 @@ overrides this file for its subtree.
   native Rust module layout.
 - During migration, every package remains non-publishable until its
   package-realistic release gates pass and publication is explicitly
-  authorized.
+  authorized. Follow `docs/implementation/PUBLICATION_FREEZE.md`.
 
 ## Commits, deviations, and irreversible actions
 

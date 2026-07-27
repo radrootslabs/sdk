@@ -1,0 +1,5 @@
+[publication]
+frozen = true
+registry = "crates-io"
+final_enablement_step = 305
+approved_packages = ["radroots-sdk", "radroots"]
