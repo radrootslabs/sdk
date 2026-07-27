@@ -24,7 +24,7 @@ overrides this file for its subtree.
 - This repository owns the Radroots SDK workspace, including Rust SDK APIs,
   generated language bindings, FFI layers, WebAssembly surfaces, package
   metadata, and SDK validation flows.
-- It owns `radroots-sdk` and the ordinary-user `radroots` facade. The 17
+- It owns `radroots_sdk` and the ordinary-user `radroots` facade. The 17
   lower release-v1 packages remain owned by the standalone
   `radrootslabs/lib` repository.
 - Do not make this repository responsible for downstream apps, private
@@ -54,11 +54,11 @@ overrides this file for its subtree.
 
 ## Architecture and generation rules
 
-- `radroots-sdk` is the advanced front door. It owns host-neutral client
+- `radroots_sdk` is the advanced front door. It owns host-neutral client
   semantics, not global runtimes, hidden workers, logging installation, UI
   state, Studio databases, or process lifecycle.
 - `radroots` is a curated ordinary-user facade. It has no public `sdk`
-  namespace and does not wildcard-reexport `radroots-sdk`.
+  namespace and does not wildcard-reexport `radroots_sdk`.
 - Cross-repository dependencies on the lower package family use registry
   versions in release candidates, never production sibling paths or Git
   overrides.

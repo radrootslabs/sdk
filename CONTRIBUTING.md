@@ -9,7 +9,7 @@ editing, read these files in order:
 4. the affected manifests, implementation, contracts, generators, and tests
 
 The release-v1 architecture identifier is `radroots.crates.release.v1`. This
-repository owns `radroots-sdk` and the ordinary-user `radroots` facade; the
+repository owns `radroots_sdk` and the ordinary-user `radroots` facade; the
 standalone core-library repository owns the other 17 public packages.
 
 ## Workflow

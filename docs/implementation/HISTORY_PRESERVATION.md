@@ -2,7 +2,7 @@
 
 Step 015 is satisfied under `RCRV1-DEV-001` without importing or combining
 repository history. This repository remains the independent source authority
-for `radroots-sdk`, the new `radroots` facade, bindings, and SDK tooling.
+for `radroots_sdk`, the new `radroots` facade, bindings, and SDK tooling.
 
 ## Verified checkpoint
 
