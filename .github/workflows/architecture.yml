@@ -1,0 +1,53 @@
+name: Architecture
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: architecture-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  architecture:
+    name: architecture
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: sdk
+    steps:
+      - name: Check out SDK source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: sdk
+          persist-credentials: false
+
+      - name: Check out coordinated library baseline
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: radrootslabs/lib
+          ref: bb9832fa4c33f68b4262140599c111abb5d5480d
+          path: lib
+          persist-credentials: false
+
+      - name: Restore Cargo download cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: ${{ runner.os }}-architecture-${{ hashFiles('sdk/Cargo.lock', 'sdk/rust-toolchain.toml', 'lib/Cargo.lock', 'lib/rust-toolchain.toml') }}
+
+      - name: Install the governed Rust toolchain
+        run: rustup toolchain install 1.97.1 --profile minimal --component llvm-tools-preview --target wasm32-unknown-unknown
+
+      - name: Validate crates-release architecture
+        run: cargo run --locked -p radroots_sdk_xtask -- architecture-ci
