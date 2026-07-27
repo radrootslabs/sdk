@@ -1,2 +1,33 @@
 [alias]
 xtask = "run -p radroots_sdk_xtask --"
+
+# Migration-only local development overrides. Release manifests contain only
+# registry identities; package-realistic checks run extracted crates without
+# this repository configuration.
+[patch.crates-io]
+radroots_authority = { path = "../lib/crates/authority" }
+radroots-blossom = { path = "../lib/crates/blossom" }
+radroots-core = { path = "../lib/crates/core" }
+radroots_event_store = { path = "../lib/crates/event_store" }
+radroots-event = { path = "../lib/crates/event" }
+radroots-event-codec = { path = "../lib/crates/event_codec" }
+radroots_event_index = { path = "../lib/crates/event_index" }
+radroots_geocoder = { path = "../lib/crates/geocoder" }
+radroots-identity = { path = "../lib/crates/identity" }
+radroots-nostr = { path = "../lib/crates/nostr" }
+radroots-nostr-connect = { path = "../lib/crates/nostr_connect" }
+radroots_nostr_signer = { path = "../lib/crates/nostr_signer" }
+radroots_outbox = { path = "../lib/crates/outbox" }
+radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1" }
+radroots_protected_store = { path = "../lib/crates/protected_store" }
+radroots_secret_vault = { path = "../lib/crates/secret_vault" }
+radroots-transport = { path = "../lib/crates/transport" }
+radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol" }
+radroots-transport-nostr = { path = "../lib/crates/transport_nostr" }
+radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum" }
+radroots_replica_store = { path = "../lib/crates/replica_store" }
+radroots_replica_schema = { path = "../lib/crates/replica_schema" }
+radroots_replica_sync = { path = "../lib/crates/replica_sync" }
+radroots_runtime_paths = { path = "../lib/crates/runtime_paths" }
+radroots_sql_core = { path = "../lib/crates/sql_core" }
+radroots-trade = { path = "../lib/crates/trade" }
