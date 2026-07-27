@@ -2,4 +2,64 @@
 frozen = true
 registry = "crates-io"
 final_enablement_step = 305
-approved_packages = ["radroots-sdk", "radroots"]
+spec_id = "radroots.crates.release.v1"
+approved_packages = [
+  "radroots-core",
+  "radroots-identity",
+  "radroots-blossom",
+  "radroots-protocol",
+  "radroots-event",
+  "radroots-event-codec",
+  "radroots-trade",
+  "radroots-signing",
+  "radroots-transport",
+  "radroots-nostr",
+  "radroots-nostr-connect",
+  "radroots-secrets",
+  "radroots-storage",
+  "radroots-storage-sqlite",
+  "radroots-transport-nostr",
+  "radroots-sync",
+  "radroots-geonames",
+  "radroots-sdk",
+  "radroots",
+]
+local_packages = ["radroots-sdk", "radroots"]
+external_packages = [
+  "radroots-core",
+  "radroots-identity",
+  "radroots-blossom",
+  "radroots-protocol",
+  "radroots-event",
+  "radroots-event-codec",
+  "radroots-trade",
+  "radroots-signing",
+  "radroots-transport",
+  "radroots-nostr",
+  "radroots-nostr-connect",
+  "radroots-secrets",
+  "radroots-storage",
+  "radroots-storage-sqlite",
+  "radroots-transport-nostr",
+  "radroots-sync",
+  "radroots-geonames",
+]
+
+[workspace_classification]
+private = ["radroots_runtime_contract_v1", "radroots_sdk"]
+build_codegen = [
+  "radroots_core_bindings",
+  "radroots_event_bindings",
+  "radroots_event_codec_wasm",
+  "radroots_event_index_bindings",
+  "radroots_identity_bindings",
+  "radroots_replica_schema_bindings",
+  "radroots_replica_store_wasm",
+  "radroots_replica_sync_wasm",
+  "radroots_sdk_sql_wasm_runtime",
+  "radroots_sdk_xtask",
+  "radroots_trade_bindings",
+]
+test_support = []
+preview = []
+retired = []
