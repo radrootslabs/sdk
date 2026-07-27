@@ -2357,6 +2357,7 @@ dependencies = [
  "radroots_trade_bindings",
  "serde",
  "serde_json",
+ "syn",
  "tar",
  "tempfile",
  "toml",
