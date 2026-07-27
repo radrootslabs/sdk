@@ -9,15 +9,14 @@ resolution. It added 12 missing transitive package records, added the new
 `radroots` workspace package, and refreshed dependency lists without upgrading
 existing locked package versions. The resulting checksum is
 `422787033afa12d00be7a402f6772bfed194ef420320189b517ca151765eae9c`.
-Repeated locked architecture tests leave it unchanged.
 
-The repaired lock lets `cargo test --workspace --locked` reach compilation. It
-currently stops in the private preview wrapper `radroots_replica_sync_wasm`:
-that crate imports `RadrootsReplicaIngestOutcome` without enabling the
-`radroots_replica_sync/legacy-ingest` feature that gates the type. This is a
-source/feature boundary failure, not lockfile drift, and remains owned by a
-later crate-surface checkpoint. It must not be described as a green workspace
-lane until repaired or retired by the final architecture.
+Step 020 repaired the private preview/test feature boundary by explicitly
+enabling `radroots_replica_sync/legacy-ingest` only for the existing wrapper and
+SDK development test that consume that gated API. Cargo refreshed only the
+local package dependency list; no package version changed. The resulting
+checksum is
+`246de979d4b2b249182860c4b0adc37fc90c11143c3a279c49201227501d84d9`.
+The full locked workspace check, test, Clippy, and rustdoc lanes now pass.
 
 Dependency changes must use repository-owned extbuild commands, preserve
 `--locked` zero-diff validation, and update this evidence when the resolved

@@ -2173,6 +2173,7 @@ dependencies = [
 name = "radroots_replica_sync"
 version = "1.0.0-alpha.1"
 dependencies = [
+ "base64 0.22.1",
  "hex",
  "radroots_core",
  "radroots_event",
@@ -2183,6 +2184,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "uuid",
 ]
 
 [[package]]
