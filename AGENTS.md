@@ -15,7 +15,9 @@ overrides this file for its subtree.
 - Current source and tests are implementation evidence. They do not silently
   override `radroots.crates.release.v1`.
 - Record any evidence-based plan deviation in
-  `docs/implementation/DEVIATIONS.md` before proceeding.
+  `docs/implementation/deviations.toml`, following
+  `docs/implementation/DEVIATIONS.md`, before proceeding. Validate it with
+  `cargo xtask architecture`.
 
 ## Repository operating model
 
@@ -77,6 +79,7 @@ overrides this file for its subtree.
   body and `- ` bullets for notable changes and validation.
 - If repository evidence proves a planned step obsolete or unsafe, record the
   evidence, affected specification anchor, disposition, and validation in
+  `docs/implementation/deviations.toml`, following
   `docs/implementation/DEVIATIONS.md`. A normative change also requires an
   approved decision record.
 - Do not publish crates or packages, create release tags, change registry
