@@ -57,3 +57,60 @@ verification = [
 unresolved_risk = "The facade remains non-publishable until the package-realistic Step 305 enablement gate."
 normative_architecture_change = false
 adr_required = false
+
+[[deviation]]
+id = "RCRV1-DEV-005"
+date = "2026-07-28"
+status = "active"
+approval = "Explicit user Rust version-policy update dated 2026-07-28 17:47 UTC."
+affected_steps = [
+  "013",
+  "019",
+  "020",
+  "021",
+  "022",
+  "023",
+  "024",
+  "025",
+  "026",
+  "226",
+  "247",
+  "249",
+  "250",
+  "251",
+  "252",
+  "253",
+  "254",
+  "255",
+  "256",
+  "257",
+  "258",
+  "259",
+  "260",
+  "261",
+  "262",
+  "263",
+  "264",
+  "265",
+  "266",
+  "267",
+  "268",
+  "305",
+]
+spec_anchors = [
+  "docs/specs/radroots_crates_release_v1.md#221-initial-versions",
+  "docs/specs/radroots_crates_release_v1.toml#repositories.sdk",
+]
+source_evidence = [
+  "The prior 0.1.0 and 0.1.0-alpha.2 SDK crate cohorts were explicitly superseded.",
+  "The user requires every Rust crate in both standalone repositories to remain exactly 0.1.0-alpha until further explicit notice.",
+]
+replacement_action = "Pin every workspace package, lockfile entry, and internal Radroots dependency requirement in oss/sdk to 0.1.0-alpha; reject cohort drift until new explicit authority is recorded."
+verification = [
+  "Repository architecture validation rejects any workspace package version other than 0.1.0-alpha.",
+  "Internal Radroots dependency requirements resolve exactly to =0.1.0-alpha.",
+  "The synchronized release specification and SDK lockfile record the same frozen cohort.",
+]
+unresolved_risk = "The prerelease cohort intentionally prevents independent package version advancement until a future explicit policy change."
+normative_architecture_change = false
+adr_required = false

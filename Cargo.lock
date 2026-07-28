@@ -1954,7 +1954,7 @@ checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
 
 [[package]]
 name = "radroots"
-version = "0.1.0"
+version = "0.1.0-alpha"
 
 [[package]]
 name = "radroots_authority"
@@ -1986,7 +1986,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_core_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen",
  "dto_bindgen_core",
@@ -2013,7 +2013,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_event_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen_backend_ts",
  "radroots_event",
@@ -2036,7 +2036,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_event_codec_wasm"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha"
 dependencies = [
  "nostr",
  "radroots_blossom",
@@ -2059,7 +2059,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_event_index_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "radroots_event_index",
 ]
@@ -2110,7 +2110,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_identity_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen_backend_ts",
  "radroots_identity",
@@ -2216,7 +2216,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_replica_schema_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen_core",
  "radroots_replica_schema",
@@ -2236,7 +2236,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_replica_store_wasm"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha"
 dependencies = [
  "js-sys",
  "radroots_replica_schema",
@@ -2271,7 +2271,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_replica_sync_wasm"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha"
 dependencies = [
  "base64 0.22.1",
  "radroots_event",
@@ -2308,7 +2308,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_runtime_contract_v1"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "radroots_protocol_contract_v1",
  "serde",
@@ -2324,7 +2324,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_sdk"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "base64 0.22.1",
  "futures",
@@ -2367,7 +2367,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_sdk_sql_wasm_runtime"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha"
 dependencies = [
  "radroots_sql_core",
  "serde",
@@ -2378,7 +2378,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_sdk_xtask"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen_backend_ts",
  "dto_bindgen_core",
@@ -2438,7 +2438,7 @@ dependencies = [
 
 [[package]]
 name = "radroots_trade_bindings"
-version = "0.1.0"
+version = "0.1.0-alpha"
 dependencies = [
  "dto_bindgen",
  "dto_bindgen_core",
