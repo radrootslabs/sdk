@@ -11,7 +11,6 @@ silently change `radroots.crates.release.v1`.
 | --- | --- | --- |
 | `RCRV1-DEV-001` | 015-023 | Preserve the existing standalone `lib` and `sdk` repositories; replace repository import/unification with independent qualification. |
 | `RCRV1-DEV-002` | 249 | Pull only the facade scaffold forward to immediately after Step 014 in `sdk`; do not repeat it later. |
-| `RCRV1-DEV-005` | 013, 019-026, 226, 247, 249-268, 305 | Pin every Rust crate and internal Radroots dependency in `radrootslabs/sdk` to exactly `0.1.0-alpha` until further explicit authority. |
 
 ## Record template
 
