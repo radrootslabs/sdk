@@ -18,7 +18,7 @@ members = [
 resolver = "3"
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.0-alpha"
 edition = "2024"
 rust-version = "1.97.1"
 license = "MIT OR Apache-2.0"
@@ -28,7 +28,7 @@ readme = "README"
 authors = ["Tyson Lupul <tyson@radroots.org>"]
 
 [workspace.metadata.radroots.public-package]
-version = "0.1.0"
+version = "0.1.0-alpha"
 authors = ["Tyson Lupul <tyson@radroots.org>"]
 readme = "README.md"
 
@@ -65,7 +65,7 @@ radroots_nostr_signer = { version = "=0.1.0-alpha", default-features = false }
 radroots_outbox = { version = "=0.1.0-alpha", default-features = false }
 radroots_protocol_contract_v1 = { version = "=0.1.0-alpha", default-features = false }
 radroots_protected_store = { version = "=0.1.0-alpha", default-features = false }
-radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "0.1.0", default-features = false }
+radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "=0.1.0-alpha", default-features = false }
 radroots_secret_vault = { version = "=0.1.0-alpha", default-features = false }
 radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_publish_protocol = { version = "=0.1.0-alpha", default-features = false }
@@ -75,7 +75,7 @@ radroots_replica_store = { version = "=0.1.0-alpha", default-features = false }
 radroots_replica_schema = { version = "=0.1.0-alpha", default-features = false }
 radroots_replica_sync = { version = "=0.1.0-alpha", default-features = false }
 radroots_runtime_paths = { version = "=0.1.0-alpha", default-features = false }
-radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "0.1.0-alpha.2" }
+radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "=0.1.0-alpha" }
 radroots_sql_core = { version = "=0.1.0-alpha", default-features = false }
 radroots_trade = { package = "radroots_trade", version = "=0.1.0-alpha", default-features = false, features = [
   "serde_json",
