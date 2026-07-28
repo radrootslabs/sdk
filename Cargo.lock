@@ -1961,6 +1961,7 @@ name = "radroots_authority"
 version = "1.0.0-alpha.1"
 dependencies = [
  "radroots_event",
+ "radroots_identity",
  "radroots_nostr",
 ]
 
@@ -2001,6 +2002,7 @@ dependencies = [
  "jiff-tzdb",
  "radroots_blossom",
  "radroots_core",
+ "radroots_identity",
  "secp256k1",
  "serde",
  "serde_json",
@@ -2026,6 +2028,7 @@ dependencies = [
  "radroots_blossom",
  "radroots_core",
  "radroots_event",
+ "radroots_identity",
  "serde",
  "serde_json",
  "sha2",
@@ -2070,6 +2073,7 @@ dependencies = [
  "radroots_blossom",
  "radroots_event",
  "radroots_event_codec",
+ "radroots_identity",
  "radroots_transport",
  "serde",
  "serde_json",
@@ -2100,12 +2104,8 @@ name = "radroots_identity"
 version = "0.1.0"
 dependencies = [
  "k256",
- "radroots_protected_store",
- "radroots_runtime_paths",
- "radroots_secret_vault",
- "serde_json",
+ "serde",
  "thiserror 2.0.18",
- "tracing",
 ]
 
 [[package]]
@@ -2428,6 +2428,7 @@ dependencies = [
  "radroots_event",
  "radroots_event_codec",
  "radroots_event_store",
+ "radroots_identity",
  "serde",
  "serde_json",
  "sha2",
