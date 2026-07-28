@@ -11,6 +11,7 @@ and verification. It adds no product requirements; the synchronized
 | Public-only identity and separated signing/secrets | `radroots_identity`, `radroots_signing`, `radroots_secrets` | 052-054, 099-111, 147-155 | public API, feature, dependency, and redaction tests |
 | One canonical `TradeId` | `radroots_event`, `radroots_trade` | 073-098 | compile/API inventory and trade conformance |
 | Version-neutral protocol ownership | `radroots_protocol` and private generators | 055-064, 261-268 | contract vectors and generated freshness |
+| Superseded protocol packages are quarantined and removed | retired compatibility shims | 064, 270, 286 | release classification, source search, and final-removal evidence |
 | Independent transport source/sink with extensible identity | `radroots_transport` and adapters | 112-134, 190-207 | transport conformance and forward-compatibility fixtures |
 | Storage SPI with SQLite backend | `radroots_storage`, `radroots_storage_sqlite` | 156-189 | backend conformance, migration, recovery, and leakage gates |
 | Shared sync engine and explicit lifecycle | `radroots_sync` | 208-225 | pull/push, idempotency, cancellation, and close tests |

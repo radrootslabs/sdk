@@ -18,11 +18,11 @@ radroots_nostr = { path = "../lib/crates/nostr" }
 radroots_nostr_connect = { path = "../lib/crates/nostr_connect" }
 radroots_nostr_signer = { path = "../lib/crates/nostr_signer" }
 radroots_outbox = { path = "../lib/crates/outbox" }
+radroots_protocol = { path = "../lib/crates/protocol" }
 radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1" }
 radroots_protected_store = { path = "../lib/crates/protected_store" }
 radroots_secret_vault = { path = "../lib/crates/secret_vault" }
 radroots_transport = { path = "../lib/crates/transport" }
-radroots_transport_publish_protocol = { path = "../lib/crates/transport_publish_protocol" }
 radroots_transport_nostr = { path = "../lib/crates/transport_nostr" }
 radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum" }
 radroots_replica_store = { path = "../lib/crates/replica_store" }

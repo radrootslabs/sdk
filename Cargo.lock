@@ -2003,6 +2003,7 @@ dependencies = [
  "radroots_blossom",
  "radroots_core",
  "radroots_identity",
+ "radroots_protocol",
  "secp256k1",
  "serde",
  "serde_json",
@@ -2199,6 +2200,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "radroots_protocol"
+version = "0.1.0-alpha"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "radroots_protocol_contract_v1"
 version = "0.1.0-alpha"
 dependencies = [
@@ -2342,17 +2350,16 @@ dependencies = [
  "radroots_nostr_signer",
  "radroots_outbox",
  "radroots_protected_store",
+ "radroots_protocol",
  "radroots_replica_schema",
  "radroots_replica_store",
  "radroots_replica_sync",
- "radroots_runtime_contract_v1",
  "radroots_runtime_paths",
  "radroots_secret_vault",
  "radroots_sql_core",
  "radroots_trade",
  "radroots_transport",
  "radroots_transport_nostr",
- "radroots_transport_publish_protocol",
  "radroots_transport_reticulum",
  "reqwest",
  "serde",
@@ -2469,14 +2476,6 @@ dependencies = [
  "thiserror 1.0.69",
  "tokio",
  "url",
-]
-
-[[package]]
-name = "radroots_transport_publish_protocol"
-version = "0.1.0-alpha"
-dependencies = [
- "radroots_transport",
- "serde",
 ]
 
 [[package]]

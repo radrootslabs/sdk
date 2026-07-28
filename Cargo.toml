@@ -63,12 +63,12 @@ radroots_nostr = { package = "radroots_nostr", version = "=0.1.0-alpha", default
 radroots_nostr_connect = { package = "radroots_nostr_connect", version = "=0.1.0-alpha", default-features = false }
 radroots_nostr_signer = { version = "=0.1.0-alpha", default-features = false }
 radroots_outbox = { version = "=0.1.0-alpha", default-features = false }
+radroots_protocol = { version = "=0.1.0-alpha", default-features = false }
 radroots_protocol_contract_v1 = { version = "=0.1.0-alpha", default-features = false }
 radroots_protected_store = { version = "=0.1.0-alpha", default-features = false }
 radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "=0.1.0-alpha", default-features = false }
 radroots_secret_vault = { version = "=0.1.0-alpha", default-features = false }
 radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
-radroots_transport_publish_protocol = { version = "=0.1.0-alpha", default-features = false }
 radroots_transport_nostr = { package = "radroots_transport_nostr", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_reticulum = { version = "=0.1.0-alpha", default-features = false }
 radroots_replica_store = { version = "=0.1.0-alpha", default-features = false }

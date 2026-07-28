@@ -46,7 +46,7 @@ external_packages = [
 ]
 
 [workspace_classification]
-private = ["radroots_runtime_contract_v1"]
+private = []
 build_codegen = [
   "radroots_core_bindings",
   "radroots_event_bindings",
@@ -62,4 +62,4 @@ build_codegen = [
 ]
 test_support = []
 preview = []
-retired = []
+retired = ["radroots_runtime_contract_v1"]

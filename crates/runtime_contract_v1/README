@@ -1,13 +1,19 @@
 # radroots_runtime_contract_v1
 
-This is the README for `radroots_runtime_contract_v1`, which contains Runtime Contract V1 descriptors, envelopes, error codes, request digest models, approval proof models, and transaction metadata for SDK-owned hosts.
+Private compatibility shim for first-party consumers that have not yet moved
+to `radroots_protocol::runtime::v1`.
+
+This package is retired from the public crate architecture and remains
+`publish = false`. New SDK code must use `radroots_protocol` directly. The
+shim remains only for the CLI registry generator and the standalone `oss/cli`
+consumer; Step 270 removes those final dependencies and deletes this package.
 
 ## Copyright
 
-Except as otherwise noted, all files in the `radroots_runtime_contract_v1` distribution are
-
-    Copyright (c) 2026 Tyson Lupul
+Except as otherwise noted, all files in this distribution are Copyright (c)
+2026 Tyson Lupul.
 
 ## License
 
-This repository is licensed under either MIT or Apache-2.0, at your option. See LICENSE-MIT and LICENSE-APACHE.
+Licensed under either MIT or Apache-2.0, at your option. See `LICENSE-MIT` and
+`LICENSE-APACHE`.
