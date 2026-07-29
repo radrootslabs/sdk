@@ -2,5 +2,8 @@
   "crate": "radroots_trade_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
-  "package": "@radroots/trade-bindings"
+  "package": "@radroots/trade-bindings",
+  "types_replacement": "RCLD-RCRV1 Steps 261-268",
+  "types_sha256": "49560c572206095bd7de5cfd377c234a7f136e4affc13d53516ae2c4b8998e87",
+  "types_source": "authenticated_predecessor_snapshot"
 }

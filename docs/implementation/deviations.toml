@@ -35,6 +35,7 @@ verification = [
 unresolved_risk = "Parent gitlinks cannot advance until the new standalone commits are public-remote reachable under separate authorization."
 normative_architecture_change = false
 adr_required = false
+
 [[deviation]]
 id = "RCRV1-DEV-002"
 date = "2026-07-27"
@@ -112,5 +113,38 @@ verification = [
   "The synchronized release specification and SDK lockfile record the same frozen cohort.",
 ]
 unresolved_risk = "The prerelease cohort intentionally prevents independent package version advancement until a future explicit policy change."
+normative_architecture_change = false
+adr_required = false
+
+[[deviation]]
+id = "RCRV1-DEV-006"
+date = "2026-07-28"
+status = "active"
+approval = "All code-review recommendations approved and persistent full-sequence execution authorized by the user on 2026-07-28."
+affected_steps = [
+  "073",
+  "261",
+  "262",
+  "263",
+  "264",
+  "265",
+  "266",
+  "267",
+  "268",
+]
+spec_anchors = [
+  "docs/specs/radroots_crates_release_v1.md#17-public-code-generation-and-cross-language-policy",
+]
+source_evidence = [
+  "Step 073 removes the public radroots_event code-generation feature and therefore invalidates the predecessor SDK generator's direct DTO registry edge.",
+  "The approved sequence assigns the protocol- and codec-owned cross-language replacement to Steps 261-268.",
+]
+replacement_action = "Retire SDK activation of public event and trade code-generation features now; keep the existing event and trade TypeScript type surfaces as SHA-256-authenticated, fail-closed predecessor snapshots until Steps 261-268 replace them from radroots_protocol and radroots_event_codec contracts."
+verification = [
+  "The SDK xtask rejects either predecessor snapshot unless its reviewed SHA-256 digest matches.",
+  "Generated provenance identifies the authenticated snapshot source and its replacement step range.",
+  "The SDK workspace compiles without enabling radroots_event or radroots_trade code-generation features.",
+]
+unresolved_risk = "Event and trade TypeScript type surfaces remain intentionally frozen until their scheduled protocol/codec generator replacement in Steps 261-268."
 normative_architecture_change = false
 adr_required = false

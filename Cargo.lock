@@ -1997,14 +1997,12 @@ dependencies = [
 name = "radroots_event"
 version = "0.1.0-alpha"
 dependencies = [
- "dto_bindgen",
  "hex",
  "jiff-tzdb",
  "radroots_blossom",
  "radroots_core",
  "radroots_identity",
  "radroots_protocol",
- "secp256k1",
  "serde",
  "serde_json",
  "sha2",
@@ -2392,16 +2390,15 @@ dependencies = [
  "dto_bindgen_core",
  "flate2",
  "radroots_core_bindings",
- "radroots_event",
  "radroots_event_bindings",
  "radroots_event_index",
  "radroots_identity",
  "radroots_identity_bindings",
  "radroots_replica_schema_bindings",
  "radroots_runtime_contract_v1",
- "radroots_trade_bindings",
  "serde",
  "serde_json",
+ "sha2",
  "syn",
  "tar",
  "tempfile",
@@ -2429,8 +2426,6 @@ name = "radroots_trade"
 version = "0.1.0-alpha"
 dependencies = [
  "base64 0.22.1",
- "dto_bindgen",
- "dto_bindgen_core",
  "hex",
  "radroots_authority",
  "radroots_core",
@@ -2448,11 +2443,6 @@ dependencies = [
 [[package]]
 name = "radroots_trade_bindings"
 version = "0.1.0-alpha"
-dependencies = [
- "dto_bindgen",
- "dto_bindgen_core",
- "radroots_trade",
-]
 
 [[package]]
 name = "radroots_transport"
