@@ -2023,11 +2023,12 @@ name = "radroots_event_codec"
 version = "0.1.0-alpha"
 dependencies = [
  "hex",
- "nostr",
  "radroots_blossom",
  "radroots_core",
  "radroots_event",
  "radroots_identity",
+ "radroots_protocol",
+ "secp256k1",
  "serde",
  "serde_json",
  "sha2",
