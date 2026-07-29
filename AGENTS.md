@@ -34,6 +34,9 @@ overrides this file for its subtree.
   not reference private checkout structure or internal coordination context.
 - Prefer the smallest coherent target-state change. Do not mix unrelated
   cleanup, speculative abstraction, compatibility scaffolding, or roadmap work.
+- `.github/**` and capsule-local CI workflows are forbidden. Keep validation
+  forge-agnostic; any required monorepo orchestration belongs exclusively to
+  the parent repository's root `.act/**` authority.
 
 ## Preflight and engineering rules
 
