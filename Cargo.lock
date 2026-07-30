@@ -2171,6 +2171,7 @@ dependencies = [
  "hex",
  "radroots_event",
  "radroots_event_store",
+ "radroots_protocol",
  "radroots_transport",
  "serde",
  "serde_json",
@@ -2446,6 +2447,9 @@ version = "0.1.0-alpha"
 name = "radroots_transport"
 version = "0.1.0-alpha"
 dependencies = [
+ "radroots_event",
+ "radroots_identity",
+ "radroots_protocol",
  "serde",
  "sha2",
 ]
