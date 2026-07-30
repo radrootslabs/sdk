@@ -48,7 +48,6 @@ unimplemented = "deny"
 dto_bindgen = { version = "0.1.0" }
 dto_bindgen_backend_ts = { version = "0.1.0" }
 dto_bindgen_core = { version = "0.1.0" }
-radroots_authority = { version = "=0.1.0-alpha", default-features = false }
 radroots_blossom = { package = "radroots_blossom", version = "=0.1.0-alpha", default-features = false }
 radroots_core = { package = "radroots_core", version = "=0.1.0-alpha", default-features = false }
 radroots_event_store = { version = "=0.1.0-alpha", default-features = false }
@@ -68,6 +67,7 @@ radroots_protocol_contract_v1 = { version = "=0.1.0-alpha", default-features = f
 radroots_protected_store = { version = "=0.1.0-alpha", default-features = false }
 radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "=0.1.0-alpha", default-features = false }
 radroots_secret_vault = { version = "=0.1.0-alpha", default-features = false }
+radroots_signing = { package = "radroots_signing", version = "=0.1.0-alpha", default-features = false }
 radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_nostr = { package = "radroots_transport_nostr", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_reticulum = { version = "=0.1.0-alpha", default-features = false }

@@ -1957,15 +1957,6 @@ name = "radroots"
 version = "0.1.0-alpha"
 
 [[package]]
-name = "radroots_authority"
-version = "0.1.0-alpha"
-dependencies = [
- "radroots_event",
- "radroots_identity",
- "radroots_nostr",
-]
-
-[[package]]
 name = "radroots_blossom"
 version = "0.1.0-alpha"
 dependencies = [
@@ -2138,6 +2129,7 @@ dependencies = [
  "radroots_event",
  "radroots_event_codec",
  "radroots_identity",
+ "radroots_signing",
  "serde",
  "serde_json",
  "thiserror 1.0.69",
@@ -2338,7 +2330,6 @@ dependencies = [
  "futures",
  "hex",
  "nostr",
- "radroots_authority",
  "radroots_core",
  "radroots_event",
  "radroots_event_codec",
@@ -2356,6 +2347,7 @@ dependencies = [
  "radroots_replica_sync",
  "radroots_runtime_paths",
  "radroots_secret_vault",
+ "radroots_signing",
  "radroots_sql_core",
  "radroots_trade",
  "radroots_transport",
@@ -2409,6 +2401,15 @@ dependencies = [
 [[package]]
 name = "radroots_secret_vault"
 version = "0.1.0-alpha"
+
+[[package]]
+name = "radroots_signing"
+version = "0.1.0-alpha"
+dependencies = [
+ "radroots_event",
+ "radroots_identity",
+ "radroots_protocol",
+]
 
 [[package]]
 name = "radroots_sql_core"
