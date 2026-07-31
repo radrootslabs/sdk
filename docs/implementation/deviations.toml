@@ -148,3 +148,30 @@ verification = [
 unresolved_risk = "Event and trade TypeScript type surfaces remain intentionally frozen until their scheduled protocol/codec generator replacement in Steps 261-268."
 normative_architecture_change = false
 adr_required = false
+
+[[deviation]]
+id = "RCRV1-DEV-007"
+date = "2026-07-30"
+status = "active"
+approval = "All code-review recommendations and the full multi-RCLD implementation sequence were explicitly approved by the user."
+affected_steps = ["122", "170", "235", "305"]
+spec_anchors = [
+  "docs/specs/radroots_crates_release_v1.md#9-radroots_transport",
+  "docs/specs/radroots_crates_release_v1.md#111-separate-source-and-sink-contracts",
+]
+source_evidence = [
+  "Step 120 migrated canonical adapters and registries to independent EventSource and EventSink contracts.",
+  "Mixed runtime delivery workers still consume predecessor request and receipt models until their ordered RCLD 40 migration.",
+  "The standalone publish-frozen SDK still maps user-facing target and satisfaction models into predecessor outbox orchestration until Step 235.",
+  "oss/cli/src/runtime/{config,sync,transport}.rs and oss/radrootsd/src/core/transport_publish.rs still import the predecessor identity aliases and Reticulum target helpers; those standalone repositories are outside the approved crate-surface mutation scope.",
+]
+replacement_action = "Consume canonical transport identity and target types immediately; retain the SDK-local unpublished target-set and satisfaction-policy mapping only until Step 235, while documentation-hidden lib aliases/helpers required by out-of-scope CLI and daemon consumers remain publication-blocking until Step 305."
+verification = [
+  "SDK source-boundary tests reject every removed public predecessor transport name.",
+  "SDK release policy keeps publication disabled while the downstream mapping remains.",
+  "Step 235 is the exact fail-closed final-removal gate for SDK-local duplicate transport types.",
+  "Step 305 rejects publication until oss/cli and oss/radrootsd no longer require the documentation-hidden external-consumer aliases and Reticulum helpers.",
+]
+unresolved_risk = "Publish-frozen SDK, CLI, and daemon consumers retain bounded predecessor mappings; package-realistic publication remains blocked until their explicit removal gates."
+normative_architecture_change = false
+adr_required = false
