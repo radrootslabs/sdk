@@ -67,6 +67,7 @@ radroots_protocol_contract_v1 = { version = "=0.1.0-alpha", default-features = f
 radroots_protected_store = { version = "=0.1.0-alpha", default-features = false }
 radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = "=0.1.0-alpha", default-features = false }
 radroots_secret_vault = { version = "=0.1.0-alpha", default-features = false }
+radroots_secrets = { package = "radroots_secrets", version = "=0.1.0-alpha", default-features = false }
 radroots_signing = { package = "radroots_signing", version = "=0.1.0-alpha", default-features = false }
 radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_nostr = { package = "radroots_transport_nostr", version = "=0.1.0-alpha", default-features = false }

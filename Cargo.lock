@@ -2362,6 +2362,7 @@ dependencies = [
  "radroots_replica_sync",
  "radroots_runtime_paths",
  "radroots_secret_vault",
+ "radroots_secrets",
  "radroots_signing",
  "radroots_sql_core",
  "radroots_trade",
@@ -2416,6 +2417,14 @@ dependencies = [
 [[package]]
 name = "radroots_secret_vault"
 version = "0.1.0-alpha"
+
+[[package]]
+name = "radroots_secrets"
+version = "0.1.0-alpha"
+dependencies = [
+ "chacha20poly1305",
+ "zeroize",
+]
 
 [[package]]
 name = "radroots_signing"

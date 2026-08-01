@@ -21,6 +21,7 @@ radroots_protocol = { path = "../lib/crates/protocol" }
 radroots_protocol_contract_v1 = { path = "../lib/crates/protocol_contract_v1" }
 radroots_protected_store = { path = "../lib/crates/protected_store" }
 radroots_secret_vault = { path = "../lib/crates/secret_vault" }
+radroots_secrets = { path = "../lib/crates/secrets" }
 radroots_signing = { path = "../lib/crates/signing" }
 radroots_transport = { path = "../lib/crates/transport" }
 radroots_transport_nostr = { path = "../lib/crates/transport_nostr" }
