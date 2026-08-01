@@ -8,6 +8,7 @@ second protocol authority.
 | --- | --- | --- | --- |
 | `radroots_runtime_contract_v1` | `radroots_protocol::runtime::v1` | SDK CLI-host generator; standalone `oss/cli` runtime registry and command code | Step 270 |
 | SDK signer provider façade and `adapters::signer` | `radroots_signing` plus host-owned `radroots_nostr_connect` adapters | SDK runtime/examples/tests; standalone `oss/cli` and `oss/studio_app` | Step 313, after SDK Step 248, downstream Steps 269-293, and matrix Step 294 |
+| hidden `RadrootsSdkNip46ClientKey`, `RadrootsSdkNip46Transport`, and legacy constructors | package-owned `radroots_nostr_connect::client::{Client, Transport}` consumed by `RadrootsSdkMycNip46Signer::from_client` | standalone `oss/cli` | Step 313, after CLI NIP-46 cutover Step 271 and matrix Step 294 |
 
 The `radroots_sdk` library no longer depends on or reexports the runtime shim.
 Its radrootsd execution path also consumes
