@@ -10,7 +10,13 @@ cargo xtask architecture-ci
 The command validates the synchronized release specification, workspace and
 package metadata, production dependency paths, the Cargo-resolved package-tier
 graph, public API implementation leakage, SDK feature boundaries, publication
-freeze, facade scaffold, language contracts, and generated-source freshness.
+freeze, facade conformance, language contracts, and generated-source freshness.
+
+Facade conformance pins its exact dependency and feature-forwarding graphs,
+curated modules and root exports, absence of new facade-owned traits and
+wildcard reexports, explicit ordinary example, and compiled rejection of a
+`radroots::sdk` namespace. Clean temporary consumers are executable through
+`cargo xtask smoke front-doors-rust-local`.
 
 SDK feature qualification additionally runs no-default, default, each of the
 eleven public features in isolation, the `native` and `full` bundles, and
