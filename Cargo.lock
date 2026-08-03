@@ -1887,6 +1887,8 @@ dependencies = [
  "radroots_transport",
  "radroots_transport_nostr",
  "reqwest",
+ "serde",
+ "serde_json",
  "tempfile",
  "tokio",
 ]
