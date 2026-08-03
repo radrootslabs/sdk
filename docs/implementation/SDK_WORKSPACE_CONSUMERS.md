@@ -16,12 +16,15 @@ intentional:
   repositories/checkouts. Their ordered migrations remain assigned to Steps
   269–294 and are not folded into this standalone repository step.
 
-The package-owned predecessor examples and inactive integration sources under
-`crates/sdk` are not Cargo consumers because the manifest sets `autotests =
-false` and `autoexamples = false`. They remain quarantined only until the
-ordered documentation and package-surface cleanup in Steps 247–248; they are
-not compiled, exported, or authorized as compatibility APIs.
+The package-owned predecessor examples were replaced in Step 247. Step 248
+removed every inactive predecessor module, integration source, support module,
+and unit-test source after proving they were outside the crate root and the
+manifest's explicit test/example target set. They are no longer present as a
+latent source boundary or compatibility API.
 
 No compatibility alias or feature was added for an external consumer. The
 next consumer edge created in this repository must be the exact `radroots ->
 radroots_sdk` dependency and forwarding contract specified for the facade.
+
+The complete source search and downstream disposition are recorded in
+[`SDK_SUPERSEDED_SURFACE_AUDIT.md`](SDK_SUPERSEDED_SURFACE_AUDIT.md).

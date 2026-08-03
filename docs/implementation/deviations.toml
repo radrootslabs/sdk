@@ -13,16 +13,16 @@ spec_anchors = [
 ]
 source_evidence = [
   "Step 179, not Step 153, owns transfer of the current SDK private database and its encrypted records into canonical SQLite storage.",
-  "The SDK can activate the final radroots_secrets dependency now while its private_store module remains the sole predecessor secret-store quarantine.",
+  "The SDK activated the final radroots_secrets dependency while its private_store module remained the sole predecessor secret-store quarantine through Step 247.",
   "Mixed publish-frozen runtime, Myc, and other external hosts still require predecessor vault/store behavior until their ordered migration steps.",
 ]
-replacement_action = "Activate the final optional radroots_secrets edge in Step 153; confine predecessor vault/store imports to private_store.rs; Step 179 transfers canonical private storage, Steps 226/288/293 migrate the remaining SDK and downstream consumers, and Step 313 removes every remaining compatibility package and legacy name."
+replacement_action = "Activate the final optional radroots_secrets edge in Step 153; remove the SDK private_store quarantine at Step 248; Steps 288/293 migrate remaining downstream consumers, and Step 313 removes every remaining compatibility package and external legacy name."
 verification = [
-  "SDK source-boundary tests confine predecessor imports to private_store.rs and require the final optional radroots_secrets dependency edge.",
+  "Step 248 source reachability and manifest-target checks prove private_store.rs and its dormant tests are removed from the SDK package.",
   "The local-signer feature activates radroots_secrets without changing the current runtime storage implementation before Step 179.",
   "Step 155 release-policy validation keeps every quarantine package non-publishable until its exact removal gate.",
 ]
-unresolved_risk = "Publish-frozen compatibility code remains reachable inside the SDK private-store path until Steps 179, 226, 288, 293, and 313; no package-realistic publication may proceed while it remains."
+unresolved_risk = "Publish-frozen compatibility code remains in separate downstream capsules until Steps 288, 293, and 313; no package-realistic publication may proceed while it remains."
 normative_architecture_change = false
 adr_required = false
 
