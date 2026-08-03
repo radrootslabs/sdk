@@ -2,5 +2,12 @@
   "crate": "radroots_event_index_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
-  "package": "@radroots/event-index-bindings"
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/types.ts": "766d0998d909b1601c1f268348158d0273659cb93275da01b9989d91271337ef"
+  },
+  "package": "@radroots/event-index-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/event-index-bindings",
+  "version": "0.1.0"
 }

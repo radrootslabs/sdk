@@ -2,5 +2,12 @@
   "crate": "radroots_identity_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
-  "package": "@radroots/identity-bindings"
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/constants.ts": "8dbbe63fa4bead4560d862a8705b55d0259b7f2fc42dd23d48c608258844c66b"
+  },
+  "package": "@radroots/identity-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/identity-bindings",
+  "version": "0.1.0"
 }

@@ -2,11 +2,20 @@
   "crate": "radroots_event_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/constants.ts": "8918f0fe056d0c4dc59d05cf1245481b93dc4c135a4150bf512e8811e3b524e8",
+    "src/generated/kinds.ts": "e4f01fdf45da2a1dc3dd363bfba5c3ac9adefb0196e40e08fd9affcc65f6c5bc",
+    "src/generated/types.ts": "fe4496950852715c573ff2abc7df8edede7161de75d9c68c3f4d6836e67f829a"
+  },
   "package": "@radroots/event-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/event-bindings",
   "types_sha256": "fe4496950852715c573ff2abc7df8edede7161de75d9c68c3f4d6836e67f829a",
   "types_source": "canonical_native_type_snapshot",
   "types_source_packages": [
     "radroots_event",
     "radroots_core"
-  ]
+  ],
+  "version": "0.1.0"
 }

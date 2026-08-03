@@ -2,5 +2,12 @@
   "crate": "radroots_core_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
-  "package": "@radroots/core-bindings"
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/types.ts": "d6e878ebdea0a057afae1af2a426756cb88a3c0700123610a459f796e7d92077"
+  },
+  "package": "@radroots/core-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/core-bindings",
+  "version": "0.1.0"
 }

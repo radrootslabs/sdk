@@ -2,12 +2,19 @@
   "crate": "radroots_trade_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/types.ts": "49560c572206095bd7de5cfd377c234a7f136e4affc13d53516ae2c4b8998e87"
+  },
   "package": "@radroots/trade-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/trade-bindings",
   "types_sha256": "49560c572206095bd7de5cfd377c234a7f136e4affc13d53516ae2c4b8998e87",
   "types_source": "canonical_native_type_snapshot",
   "types_source_packages": [
     "radroots_trade",
     "radroots_event",
     "radroots_core"
-  ]
+  ],
+  "version": "0.1.0"
 }

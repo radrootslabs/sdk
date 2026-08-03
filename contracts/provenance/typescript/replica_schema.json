@@ -2,5 +2,12 @@
   "crate": "radroots_replica_schema_bindings",
   "generated": true,
   "generator": "radroots_sdk_xtask",
-  "package": "@radroots/replica-schema-bindings"
+  "license": "MIT OR Apache-2.0",
+  "outputs": {
+    "src/generated/types.ts": "359a2339ccdd966f805a41560e6b0a321a9e66f9832f7739928ddce58a9bcc1c"
+  },
+  "package": "@radroots/replica-schema-bindings",
+  "repository": "https://github.com/radrootslabs/sdk",
+  "repository_directory": "packages/replica-schema-bindings",
+  "version": "0.1.0"
 }
