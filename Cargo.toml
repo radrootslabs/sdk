@@ -55,6 +55,7 @@ radroots_event = { package = "radroots_event", version = "=0.1.0-alpha", default
 radroots_event_codec = { package = "radroots_event_codec", version = "=0.1.0-alpha", default-features = false }
 radroots_event_index = { version = "=0.1.0-alpha", default-features = false }
 radroots_geocoder = { version = "=0.1.0-alpha" }
+radroots_geonames = { package = "radroots_geonames", version = "=0.1.0-alpha", default-features = false }
 radroots_identity = { package = "radroots_identity", version = "=0.1.0-alpha", default-features = false, features = [
   "std",
 ] }
@@ -69,6 +70,9 @@ radroots_runtime_contract_v1 = { path = "crates/runtime_contract_v1", version = 
 radroots_secret_vault = { version = "=0.1.0-alpha", default-features = false }
 radroots_secrets = { package = "radroots_secrets", version = "=0.1.0-alpha", default-features = false }
 radroots_signing = { package = "radroots_signing", version = "=0.1.0-alpha", default-features = false }
+radroots_storage = { package = "radroots_storage", version = "=0.1.0-alpha", default-features = false }
+radroots_storage_sqlite = { package = "radroots_storage_sqlite", version = "=0.1.0-alpha", default-features = false }
+radroots_sync = { package = "radroots_sync", version = "=0.1.0-alpha", default-features = false }
 radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_nostr = { package = "radroots_transport_nostr", version = "=0.1.0-alpha", default-features = false }
 radroots_transport_reticulum = { version = "=0.1.0-alpha", default-features = false }

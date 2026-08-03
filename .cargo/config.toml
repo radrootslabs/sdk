@@ -12,6 +12,7 @@ radroots_event = { path = "../lib/crates/event" }
 radroots_event_codec = { path = "../lib/crates/event_codec" }
 radroots_event_index = { path = "../lib/crates/event_index" }
 radroots_geocoder = { path = "../lib/crates/geocoder" }
+radroots_geonames = { path = "../lib/crates/geonames" }
 radroots_identity = { path = "../lib/crates/identity" }
 radroots_nostr = { path = "../lib/crates/nostr" }
 radroots_nostr_connect = { path = "../lib/crates/nostr_connect" }
@@ -23,6 +24,9 @@ radroots_protected_store = { path = "../lib/crates/protected_store" }
 radroots_secret_vault = { path = "../lib/crates/secret_vault" }
 radroots_secrets = { path = "../lib/crates/secrets" }
 radroots_signing = { path = "../lib/crates/signing" }
+radroots_storage = { path = "../lib/crates/storage" }
+radroots_storage_sqlite = { path = "../lib/crates/storage_sqlite" }
+radroots_sync = { path = "../lib/crates/sync" }
 radroots_transport = { path = "../lib/crates/transport" }
 radroots_transport_nostr = { path = "../lib/crates/transport_nostr" }
 radroots_transport_reticulum = { path = "../lib/crates/transport_reticulum" }
