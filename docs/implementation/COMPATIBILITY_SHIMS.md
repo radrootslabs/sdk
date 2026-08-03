@@ -6,7 +6,7 @@ second protocol authority.
 
 | Shim | Final owner | Remaining consumers | Final removal |
 | --- | --- | --- | --- |
-| `radroots_runtime_contract_v1` | `radroots_protocol::runtime::v1` | SDK CLI-host generator; standalone `oss/cli` runtime registry and command code | Step 270 |
+| `radroots_runtime_contract_v1` | `radroots_protocol::runtime::v1` | standalone CLI runtime registry and command code only; SDK codegen now consumes protocol directly | Step 270 |
 
 The `radroots_sdk` library no longer depends on or reexports the runtime shim.
 Its radrootsd execution path also consumes
