@@ -1,30 +1,43 @@
-# SDK canonical-workspace consumer cutover
+# Rust front-door canonical-workspace consumer cutover
 
-Step 246 evaluated every Cargo package in the standalone SDK workspace before
-the ordinary-user facade was activated. Cargo metadata reports no package with
-a dependency on `radroots_sdk` at this checkpoint. That zero-dependent state is
-intentional:
+Step 258 re-audited every Cargo package and Rust source in the standalone SDK
+workspace after the final `radroots` facade became active. Cargo metadata has
+one front-door dependency edge:
 
-- `radroots` remains the pulled-forward, dependency-free scaffold until Steps
-  250–253 establish its curated modules, builders, and feature forwarding.
-- binding and WASM packages consume their owning lower crates and do not route
-  through the native advanced-host SDK.
-- the xtask clean-host smoke now uses only the final `ClientBuilder` and
-  `ErrorKind` surface. Its predecessor knowledge smoke, which referenced
-  removed SDK features and prefixed types, is retired.
-- CLI, Studio, FFI/mobile, daemon, and other application capsules are separate
-  repositories/checkouts. Their ordered migrations remain assigned to Steps
-  269–294 and are not folded into this standalone repository step.
+```text
+radroots -> radroots_sdk
+```
 
-The package-owned predecessor examples were replaced in Step 247. Step 248
-removed every inactive predecessor module, integration source, support module,
-and unit-test source after proving they were outside the crate root and the
-manifest's explicit test/example target set. They are no longer present as a
-latent source boundary or compatibility API.
+That is the normative engine composition edge. No other workspace package
+depends on `radroots` or `radroots_sdk`:
 
-No compatibility alias or feature was added for an external consumer. The
-next consumer edge created in this repository must be the exact `radroots ->
-radroots_sdk` dependency and forwarding contract specified for the facade.
+- binding and WASM packages consume their final owning lower crates;
+- `radroots_sdk_sql_wasm_runtime` is a distinct private implementation package,
+  not a predecessor spelling or an SDK front-door consumer;
+- xtask smoke sources construct clean external `radroots` and `radroots_sdk`
+  hosts and intentionally exercise both public package paths;
+- package READMEs and engineering documents use the final identities and do not
+  create Cargo dependency edges.
 
-The complete source search and downstream disposition are recorded in
+The ordinary example uses only `radroots::client`; the advanced examples use
+`radroots_sdk` and explicit lower capability types. There are no application
+packages in this capsule to rewrite, no legacy facade package, and no temporary
+compatibility dependency to retain.
+
+CLI, Studio, FFI/mobile, daemon, and other applications are separate repository
+capsules. Their migrations remain assigned to Steps 269-294; this workspace
+checkpoint does not edit or claim those consumers. The external CLI still has
+the previously recorded sibling-SDK path and legacy API debt in
 [`SDK_SUPERSEDED_SURFACE_AUDIT.md`](SDK_SUPERSEDED_SURFACE_AUDIT.md).
+
+The repeatable audit is:
+
+```sh
+cargo metadata --no-deps --format-version 1
+rg -n 'radroots_sdk|radroots::|radroots =' --glob 'Cargo.toml' --glob '*.rs'
+cargo xtask smoke front-doors-rust-local
+```
+
+The result is a deliberately narrow canonical workspace: ordinary code enters
+through `radroots`; advanced host composition enters through `radroots_sdk`;
+lower packages and generated bindings do not route through either front door.
