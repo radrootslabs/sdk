@@ -11,6 +11,14 @@ The command validates the synchronized release specification, workspace and
 package metadata, production dependency paths, the Cargo-resolved package-tier
 graph, public API implementation leakage, SDK feature boundaries, publication
 freeze, facade scaffold, language contracts, and generated-source freshness.
+
+SDK feature qualification additionally runs no-default, default, each of the
+eleven public features in isolation, the `native` and `full` bundles, and
+all-features. Every lane uses `--all-targets`; strict Clippy mirrors the
+no-default and all-feature endpoints. Package-boundary tests reject any feature
+outside `memory`, `sqlite`, `sync`, `nostr`, `nip46`, `local-signing`,
+`radrootsd`, `geonames`, `knowledge`, `native`, and `full`, and verify that
+optional dependencies are activated through explicit `dep:` entries.
 The workflow invokes the same dispatcher with `cargo run --locked` so lockfile
 drift fails rather than being resolved implicitly.
 
