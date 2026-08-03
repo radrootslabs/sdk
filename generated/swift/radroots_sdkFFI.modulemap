@@ -1,0 +1,7 @@
+module radroots_sdkFFI {
+    header "radroots_sdkFFI.h"
+    export *
+    use "Darwin"
+    use "_Builtin_stdbool"
+    use "_Builtin_stdint"
+}
