@@ -86,7 +86,7 @@ radroots_sdk = { path = "crates/sdk", version = "=0.1.0-alpha", default-features
 radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "=0.1.0-alpha" }
 radroots_sql_core = { version = "=0.1.0-alpha", default-features = false }
 radroots_trade = { package = "radroots_trade", version = "=0.1.0-alpha", default-features = false, features = [
-  "serde_json",
+  "json",
   "std",
 ] }
 
