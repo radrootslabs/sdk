@@ -68,6 +68,7 @@ impl radroots_sdk::client::ClientBuilder
 pub fn radroots_sdk::client::ClientBuilder::build(self) -> radroots_sdk::error::Result<radroots_sdk::client::Client>
 pub fn radroots_sdk::client::ClientBuilder::capability_availability(self, radroots_sdk::capability::CapabilityId, radroots_sdk::capability::Availability) -> Self
 pub fn radroots_sdk::client::ClientBuilder::memory(radroots_storage::event::SourceGeneration) -> Self
+pub fn radroots_sdk::client::ClientBuilder::memory_default() -> Self
 pub fn radroots_sdk::client::ClientBuilder::new() -> Self
 pub fn radroots_sdk::client::ClientBuilder::signer(self, alloc::sync::Arc<dyn radroots_signing::signer::Signer>) -> Self
 pub fn radroots_sdk::client::ClientBuilder::signing(self, radroots_sdk::signing::Provider) -> Self
@@ -337,6 +338,7 @@ impl radroots_sdk::client::ClientBuilder
 pub fn radroots_sdk::client::ClientBuilder::build(self) -> radroots_sdk::error::Result<radroots_sdk::client::Client>
 pub fn radroots_sdk::client::ClientBuilder::capability_availability(self, radroots_sdk::capability::CapabilityId, radroots_sdk::capability::Availability) -> Self
 pub fn radroots_sdk::client::ClientBuilder::memory(radroots_storage::event::SourceGeneration) -> Self
+pub fn radroots_sdk::client::ClientBuilder::memory_default() -> Self
 pub fn radroots_sdk::client::ClientBuilder::new() -> Self
 pub fn radroots_sdk::client::ClientBuilder::signer(self, alloc::sync::Arc<dyn radroots_signing::signer::Signer>) -> Self
 pub fn radroots_sdk::client::ClientBuilder::signing(self, radroots_sdk::signing::Provider) -> Self
