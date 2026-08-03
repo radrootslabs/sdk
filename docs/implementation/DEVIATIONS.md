@@ -15,6 +15,7 @@ silently change `radroots.crates.release.v1`.
 | `RCRV1-DEV-006` | 073, 261-268 | Retire public event/trade codegen edges now and authenticate the predecessor TypeScript snapshots until their scheduled protocol/codec replacement. |
 | `RCRV1-DEV-007` | 122, 170, 235, 305 | Remove the predecessor monolithic transport SPI now; quarantine publish-frozen runtime, SDK, CLI, and daemon consumer shims until their explicit removal gates. |
 | `RCRV1-DEV-008` | 153, 155, 171, 179, 226, 288, 293, 313 | Activate final secrets dependency edges now; quarantine legacy vault/store consumers until their ordered storage, SDK, downstream, and final-removal gates. |
+| `RCRV1-DEV-012` | 279, 282-283 | Complete the shared SDK engine with host-controlled identity/relay slots and bounded social operations before migrating the iOS host. |
 
 ## Record template
 

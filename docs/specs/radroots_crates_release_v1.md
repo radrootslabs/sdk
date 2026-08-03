@@ -928,7 +928,7 @@ memory = ["radroots_storage/memory"]
 
 # Explicit native capabilities.
 sqlite = ["dep:radroots_storage_sqlite"]
-sync = ["dep:radroots_sync"]
+sync = ["dep:radroots_sync", "dep:uuid"]
 nostr = [
   "sync",
   "dep:radroots_nostr",

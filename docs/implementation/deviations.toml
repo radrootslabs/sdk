@@ -2,6 +2,32 @@ schema_version = 1
 architecture_id = "radroots.crates.release.v1"
 
 [[deviation]]
+id = "RCRV1-DEV-012"
+date = "2026-08-03"
+status = "active"
+approval = "All code-review recommendations and the full multi-RCLD implementation sequence were explicitly approved by the user."
+affected_steps = ["279", "282", "283"]
+spec_anchors = [
+  "docs/specs/radroots_crates_release_v1.md#18-radroots_sdk",
+  "docs/specs/radroots_crates_release_v1.md#161-radroots_sdk",
+]
+source_evidence = [
+  "The initial Step 279 app_rt bridge removed mobile identity, relay, profile, and post behavior before an equivalent shared-engine SDK operation surface existed.",
+  "The Step 282 simulator compile exposed those removed operations as downstream iOS failures rather than presentation-only drift.",
+  "The canonical transport selector correction in oss/lib now permits bounded kind, author, and time-filtered Nostr retrieval without reintroducing legacy runtime ownership.",
+]
+replacement_action = "Before completing Step 282, add SDK-owned host-controlled local-signer and Nostr slots, explicit native host sync policy, and bounded verified social fetch/publish operations; then keep keychain persistence, lifecycle polling, and retry scheduling in the iOS host."
+verification = [
+  "The SDK mobile feature composition builds and tests with one shared client and no hidden executor or worker.",
+  "Local signer generation hands the only persistence representation to the host; clear and restore retain the same public identity.",
+  "Nostr relay replacement validates the full set before atomic installation and preserves the prior set on failure.",
+  "Fetch verifies and durably ingests accepted events; publish durably enqueues and performs exactly one explicit delivery pass.",
+]
+unresolved_risk = "Step 282 and Step 283 must still regenerate app_rt bindings and migrate the iOS host to polling and keychain-owned lifecycle behavior before the corrective record can close."
+normative_architecture_change = false
+adr_required = false
+
+[[deviation]]
 id = "RCRV1-DEV-008"
 date = "2026-08-01"
 status = "active"
