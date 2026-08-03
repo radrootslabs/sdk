@@ -4,6 +4,7 @@ members = [
   "crates/event_codec_wasm",
   "crates/event_bindings",
   "crates/event_index_bindings",
+  "crates/ffi",
   "crates/identity_bindings",
   "crates/replica_store_wasm",
   "crates/replica_schema_bindings",
@@ -54,6 +55,7 @@ radroots_event_store = { version = "=0.1.0-alpha", default-features = false }
 radroots_event = { package = "radroots_event", version = "=0.1.0-alpha", default-features = false }
 radroots_event_codec = { package = "radroots_event_codec", version = "=0.1.0-alpha", default-features = false }
 radroots_event_index = { version = "=0.1.0-alpha", default-features = false }
+radroots_sdk_ffi = { path = "crates/ffi", version = "=0.1.0-alpha" }
 radroots_geocoder = { version = "=0.1.0-alpha" }
 radroots_geonames = { package = "radroots_geonames", version = "=0.1.0-alpha", default-features = false }
 radroots_identity = { package = "radroots_identity", version = "=0.1.0-alpha", default-features = false, features = [
@@ -106,8 +108,10 @@ serde-wasm-bindgen = { version = "0.6" }
 sha2 = { version = "0.10", default-features = false }
 sqlx = { version = "0.9.0", default-features = false }
 tempfile = { version = "3" }
+thiserror = { version = "2" }
 tokio = { version = "1" }
 tokio-tungstenite = "0.26.2"
 uuid = { version = "1.22.0", features = ["v4", "v7"] }
+uniffi = { version = "0.29.4" }
 wasm-bindgen = { version = "0.2" }
 wasm-bindgen-test = { version = "0.3" }

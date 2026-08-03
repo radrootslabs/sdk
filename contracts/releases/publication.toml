@@ -46,7 +46,7 @@ external_packages = [
 ]
 
 [workspace_classification]
-private = []
+private = ["radroots_sdk_ffi"]
 build_codegen = [
   "radroots_core_bindings",
   "radroots_event_bindings",
