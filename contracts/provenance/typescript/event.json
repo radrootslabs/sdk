@@ -3,7 +3,10 @@
   "generated": true,
   "generator": "radroots_sdk_xtask",
   "package": "@radroots/event-bindings",
-  "types_replacement": "RCLD-RCRV1 Steps 261-268",
   "types_sha256": "fe4496950852715c573ff2abc7df8edede7161de75d9c68c3f4d6836e67f829a",
-  "types_source": "authenticated_predecessor_snapshot"
+  "types_source": "canonical_native_type_snapshot",
+  "types_source_packages": [
+    "radroots_event",
+    "radroots_core"
+  ]
 }
