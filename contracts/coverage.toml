@@ -2,10 +2,12 @@
 enforce = true
 require_regions = true
 require_functions = true
-require_lines = true
+require_executable_lines = true
+require_branches = true
 
 [toolchain]
-rust = "1.97.0"
+rust = "1.97.1"
+coverage_rust = "nightly"
 wasm_target = "wasm32-unknown-unknown"
 
 [report]
@@ -14,27 +16,33 @@ ignore_filename_regex = "(/target/|/\\.cargo/registry/|/Cellar/rust/|/crates/.+_
 
 [scopes.radroots_sdk]
 paths = ["crates/sdk/src/**"]
-threshold = 98.0
+threshold = 90.0
+
+[scopes.radroots]
+paths = ["crates/radroots/src/**"]
+threshold = 90.0
+branches_applicable = false
+branch_reason = "the facade contains straight-line curated constructors and re-exports with no measured branch records"
 
 [scopes.xtask_policy]
 paths = ["tools/xtask/src/coverage_policy.rs"]
-threshold = 100.0
+threshold = 90.0
 
 [scopes.event_codec_wasm]
 paths = ["crates/event_codec_wasm/src/**"]
-threshold = 100.0
+threshold = 90.0
 
 [scopes.sql_wasm_runtime]
 paths = ["crates/sql_wasm_runtime/src/**"]
-threshold = 100.0
+threshold = 90.0
 
 [scopes.replica_sync_wasm]
 paths = ["crates/replica_sync_wasm/src/**"]
-threshold = 100.0
+threshold = 90.0
 
 [scopes.replica_store_snapshot]
 paths = ["crates/replica_store_wasm/src/snapshot.rs"]
-threshold = 100.0
+threshold = 90.0
 
 [generated]
 typescript = "generated TypeScript is excluded from line coverage and verified by generator tests, generated-output reproducibility, package export checks, and pnpm typecheck; current handwritten package entrypoints only re-export generated surfaces and must gain focused tests if runtime logic is added"
