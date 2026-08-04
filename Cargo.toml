@@ -47,32 +47,32 @@ unimplemented = "deny"
 dto_bindgen = { version = "0.1.0" }
 dto_bindgen_backend_ts = { version = "0.1.0" }
 dto_bindgen_core = { version = "0.1.0" }
-radroots_blossom = { package = "radroots_blossom", version = "=0.1.0-alpha", default-features = false }
-radroots_core = { package = "radroots_core", version = "=0.1.0-alpha", default-features = false }
-radroots_event = { package = "radroots_event", version = "=0.1.0-alpha", default-features = false }
-radroots_event_codec = { package = "radroots_event_codec", version = "=0.1.0-alpha", default-features = false }
+radroots_blossom = { package = "radroots_blossom", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_core = { package = "radroots_core", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_event = { package = "radroots_event", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_event_codec = { package = "radroots_event_codec", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
 radroots_sdk_ffi = { path = "crates/ffi", version = "=0.1.0-alpha" }
-radroots_geonames = { package = "radroots_geonames", version = "=0.1.0-alpha", default-features = false }
-radroots_identity = { package = "radroots_identity", version = "=0.1.0-alpha", default-features = false, features = [
+radroots_geonames = { package = "radroots_geonames", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_identity = { package = "radroots_identity", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false, features = [
   "std",
 ] }
-radroots_nostr = { package = "radroots_nostr", version = "=0.1.0-alpha", default-features = false }
-radroots_nostr_connect = { package = "radroots_nostr_connect", version = "=0.1.0-alpha", default-features = false }
-radroots_protocol = { version = "=0.1.0-alpha", default-features = false }
-radroots_secrets = { package = "radroots_secrets", version = "=0.1.0-alpha", default-features = false }
-radroots_signing = { package = "radroots_signing", version = "=0.1.0-alpha", default-features = false }
-radroots_storage = { package = "radroots_storage", version = "=0.1.0-alpha", default-features = false }
-radroots_storage_sqlite = { package = "radroots_storage_sqlite", version = "=0.1.0-alpha", default-features = false }
-radroots_sync = { package = "radroots_sync", version = "=0.1.0-alpha", default-features = false }
-radroots_transport = { package = "radroots_transport", version = "=0.1.0-alpha", default-features = false }
-radroots_transport_nostr = { package = "radroots_transport_nostr", version = "=0.1.0-alpha", default-features = false }
-radroots_replica_store = { version = "=0.1.0-alpha", default-features = false }
-radroots_replica_schema = { version = "=0.1.0-alpha", default-features = false }
-radroots_replica_sync = { version = "=0.1.0-alpha", default-features = false }
+radroots_nostr = { package = "radroots_nostr", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_nostr_connect = { package = "radroots_nostr_connect", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_protocol = { git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_secrets = { package = "radroots_secrets", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_signing = { package = "radroots_signing", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_storage = { package = "radroots_storage", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_storage_sqlite = { package = "radroots_storage_sqlite", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_sync = { package = "radroots_sync", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_transport = { package = "radroots_transport", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_transport_nostr = { package = "radroots_transport_nostr", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_replica_store = { git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_replica_schema = { git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_replica_sync = { git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
 radroots_sdk = { path = "crates/sdk", version = "=0.1.0-alpha", default-features = false }
 radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "=0.1.0-alpha" }
-radroots_sql_core = { version = "=0.1.0-alpha", default-features = false }
-radroots_trade = { package = "radroots_trade", version = "=0.1.0-alpha", default-features = false, features = [
+radroots_sql_core = { git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false }
+radroots_trade = { package = "radroots_trade", git = "https://github.com/radrootslabs/lib.git", rev = "74f5c91cbc80248df1f51f644004daaf8ae8e9be", version = "=0.1.0-alpha", default-features = false, features = [
   "json",
   "std",
 ] }
