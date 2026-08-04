@@ -2023,6 +2023,7 @@ dependencies = [
 name = "radroots_sdk"
 version = "0.1.0-alpha"
 dependencies = [
+ "nostr",
  "radroots_core",
  "radroots_event",
  "radroots_event_codec",
