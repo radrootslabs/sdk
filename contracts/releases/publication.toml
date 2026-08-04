@@ -1,5 +1,5 @@
 [publication]
-frozen = true
+frozen = false
 registry = "crates-io"
 final_enablement_step = 305
 spec_id = "radroots.crates.release.v1"
@@ -63,3 +63,6 @@ build_codegen = [
 test_support = []
 preview = []
 retired = ["radroots_runtime_contract_v1"]
+
+[publish_order]
+crates = ["radroots_sdk", "radroots"]
