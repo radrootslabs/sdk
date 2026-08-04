@@ -5,6 +5,8 @@ xtask = "run -p radroots_sdk_xtask --"
 # registry identities; package-realistic checks run extracted crates without
 # this repository configuration.
 [patch.crates-io]
+radroots_sdk = { path = "crates/sdk" }
+radroots = { path = "crates/radroots" }
 radroots_blossom = { path = "../lib/crates/blossom" }
 radroots_core = { path = "../lib/crates/core" }
 radroots_event_store = { path = "../lib/crates/event_store" }
