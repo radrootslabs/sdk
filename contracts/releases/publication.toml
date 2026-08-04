@@ -51,7 +51,6 @@ build_codegen = [
   "radroots_core_bindings",
   "radroots_event_bindings",
   "radroots_event_codec_wasm",
-  "radroots_event_index_bindings",
   "radroots_identity_bindings",
   "radroots_replica_schema_bindings",
   "radroots_replica_store_wasm",
@@ -62,7 +61,7 @@ build_codegen = [
 ]
 test_support = []
 preview = []
-retired = ["radroots_runtime_contract_v1"]
+retired = []
 
 [publish_order]
 crates = ["radroots_sdk", "radroots"]

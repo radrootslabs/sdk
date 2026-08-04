@@ -24,7 +24,6 @@ order = 3
 "social.reaction.build_tags" = "social.ReactionBuildTags"
 "social.article.build_tags" = "social.ArticleBuildTags"
 "social.file_metadata.build_tags" = "social.FileMetadataBuildTags"
-"trade_validation.validate_operational_listing_event" = "tradevalidation.ValidateOperationalListingEvent"
 
 [shared_types]
 "RadrootsNip01EventWireParts" = "RadrootsNip01EventWireParts"

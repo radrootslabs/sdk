@@ -1,30 +1,19 @@
-# Compatibility shim quarantine
+# Compatibility shim retirement
 
-Step 064 retires version-suffixed packages from the public crate architecture.
-The remaining package is a private, non-publishable bridge only; it is not a
-second protocol authority.
+Step 313 removed the final version-suffixed compatibility package after every
+standalone consumer cut over to the final protocol and facade surfaces. No
+second runtime protocol authority remains.
 
-| Shim | Final owner | Remaining consumers | Final removal |
+| Retired shim | Final owner | Cutover evidence | Final removal |
 | --- | --- | --- | --- |
-| `radroots_runtime_contract_v1` | `radroots_protocol::runtime::v1` | standalone CLI runtime registry and command code only; SDK codegen now consumes protocol directly | Step 270 |
+| `radroots_runtime_contract_v1` | `radroots_protocol::runtime::v1` | CLI facade-only refactor and Step 313 source census | Step 313 |
 
-The `radroots_sdk` library no longer depends on or reexports the runtime shim.
-Its radrootsd execution path also consumes
-`radroots_protocol::radrootsd::transport_publish::v5` directly instead of the
-separate transport-publish package. Repository publication policy classifies
-the retained runtime shim as `retired`, and its manifest keeps
-`publish = false`.
-
-Source searches at this checkpoint also found the transport-publish shim in
-standalone `oss/radrootsd` and the runtime/protocol shims in standalone
-`oss/cli`; those consumers are assigned to Steps 286 and 270 respectively.
-No new consumer may be added before those cutovers.
+The SDK consumes `radroots_protocol::runtime::v1` and
+`radroots_protocol::radrootsd::transport_publish::v5` directly. Repository
+publication policy has no retained compatibility classification, and SDK
+code generation no longer owns CLI runtime-contract output.
 
 Step 248 removed the inactive SDK signer adapter, Nostr adapter, prefixed
-models, private store, workflow runtime, and their dormant tests. No SDK-local
-compatibility alias, feature, module, or dependency remains for them. The
-standalone CLI still names predecessor SDK types and features, but that is an
-external red consumer rather than authority to retain a second SDK surface:
-Steps 269-272 own its dependency, product API, signing, and sync migrations;
-Step 294 proves the downstream matrix; Step 313 rejects any surviving legacy
-name before release qualification.
+models, private store, workflow runtime, and their dormant tests. Step 313
+rejects any returning legacy package, feature, module, generated host surface,
+or event-index binding package before release qualification.

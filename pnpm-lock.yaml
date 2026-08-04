@@ -22,8 +22,6 @@ importers:
 
   packages/event-codec-wasm: {}
 
-  packages/event-index-bindings: {}
-
   packages/identity-bindings: {}
 
   packages/replica-schema-bindings: {}

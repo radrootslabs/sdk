@@ -5,7 +5,6 @@ repository = "sdk-typescript"
 [packages]
 "radroots_core" = "@radroots/core-bindings"
 "radroots_event" = "@radroots/event-bindings"
-"radroots_event_index" = "@radroots/event-index-bindings"
 "radroots_identity" = "@radroots/identity-bindings"
 "radroots_replica_schema" = "@radroots/replica-schema-bindings"
 "radroots_trade" = "@radroots/trade-bindings"

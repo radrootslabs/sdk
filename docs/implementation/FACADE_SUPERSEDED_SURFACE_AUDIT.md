@@ -9,8 +9,8 @@ publish.
 ## Canonical SDK capsule
 
 The only package named `radroots` in this workspace is `crates/radroots`. Its
-manifest is explicitly `publish = false` until Step 305, its exact dependency
-and feature graphs are governed, and its source is limited to the curated
+manifest is enabled only for validation staging after Step 305, its exact
+dependency and feature graphs are governed, and its source is limited to the curated
 ordinary-user modules. The only advanced engine edge is its private Cargo
 dependency on `radroots_sdk`; the facade does not duplicate engine logic.
 
@@ -21,17 +21,15 @@ placeholder package exists.
 
 ## Other checked-out OSS capsules
 
-The separate CLI capsule currently uses Cargo package/binary name `radroots`.
-That is an application identity, not a facade experiment, but its Cargo package
-identity conflicts with the new library front door and its source still uses
-the previously recorded sibling SDK path and legacy APIs. Its complete cutover
-is assigned to Steps 269-272 and final consumer verification in Steps 294 and
-313. Step 260 does not mutate that separate repository early or introduce a
-shim for it.
+Before its Step 313 cutover, the separate CLI capsule used Cargo package/binary
+name `radroots`. That was an application identity, not a facade experiment,
+but its Cargo package identity conflicted with the new library front door.
+Steps 269-272 migrated the consumer, Step 294 qualified it, and Step 313
+removed the final source branch without introducing a shim.
 
 The daemon, Apple/mobile, Studio, web, and other checked-out capsules contain
 no alternate Rust facade package or `radroots::sdk` namespace. Their real
-consumer migrations remain owned by Steps 269-294.
+consumer migrations completed in Steps 269-294.
 
 `oss/.sdk_step064_worktree` is an untracked local recovery checkout, not a
 canonical repository, workspace member, release input, or compatibility
@@ -49,6 +47,6 @@ rg -n 'radroots[_-](facade|client)|radroots::sdk|pub use radroots_sdk::\*|name =
 
 Then run the SDK capsule's workspace tests and `cargo xtask architecture-ci`.
 Expected matches are limited to the final facade, normative specifications and
-guards, clean-smoke fixture names, and the separately assigned CLI identity.
+guards, and clean-smoke fixture names.
 Any new package or namespace match blocks release until it is removed or an
 explicit later migration step owns it.

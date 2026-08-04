@@ -1877,22 +1877,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "radroots_event_index"
-version = "0.1.0-alpha"
-dependencies = [
- "dto_bindgen",
- "dto_bindgen_core",
- "serde",
-]
-
-[[package]]
-name = "radroots_event_index_bindings"
-version = "0.1.0-alpha"
-dependencies = [
- "radroots_event_index",
-]
-
-[[package]]
 name = "radroots_geonames"
 version = "0.1.0-alpha"
 dependencies = [
@@ -1951,13 +1935,6 @@ dependencies = [
 
 [[package]]
 name = "radroots_protocol"
-version = "0.1.0-alpha"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "radroots_protocol_contract_v1"
 version = "0.1.0-alpha"
 dependencies = [
  "serde",
@@ -2043,14 +2020,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "radroots_runtime_contract_v1"
-version = "0.1.0-alpha"
-dependencies = [
- "radroots_protocol_contract_v1",
- "serde",
-]
-
-[[package]]
 name = "radroots_sdk"
 version = "0.1.0-alpha"
 dependencies = [
@@ -2108,7 +2077,6 @@ dependencies = [
  "flate2",
  "radroots_core_bindings",
  "radroots_event_bindings",
- "radroots_event_index",
  "radroots_identity",
  "radroots_identity_bindings",
  "radroots_protocol",
@@ -2190,11 +2158,9 @@ dependencies = [
 name = "radroots_trade"
 version = "0.1.0-alpha"
 dependencies = [
- "base64",
  "hex",
  "radroots_core",
  "radroots_event",
- "radroots_event_codec",
  "radroots_identity",
  "serde",
  "serde_json",
@@ -4066,35 +4032,3 @@ name = "zmij"
 version = "1.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"
-
-[[patch.unused]]
-name = "radroots_event_store"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_geocoder"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_nostr_signer"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_outbox"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_protected_store"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_runtime_paths"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_secret_vault"
-version = "0.1.0-alpha"
-
-[[patch.unused]]
-name = "radroots_transport_reticulum"
-version = "0.1.0-alpha"

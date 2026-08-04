@@ -32,18 +32,14 @@ evidence, generated API snapshots, build outputs, and the untracked historical
 `.sdk_step064_worktree` recovery checkout. That checkout is not a canonical
 repository input and was left untouched.
 
-One canonical external consumer remains red: standalone `oss/cli` still uses
-the sibling `../sdk/crates/sdk` path, retired feature names, and prefixed SDK
-types. This does not justify restoring a shim because the final SDK surface is
-already cut over and the CLI is not part of this standalone workspace. Its
-ordered disposition is:
+The standalone `oss/cli` consumer completed its ordered cutover without a shim:
 
 - Step 269 removes sibling paths and selects final package/features.
 - Step 270 migrates product operations and error imports.
 - Step 271 migrates signer and NIP-46 composition.
 - Step 272 migrates inbound/outbound synchronization.
 - Step 294 proves the complete downstream compatibility matrix.
-- Step 313 rejects all remaining legacy public names before qualification.
+- Step 313 rejected all remaining legacy public names and source dependencies.
 
 No other checked-out first-party executable source imports prefixed SDK types.
 Documentation, release contracts, architecture fixtures, and lower-package
@@ -52,7 +48,8 @@ compatibility consumers.
 
 ## Release disposition
 
-`radroots_sdk` remains `publish = false`. No deprecation placeholder exists.
-The only retained compatibility package in this repository is the separately
-classified, non-publishable `radroots_runtime_contract_v1` generator bridge;
-it is not linked by the SDK library and its external CLI cutover is Step 270.
+`radroots_sdk` and `radroots` are enabled only for validation staging through
+the sole `crates-io` registry declaration. No deprecation placeholder or
+compatibility package exists. Step 313 removed
+`radroots_runtime_contract_v1`, the event-index binding crate/package, their
+generator paths, and every external legacy consumer.

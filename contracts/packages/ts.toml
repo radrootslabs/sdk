@@ -23,13 +23,6 @@ crate_dir = "crates/event_bindings"
 package = "@radroots/event-bindings"
 package_dir = "packages/event-bindings"
 
-[npm_packages.event_index]
-kind = "bindings"
-crate_name = "radroots_event_index_bindings"
-crate_dir = "crates/event_index_bindings"
-package = "@radroots/event-index-bindings"
-package_dir = "packages/event-index-bindings"
-
 [npm_packages.identity]
 kind = "bindings"
 crate_name = "radroots_identity_bindings"
@@ -94,7 +87,6 @@ order = 1
 "social.reaction.build_tags" = "social.reaction.buildTags"
 "social.article.build_tags" = "social.article.buildTags"
 "social.file_metadata.build_tags" = "social.fileMetadata.buildTags"
-"trade_validation.validate_operational_listing_event" = "tradeValidation.validateOperationalListingEvent"
 
 [shared_types]
 "RadrootsNip01EventWireParts" = "RadrootsNip01EventWireParts"

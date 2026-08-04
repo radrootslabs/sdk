@@ -4,7 +4,7 @@ architecture_id = "radroots.crates.release.v1"
 [[deviation]]
 id = "RCRV1-DEV-012"
 date = "2026-08-03"
-status = "active"
+status = "closed"
 approval = "All code-review recommendations and the full multi-RCLD implementation sequence were explicitly approved by the user."
 affected_steps = ["279", "282", "283"]
 spec_anchors = [
@@ -23,14 +23,18 @@ verification = [
   "Nostr relay replacement validates the full set before atomic installation and preserves the prior set on failure.",
   "Fetch verifies and durably ingests accepted events; publish durably enqueues and performs exactly one explicit delivery pass.",
 ]
-unresolved_risk = "Step 282 and Step 283 must still regenerate app_rt bindings and migrate the iOS host to polling and keychain-owned lifecycle behavior before the corrective record can close."
+unresolved_risk = "None; the regenerated app_rt bridge and iOS host consume the final SDK-owned operation surface."
 normative_architecture_change = false
 adr_required = false
+closure_evidence = [
+  "Step 282 regenerated and qualified the app_rt bindings against the final shared SDK engine.",
+  "Step 283 migrated and qualified the iOS host with host-owned keychain persistence, lifecycle polling, and retry scheduling.",
+]
 
 [[deviation]]
 id = "RCRV1-DEV-008"
 date = "2026-08-01"
-status = "active"
+status = "closed"
 approval = "All code-review recommendations and the full multi-RCLD implementation sequence were explicitly approved by the user."
 affected_steps = ["153", "155", "171", "179", "226", "288", "293", "313"]
 spec_anchors = [
@@ -48,9 +52,13 @@ verification = [
   "The local-signer feature activates radroots_secrets without changing the current runtime storage implementation before Step 179.",
   "Step 155 release-policy validation keeps every quarantine package non-publishable until its exact removal gate.",
 ]
-unresolved_risk = "Publish-frozen compatibility code remains in separate downstream capsules until Steps 288, 293, and 313; no package-realistic publication may proceed while it remains."
+unresolved_risk = "None; every predecessor package and downstream source edge is absent."
 normative_architecture_change = false
 adr_required = false
+closure_evidence = [
+  "The SDK package-boundary test rejects private_store and every predecessor secret-store package.",
+  "Step 313 source census confirmed the library, SDK, Myc, and CLI consume only final secrets and storage owners.",
+]
 
 [[deviation]]
 id = "RCRV1-DEV-001"
@@ -90,7 +98,7 @@ adr_required = false
 [[deviation]]
 id = "RCRV1-DEV-002"
 date = "2026-07-27"
-status = "active"
+status = "closed"
 approval = "Explicit user correction dated 2026-07-27."
 affected_steps = ["249"]
 spec_anchors = [
@@ -106,9 +114,13 @@ verification = [
   "The sdk release policy reserves radroots as an approved local package while publication remains frozen.",
   "The facade scaffold checkpoint must add radroots only to the sdk workspace and architecture policy.",
 ]
-unresolved_risk = "The facade remains non-publishable until the package-realistic Step 305 enablement gate."
+unresolved_risk = "None; the facade completed Steps 249-260 and Step 305 enabled its validation-only publication metadata."
 normative_architecture_change = false
 adr_required = false
+closure_evidence = [
+  "The radroots package remains solely in oss/sdk and exposes the reviewed curated facade.",
+  "Publication policy enables exactly radroots_sdk and radroots for validation staging without authorizing upload.",
+]
 
 [[deviation]]
 id = "RCRV1-DEV-005"
@@ -170,7 +182,7 @@ adr_required = false
 [[deviation]]
 id = "RCRV1-DEV-006"
 date = "2026-07-28"
-status = "active"
+status = "closed"
 approval = "All code-review recommendations approved and persistent full-sequence execution authorized by the user on 2026-07-28."
 affected_steps = [
   "073",
@@ -196,14 +208,18 @@ verification = [
   "Generated provenance identifies the authenticated snapshot source and its replacement step range.",
   "The SDK workspace compiles without enabling radroots_event or radroots_trade code-generation features.",
 ]
-unresolved_risk = "Event and trade TypeScript type surfaces remain intentionally frozen until their scheduled protocol/codec generator replacement in Steps 261-268."
+unresolved_risk = "None; Steps 261-268 replaced the predecessor snapshots with protocol- and codec-owned generation."
 normative_architecture_change = false
 adr_required = false
+closure_evidence = [
+  "The package generator reads only the approved protocol, event, trade, and replica-schema authorities.",
+  "Generated freshness and provenance checks reject predecessor snapshot ownership or unregistered output.",
+]
 
 [[deviation]]
 id = "RCRV1-DEV-007"
 date = "2026-07-30"
-status = "active"
+status = "closed"
 approval = "All code-review recommendations and the full multi-RCLD implementation sequence were explicitly approved by the user."
 affected_steps = ["122", "170", "235", "305"]
 spec_anchors = [
@@ -223,6 +239,10 @@ verification = [
   "Step 235 is the exact fail-closed final-removal gate for SDK-local duplicate transport types.",
   "Step 305 rejects publication until oss/cli and oss/radrootsd no longer require the documentation-hidden external-consumer aliases and Reticulum helpers.",
 ]
-unresolved_risk = "Publish-frozen SDK, CLI, and daemon consumers retain bounded predecessor mappings; package-realistic publication remains blocked until their explicit removal gates."
+unresolved_risk = "None; SDK, CLI, and daemon consumers use the final transport identities and targets."
 normative_architecture_change = false
 adr_required = false
+closure_evidence = [
+  "Step 235 removed the SDK-local duplicate target and satisfaction mapping.",
+  "Step 313 migrated the daemon and confirmed every hidden external-consumer alias and Reticulum helper is absent from radroots_transport.",
+]

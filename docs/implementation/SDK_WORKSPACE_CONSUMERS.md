@@ -25,9 +25,9 @@ packages in this capsule to rewrite, no legacy facade package, and no temporary
 compatibility dependency to retain.
 
 CLI, Studio, FFI/mobile, daemon, and other applications are separate repository
-capsules. Their migrations remain assigned to Steps 269-294; this workspace
-checkpoint does not edit or claim those consumers. The external CLI still has
-the previously recorded sibling-SDK path and legacy API debt in
+capsules. Steps 269-294 migrated and qualified those consumers, and Step 313
+removed their final source-dependency and legacy-name branches. The durable
+outcome is recorded in
 [`SDK_SUPERSEDED_SURFACE_AUDIT.md`](SDK_SUPERSEDED_SURFACE_AUDIT.md).
 
 The repeatable audit is:

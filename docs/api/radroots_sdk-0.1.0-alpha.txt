@@ -210,6 +210,47 @@ pub radroots_sdk::listing::Action::Update
 pub radroots_sdk::listing::PrepareErrorKind::Edit
 pub radroots_sdk::listing::PrepareErrorKind::Mutation
 pub radroots_sdk::listing::PrepareErrorKind::UnauthorizedActor
+pub enum radroots_sdk::listing::RadrootsOperationalListingEditError
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::DuplicateBinId
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::DuplicateBinId::bin_id: radroots_event::id::InventoryBinId
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::FarmPubkeyMismatch
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::FarmPubkeyMismatch::actual_pubkey: radroots_identity::key::PublicKey
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::FarmPubkeyMismatch::expected_pubkey: radroots_identity::key::PublicKey
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::InvalidClassifiedListingAddress(radroots_event::id::ParseError)
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::InvalidFarmPubkey(radroots_identity::error::Error)
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::InvalidModel(radroots_event::trade::validation::OperationalListingValidationError)
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::MissingPrimaryBin
+pub radroots_sdk::listing::RadrootsOperationalListingEditError::MissingPrimaryBin::primary_bin_id: radroots_event::id::InventoryBinId
+impl core::error::Error for radroots_sdk::listing::RadrootsOperationalListingEditError
+impl core::fmt::Display for radroots_sdk::listing::RadrootsOperationalListingEditError
+pub fn radroots_sdk::listing::RadrootsOperationalListingEditError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub enum radroots_sdk::listing::RadrootsOperationalListingLifecycleState
+pub radroots_sdk::listing::RadrootsOperationalListingLifecycleState::Draft
+pub radroots_sdk::listing::RadrootsOperationalListingLifecycleState::Published
+pub enum radroots_sdk::listing::RadrootsOperationalListingMutation
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Archive
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Archive::listing_addr: radroots_event::id::ClassifiedListingAddress
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Publish
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Publish::draft: radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::SaveDraft
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::SaveDraft::draft: radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Update
+pub radroots_sdk::listing::RadrootsOperationalListingMutation::Update::draft: radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit
+impl radroots_sdk::listing::RadrootsOperationalListingMutation
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::archive(radroots_event::id::ClassifiedListingAddress) -> Self
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::canonical_draft(&self) -> core::result::Result<&radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit, radroots_sdk::listing::RadrootsOperationalListingMutationError>
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::lifecycle_state(&self) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingLifecycleState, radroots_sdk::listing::RadrootsOperationalListingMutationError>
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::listing_addr(&self) -> core::result::Result<&radroots_event::id::ClassifiedListingAddress, radroots_sdk::listing::RadrootsOperationalListingMutationError>
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::publish(radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit) -> Self
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::save_draft(radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit) -> Self
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutation::update(radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit) -> Self
+pub enum radroots_sdk::listing::RadrootsOperationalListingMutationError
+pub radroots_sdk::listing::RadrootsOperationalListingMutationError::EncodeListing(alloc::string::String)
+pub radroots_sdk::listing::RadrootsOperationalListingMutationError::FrozenDraft(radroots_event::draft::DraftError)
+pub radroots_sdk::listing::RadrootsOperationalListingMutationError::UnsupportedMutation
+impl core::error::Error for radroots_sdk::listing::RadrootsOperationalListingMutationError
+impl core::fmt::Display for radroots_sdk::listing::RadrootsOperationalListingMutationError
+pub fn radroots_sdk::listing::RadrootsOperationalListingMutationError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 pub struct radroots_sdk::listing::EnqueueRequest
 impl radroots_sdk::listing::EnqueueRequest
 pub const fn radroots_sdk::listing::EnqueueRequest::new(radroots_sync::policy::SyncId, radroots_storage::journal::IdempotencyKey, radroots_sdk::listing::Plan, radroots_sdk::transport::Profile, radroots_signing::request::CancellationPolicy) -> Self
@@ -222,7 +263,7 @@ pub const fn radroots_sdk::listing::Plan::action(&self) -> radroots_sdk::listing
 pub const fn radroots_sdk::listing::Plan::actor(&self) -> &radroots_signing::actor::Actor
 pub const fn radroots_sdk::listing::Plan::address(&self) -> &radroots_event::id::ClassifiedListingAddress
 pub const fn radroots_sdk::listing::Plan::draft(&self) -> &radroots_event::draft::EventDraft
-pub const fn radroots_sdk::listing::Plan::lifecycle(&self) -> radroots_trade::operational_listing::mutation::RadrootsOperationalListingLifecycleState
+pub const fn radroots_sdk::listing::Plan::lifecycle(&self) -> radroots_sdk::listing::RadrootsOperationalListingLifecycleState
 pub struct radroots_sdk::listing::PrepareError
 impl radroots_sdk::listing::PrepareError
 pub const fn radroots_sdk::listing::PrepareError::kind(&self) -> radroots_sdk::listing::PrepareErrorKind
@@ -234,9 +275,70 @@ impl core::fmt::Display for radroots_sdk::listing::PrepareError
 pub fn radroots_sdk::listing::PrepareError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 pub struct radroots_sdk::listing::PrepareRequest
 impl radroots_sdk::listing::PrepareRequest
-pub const fn radroots_sdk::listing::PrepareRequest::publish(radroots_signing::actor::Actor, radroots_trade::operational_listing::draft::RadrootsOperationalListingEditDocumentV1, u64) -> Self
-pub const fn radroots_sdk::listing::PrepareRequest::update(radroots_signing::actor::Actor, radroots_trade::operational_listing::draft::RadrootsOperationalListingEditDocumentV1, u64) -> Self
+pub const fn radroots_sdk::listing::PrepareRequest::publish(radroots_signing::actor::Actor, radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1, u64) -> Self
+pub const fn radroots_sdk::listing::PrepareRequest::update(radroots_signing::actor::Actor, radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1, u64) -> Self
+pub struct radroots_sdk::listing::RadrootsClassifiedListingAddressParts
+pub radroots_sdk::listing::RadrootsClassifiedListingAddressParts::address: radroots_event::id::ClassifiedListingAddress
+pub radroots_sdk::listing::RadrootsClassifiedListingAddressParts::kind: u32
+pub radroots_sdk::listing::RadrootsClassifiedListingAddressParts::listing_id: radroots_event::id::DTag
+pub radroots_sdk::listing::RadrootsClassifiedListingAddressParts::seller_pubkey: radroots_identity::key::PublicKey
+impl radroots_sdk::listing::RadrootsClassifiedListingAddressParts
+pub fn radroots_sdk::listing::RadrootsClassifiedListingAddressParts::parse(impl core::convert::AsRef<str>) -> core::result::Result<Self, radroots_event::id::ParseError>
+pub struct radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit
+impl radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit
+pub fn radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit::listing(&self) -> &radroots_event::listing::operational::OperationalListing
+pub fn radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit::new(radroots_event::listing::operational::OperationalListing, radroots_identity::key::PublicKey) -> core::result::Result<Self, radroots_sdk::listing::RadrootsOperationalListingEditError>
+pub fn radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit::public_listing_addr(&self) -> &radroots_event::id::ClassifiedListingAddress
+pub fn radroots_sdk::listing::RadrootsOperationalListingCanonicalEdit::seller_pubkey(&self) -> &radroots_identity::key::PublicKey
+pub struct radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1
+pub radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1::listing: radroots_event::listing::operational::OperationalListing
+impl radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1
+pub fn radroots_sdk::listing::RadrootsOperationalListingEditDocumentV1::new(radroots_event::listing::operational::OperationalListing) -> Self
+pub struct radroots_sdk::listing::RadrootsOperationalListingSubtotal
+pub radroots_sdk::listing::RadrootsOperationalListingSubtotal::price_amount: radroots_core::money::Money
+pub radroots_sdk::listing::RadrootsOperationalListingSubtotal::price_currency: radroots_core::currency::Currency
+pub radroots_sdk::listing::RadrootsOperationalListingSubtotal::quantity_amount: radroots_core::decimal::Decimal
+pub radroots_sdk::listing::RadrootsOperationalListingSubtotal::quantity_unit: radroots_core::unit::Unit
+pub struct radroots_sdk::listing::RadrootsOperationalListingTotal
+pub radroots_sdk::listing::RadrootsOperationalListingTotal::price_amount: radroots_core::money::Money
+pub radroots_sdk::listing::RadrootsOperationalListingTotal::price_currency: radroots_core::currency::Currency
+pub radroots_sdk::listing::RadrootsOperationalListingTotal::quantity_amount: radroots_core::decimal::Decimal
+pub radroots_sdk::listing::RadrootsOperationalListingTotal::quantity_unit: radroots_core::unit::Unit
+pub struct radroots_sdk::listing::RadrootsOperationalListingTradeProjection
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::availability: radroots_event::listing::operational::OperationalListingAvailability
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::bin_quantity: radroots_core::quantity::Quantity
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::delivery_method: radroots_event::listing::operational::OperationalListingDeliveryMethod
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::description: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::inventory_available: radroots_core::decimal::Decimal
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::listing: radroots_event::listing::operational::OperationalListing
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::listing_addr: radroots_event::id::ClassifiedListingAddress
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::listing_id: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::location: radroots_event::listing::operational::OperationalListingPublicLocation
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::primary_bin_id: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::product_type: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::seller_pubkey: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::title: alloc::string::String
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::unit: radroots_core::unit::Unit
+pub radroots_sdk::listing::RadrootsOperationalListingTradeProjection::unit_price: radroots_core::money::Money
+pub struct radroots_sdk::listing::RadrootsPublicClassifiedListingAddress
+pub radroots_sdk::listing::RadrootsPublicClassifiedListingAddress::address: radroots_event::id::ClassifiedListingAddress
+pub radroots_sdk::listing::RadrootsPublicClassifiedListingAddress::kind: u32
+pub radroots_sdk::listing::RadrootsPublicClassifiedListingAddress::listing_id: radroots_event::id::DTag
+pub radroots_sdk::listing::RadrootsPublicClassifiedListingAddress::seller_pubkey: radroots_identity::key::PublicKey
+impl radroots_sdk::listing::RadrootsPublicClassifiedListingAddress
+pub fn radroots_sdk::listing::RadrootsPublicClassifiedListingAddress::parse(impl core::convert::AsRef<str>) -> core::result::Result<Self, radroots_event::id::ParseError>
+pub trait radroots_sdk::listing::BinPricingTryExt
+pub fn radroots_sdk::listing::BinPricingTryExt::try_subtotal_for_count(&self, u32) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingSubtotal, radroots_core::quantity_price::Error>
+pub fn radroots_sdk::listing::BinPricingTryExt::try_total_for_count(&self, u32) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingTotal, radroots_core::quantity_price::Error>
+impl radroots_sdk::listing::BinPricingTryExt for radroots_event::listing::operational::OperationalListingBin
+pub fn radroots_event::listing::operational::OperationalListingBin::try_subtotal_for_count(&self, u32) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingSubtotal, radroots_core::quantity_price::Error>
+pub fn radroots_event::listing::operational::OperationalListingBin::try_total_for_count(&self, u32) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingTotal, radroots_core::quantity_price::Error>
+pub fn radroots_sdk::listing::parse_classified_listing_address(impl core::convert::AsRef<str>) -> core::result::Result<radroots_sdk::listing::RadrootsClassifiedListingAddressParts, radroots_event::id::ParseError>
+pub fn radroots_sdk::listing::parse_operational_listing_event(&radroots_event::envelope::EventEnvelope) -> core::result::Result<radroots_event::listing::operational::OperationalListing, radroots_event::listing::operational::OperationalListingParseError>
+pub fn radroots_sdk::listing::parse_public_classified_listing_address(impl core::convert::AsRef<str>) -> core::result::Result<radroots_sdk::listing::RadrootsPublicClassifiedListingAddress, radroots_event::id::ParseError>
 pub fn radroots_sdk::listing::prepare(radroots_sdk::listing::PrepareRequest) -> core::result::Result<radroots_sdk::listing::Plan, radroots_sdk::listing::PrepareError>
+pub fn radroots_sdk::listing::validate_operational_listing_event(&radroots_event_codec::verification::v1::RadrootsSignatureVerifiedEvent) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingTradeProjection, radroots_event::trade::validation::OperationalListingValidationError>
+pub fn radroots_sdk::listing::validate_operational_listing_model(radroots_event::listing::operational::OperationalListing, &radroots_identity::key::PublicKey) -> core::result::Result<radroots_sdk::listing::RadrootsOperationalListingTradeProjection, radroots_event::trade::validation::OperationalListingValidationError>
 pub mod radroots_sdk::signing
 #[non_exhaustive] pub enum radroots_sdk::signing::Mode
 pub radroots_sdk::signing::Mode::Host

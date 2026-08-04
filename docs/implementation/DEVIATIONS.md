@@ -10,12 +10,17 @@ silently change `radroots.crates.release.v1`.
 | ID | Affected steps | Approved disposition |
 | --- | --- | --- |
 | `RCRV1-DEV-001` | 015-023 | Preserve the existing standalone `lib` and `sdk` repositories; replace repository import/unification with independent qualification. |
-| `RCRV1-DEV-002` | 249 | Pull only the facade scaffold forward to immediately after Step 014 in `sdk`; do not repeat it later. |
 | `RCRV1-DEV-005` | 013, 019-026, 226, 247, 249-268, 305 | Pin every Rust crate and internal Radroots dependency in `radrootslabs/sdk` to exactly `0.1.0-alpha` until further explicit authority. |
-| `RCRV1-DEV-006` | 073, 261-268 | Retire public event/trade codegen edges now and authenticate the predecessor TypeScript snapshots until their scheduled protocol/codec replacement. |
-| `RCRV1-DEV-007` | 122, 170, 235, 305 | Remove the predecessor monolithic transport SPI now; quarantine publish-frozen runtime, SDK, CLI, and daemon consumer shims until their explicit removal gates. |
-| `RCRV1-DEV-008` | 153, 155, 171, 179, 226, 288, 293, 313 | Activate final secrets dependency edges now; quarantine legacy vault/store consumers until their ordered storage, SDK, downstream, and final-removal gates. |
-| `RCRV1-DEV-012` | 279, 282-283 | Complete the shared SDK engine with host-controlled identity/relay slots and bounded social operations before migrating the iOS host. |
+
+## Closed records
+
+| ID | Closure |
+| --- | --- |
+| `RCRV1-DEV-002` | The facade remained in `oss/sdk`, completed Steps 249-260, and entered validation-only publication staging at Step 305. |
+| `RCRV1-DEV-006` | Steps 261-268 replaced authenticated predecessor snapshots with protocol- and codec-owned generation. |
+| `RCRV1-DEV-007` | Step 235 removed SDK-local mappings; Step 313 removed the last daemon/lib transport aliases and helpers. |
+| `RCRV1-DEV-008` | Step 313 confirmed every predecessor secrets/storage package and downstream source edge is absent. |
+| `RCRV1-DEV-012` | Steps 282-283 qualified the final shared SDK engine, app_rt bindings, and iOS host lifecycle boundary. |
 
 ## Record template
 
