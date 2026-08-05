@@ -14,10 +14,10 @@ pub fn radroots::client::with_transport(radroots_sdk::client::ClientBuilder, all
 pub mod radroots::event
 pub use radroots::event::Error
 pub use radroots::event::Event
-pub use radroots::event::EventDraft
 pub use radroots::event::EventId
 pub use radroots::event::EventKind
 pub use radroots::event::EventTag
+pub use radroots::event::GenericEventDraft
 pub use radroots::event::SignedEvent
 pub use radroots::event::VerifiedEvent
 pub mod radroots::farm
