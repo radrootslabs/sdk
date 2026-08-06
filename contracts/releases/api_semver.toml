@@ -1,8 +1,0 @@
-schema_version = 2
-baseline_revision = "5217d73"
-package_version = "0.1.0-alpha"
-tool = "cargo-public-api"
-minimum_tool_version = "0.52.0"
-policy = "reviewed-breaking-snapshot"
-feature_policy = "all"
-packages = ["radroots", "radroots_sdk"]

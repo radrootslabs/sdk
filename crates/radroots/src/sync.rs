@@ -1,1 +1,0 @@
-//! Curated synchronization entry points.
