@@ -23,4 +23,4 @@ todo = "deny"
 unimplemented = "deny"
 
 [workspace.dependencies]
-radroots_sdk = { package = "radroots_sdk", git = "https://github.com/radrootslabs/lib", rev = "27029a804e76555b29d65ccb874c76392893a98e", version = "=0.1.0-alpha", default-features = false }
+radroots_sdk = { package = "radroots_sdk", git = "https://github.com/radrootslabs/lib", rev = "09065a610d95e57acdc895a14c07580fa099e7c3", version = "=0.1.0-alpha", default-features = false }
