@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source_package": "radroots_sdk_ffi",
   "source_version": "0.1.0-alpha",
-  "source_sha256": "733c27226e29c3bea820e869e93f3916f1e1dbe9fc1cce30c15d31063ad5a033",
+  "source_sha256": "dccf9f024910684a3225310a593667312f0c2598c22f05fa233b6012b0e133eb",
   "generator": "uniffi",
   "generator_version": "0.29.5",
   "language": "kotlin",

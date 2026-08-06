@@ -1,7 +1,7 @@
 {
   "crate": "radroots_event_bindings",
   "generated": true,
-  "generator": "radroots_sdk_xtask",
+  "generator": "radroots_lib_xtask",
   "license": "MIT OR Apache-2.0",
   "outputs": {
     "src/generated/constants.ts": "8918f0fe056d0c4dc59d05cf1245481b93dc4c135a4150bf512e8811e3b524e8",

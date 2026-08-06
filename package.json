@@ -3,12 +3,16 @@
   "private": true,
   "packageManager": "pnpm@10.25.0",
   "scripts": {
-    "generate:ts": "cargo xtask generate ts",
-    "generate:wasm": "cargo xtask generate wasm",
-    "generate:package-metadata": "cargo xtask generate package-metadata",
-    "check": "cargo xtask generate ts && cargo xtask generate package-metadata && pnpm -r build && cargo xtask check && pnpm -r typecheck",
-    "coverage": "cargo xtask coverage run",
-    "build": "pnpm -r build",
+    "source:check": "node tools/radroots_sdk_artifact.mjs source-check",
+    "generate:ts": "node tools/radroots_sdk_artifact.mjs write typescript",
+    "generate:wasm": "node tools/radroots_sdk_artifact.mjs write wasm",
+    "generate:swift": "node tools/radroots_sdk_artifact.mjs write swift",
+    "generate:kotlin": "node tools/radroots_sdk_artifact.mjs write kotlin",
+    "generate": "pnpm run generate:ts && pnpm run generate:wasm && pnpm run generate:swift && pnpm run generate:kotlin",
+    "check:generated": "node tools/radroots_sdk_artifact.mjs check typescript && node tools/radroots_sdk_artifact.mjs check wasm && node tools/radroots_sdk_artifact.mjs check swift && node tools/radroots_sdk_artifact.mjs check kotlin",
+    "test:tools": "node --test tools/*.test.mjs",
+    "check": "pnpm run generate && pnpm -r build && pnpm -r typecheck && pnpm run test:tools && pnpm run check:generated",
+    "build": "pnpm run generate:ts && pnpm run generate:wasm && pnpm -r build",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

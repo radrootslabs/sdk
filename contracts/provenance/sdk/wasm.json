@@ -1,0 +1,22 @@
+{
+  "schema": "radroots.artifact-manifest.v1",
+  "product": "sdk",
+  "target": "wasm",
+  "language": "javascript",
+  "external_names": [
+    "radroots",
+    "radroots_sdk"
+  ],
+  "files": [],
+  "provenance": {
+    "repository": "https://github.com/radrootslabs/lib",
+    "revision": "27029a804e76555b29d65ccb874c76392893a98e",
+    "architecture": "radroots.crates.release.v2",
+    "catalog_sha256": "8c27cebf6825f9ed74e122513c661f6dd31837dddb39d0988014121d8ab05e75",
+    "lockfile_sha256": "1c68ccdc28f8dd65bd96f06032437d9a7a84754e1a666423a1df0e07ef80d70a",
+    "source_archive_sha256": "889ffb069538f82bea989df94b78d12cab1510fb066353851603509e31eda471",
+    "source_date_epoch": 1786043896,
+    "builder_id": "radroots_sdk_artifact_v1",
+    "features": []
+  }
+}

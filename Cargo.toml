@@ -1,19 +1,5 @@
 [workspace]
-members = [
-  "crates/core_bindings",
-  "crates/event_codec_wasm",
-  "crates/event_bindings",
-  "crates/ffi",
-  "crates/identity_bindings",
-  "crates/replica_store_wasm",
-  "crates/replica_schema_bindings",
-  "crates/replica_sync_wasm",
-  "crates/radroots",
-  "crates/sdk",
-  "crates/sql_wasm_runtime",
-  "crates/trade_bindings",
-  "tools/xtask",
-]
+members = ["crates/source_lock"]
 resolver = "3"
 
 [workspace.package]
@@ -23,17 +9,10 @@ rust-version = "1.97.1"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/radrootslabs/sdk"
 homepage = "https://radroots.org"
-readme = "README"
 authors = ["Tyson Lupul <tyson@radroots.org>"]
-
-[workspace.metadata.radroots.public-package]
-version = "0.1.0-alpha"
-authors = ["Tyson Lupul <tyson@radroots.org>"]
-readme = "README.md"
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(coverage_nightly)'] }
 
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"
@@ -44,61 +23,4 @@ todo = "deny"
 unimplemented = "deny"
 
 [workspace.dependencies]
-dto_bindgen = { version = "0.1.0" }
-dto_bindgen_backend_ts = { version = "0.1.0" }
-dto_bindgen_core = { version = "0.1.0" }
-radroots_blossom = { package = "radroots_blossom", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_core = { package = "radroots_core", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_event = { package = "radroots_event", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_event_codec = { package = "radroots_event_codec", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_sdk_ffi = { path = "crates/ffi", version = "=0.1.0-alpha" }
-radroots_geonames = { package = "radroots_geonames", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_identity = { package = "radroots_identity", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false, features = [
-  "std",
-] }
-radroots_nostr = { package = "radroots_nostr", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_nostr_connect = { package = "radroots_nostr_connect", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_protocol = { git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_secrets = { package = "radroots_secrets", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_signing = { package = "radroots_signing", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_storage = { package = "radroots_storage", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_storage_sqlite = { package = "radroots_storage_sqlite", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_sync = { package = "radroots_sync", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_transport = { package = "radroots_transport", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_transport_nostr = { package = "radroots_transport_nostr", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_replica_store = { git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_replica_schema = { git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_replica_sync = { git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_sdk = { path = "crates/sdk", version = "=0.1.0-alpha", default-features = false }
-radroots_sdk_sql_wasm_runtime = { path = "crates/sql_wasm_runtime", version = "=0.1.0-alpha" }
-radroots_sql_core = { git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false }
-radroots_trade = { package = "radroots_trade", git = "https://github.com/radrootslabs/lib.git", rev = "f7f456d906d91aadbb9fac4850afaa8c5723c3e9", version = "=0.1.0-alpha", default-features = false, features = [
-  "json",
-  "std",
-] }
-
-base64 = { version = "0.22", default-features = false, features = ["alloc"] }
-futures = { version = "0.3" }
-hex = { version = "0.4", default-features = false, features = ["alloc"] }
-js-sys = { version = "0.3" }
-nostr = { version = "0.44.7" }
-reqwest = { version = "0.12", default-features = false, features = [
-  "json",
-  "rustls-tls",
-] }
-serde = { version = "1", default-features = false, features = [
-  "derive",
-  "alloc",
-] }
-serde_json = { version = "1", default-features = false, features = ["alloc"] }
-serde-wasm-bindgen = { version = "0.6" }
-sha2 = { version = "0.10", default-features = false }
-sqlx = { version = "0.9.0", default-features = false }
-tempfile = { version = "3" }
-thiserror = { version = "2" }
-tokio = { version = "1" }
-tokio-tungstenite = "0.26.2"
-uuid = { version = "1.22.0", features = ["v4", "v7"] }
-uniffi = { version = "0.29.4" }
-wasm-bindgen = { version = "0.2" }
-wasm-bindgen-test = { version = "0.3" }
+radroots_sdk = { package = "radroots_sdk", git = "https://github.com/radrootslabs/lib", rev = "27029a804e76555b29d65ccb874c76392893a98e", version = "=0.1.0-alpha", default-features = false }
