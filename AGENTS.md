@@ -1,99 +1,116 @@
 # Radroots SDK agent specification
 
-This file applies to the full standalone SDK repository. Read
-`CONTRIBUTING.md` for the contributor workflow. A closer `AGENTS.md`
-overrides this file for its subtree.
+This file applies to the complete standalone SDK repository. Read
+`CONTRIBUTING.md` before editing. A closer `AGENTS.md` overrides this file for
+its subtree.
 
-## Source of intent
+## Current authority
 
-- Read `docs/specs/README.md` and
-  `docs/specs/radroots_crates_release_v1.md` before changing a public
-  package, dependency, feature, binding, or release control.
-- The Markdown specification is normative. Its TOML catalog is the executable
-  package and dependency representation; the CSV and DOT files are review
-  aids.
-- Current source and tests are implementation evidence. They do not silently
-  override `radroots.crates.release.v1`.
-- Record any evidence-based plan deviation in
-  `docs/implementation/deviations.toml`, following
-  `docs/implementation/DEVIATIONS.md`, before proceeding. Validate it with
-  `cargo xtask architecture`.
+- This capsule is an independently verifiable public generated-package and
+  source-lock consumer. Its Rust workspace contains only the unpublished
+  `radroots_sdk_source_lock` package; canonical Rust SDK implementation and
+  generators remain in the exact public `radrootslabs/lib` revision selected
+  by `radroots.lib.source-lock.v1.toml` and `Cargo.toml`.
+- `radroots.lib.source-lock.v1.toml` is the exact lib source-lock authority.
+  `contracts/provenance/**`, `contracts/packages/**`, and
+  `contracts/exports/**` own generated artifact provenance and package/export
+  selection.
+- `contracts/historical_authority.v1.json` owns the closed Release V1 machine
+  artifact inventory and its exact digests. Historical API baselines live at
+  `contracts/api_baselines/**`; other retained machine history lives below
+  `contracts/architecture/**` and `contracts/crates/release_v1/**`.
+- Human specifications, decisions, migration history, and qualification
+  evidence are parent-owned under `docs/oss/sdk/**`. They are not present in a
+  standalone clone and must never become a build, test, generation, package,
+  or release input for this capsule.
+- Current source, generated output, tests, and lockfiles are implementation
+  evidence. They do not silently override the selected source revision or
+  checked-in contracts.
 
-## Repository operating model
+## Repository boundary
 
-- This repository owns the Radroots SDK workspace, including Rust SDK APIs,
-  generated language bindings, FFI layers, WebAssembly surfaces, package
-  metadata, and SDK validation flows.
-- It owns `radroots_sdk` and the ordinary-user `radroots` facade. The 17
-  lower release-v1 packages remain owned by the standalone
-  `radrootslabs/lib` repository.
-- Do not make this repository responsible for downstream apps, private
-  layouts, deployment policy, or compatibility packages unless represented by
-  a public contract here.
-- Keep commits and handoff language standalone and open-source-readable. Do
-  not reference private checkout structure or internal coordination context.
-- Prefer the smallest coherent target-state change. Do not mix unrelated
-  cleanup, speculative abstraction, compatibility scaffolding, or roadmap work.
-- `.github/**` and capsule-local CI workflows are forbidden. Keep validation
-  forge-agnostic; any required monorepo orchestration belongs exclusively to
-  the parent repository's root `.act/**` authority.
+- Keep the repository standalone, forge agnostic, and open-source-readable.
+  Do not depend on a non-public parent path, non-public contract, local sibling
+  checkout, unpublished local artifact, or internal coordination context.
+- Production source selection must use the exact remotely reachable public Git
+  revision recorded by both source-lock surfaces. Floating branches, tags,
+  local paths, and mismatched revisions are forbidden.
+- The `.radroots-consumer-root` marker must remain exactly `sdk` followed by
+  LF. Source resolution must remain absolute, canonical, non-symlinked, and
+  explicitly supplied through `RADROOTS_LIB_SOURCE_ROOT`.
+- `docs/**`, `.github/**`, and `.act/**` are forbidden tracked roots. Public
+  validation commands live in this repository; private cross-repository
+  orchestration belongs only to the parent repository's root `.act/**`.
+- Do not make this repository responsible for private applications,
+  deployment policy, service runtime ownership, or compatibility packages.
 
-## Preflight and engineering rules
+## Generated artifacts and packages
 
-- Inspect the relevant specs, manifests, implementation, tests, package
-  metadata, generators, and generated outputs before editing.
-- Inspect `git status --short` and preserve unrelated work.
-- Use checked-in repository commands and the narrowest validation that proves
-  the change; never claim a check passed unless it ran successfully.
-- Work spec-first. Do not invent packages, bindings, exports, compatibility
-  layers, or publishing behavior.
-- Prefer explicit typed models, deterministic behavior, narrow side effects,
-  and direct service boundaries over stringly or implicit behavior.
-- Avoid hidden production panics. Use typed errors for expected failures.
-- Avoid `unsafe` unless strictly necessary and document the local invariants.
-- Do not expose secrets, private keys, credentials, tokens, private
-  identifiers, sensitive user data, or sensitive event content in code, logs,
-  tests, fixtures, docs, or examples.
+- `tools/radroots_sdk_artifact.mjs` is the governed generation/check adapter.
+  It delegates generation and source-lock verification to the selected public
+  lib checkout through lib's `cargo xtask` surface.
+- Generated artifacts are reproducible outputs of checked-in source locks,
+  package/export contracts, and producer generators. Do not hand-edit
+  `generated/**`, generated files under `packages/**`, provenance JSON, or
+  package source-lock output.
+- Update generators and canonical contracts first, regenerate, inspect the
+  complete diff, and run freshness checks. Generated output never dictates a
+  native source model or creates a second source authority.
+- Keep package manifests, the pnpm lockfile, provenance, exports, generated
+  source, and consumer-facing package READMEs synchronized.
+- Do not reintroduce retired prototype evidence, outcomes, receipts, event
+  models, runtime contracts, or compatibility aliases. Services-hardening
+  generated changes must expose the approved four coverage states and three
+  outcomes together across every applicable language/package surface.
 
-## Architecture and generation rules
+## Working and verification rules
 
-- `radroots_sdk` is the advanced front door. It owns host-neutral client
-  semantics, not global runtimes, hidden workers, logging installation, UI
-  state, Studio databases, or process lifecycle.
-- `radroots` is a curated ordinary-user facade. It has no public `sdk`
-  namespace and does not wildcard-reexport `radroots_sdk`.
-- Cross-repository dependencies on the lower package family use registry
-  versions in release candidates, never production sibling paths or Git
-  overrides.
-- No public package has a dependency on a private or unpublished Radroots
-  package, including dev, build, optional, and target-specific edges.
-- Own generated artifacts through checked-in schemas, generators, templates,
-  and public contracts. Do not hand-edit generated output.
-- Generated bindings remain reproducible and do not mechanically dictate the
-  native Rust module layout.
-- During migration, every package remains non-publishable until its
-  package-realistic release gates pass and publication is explicitly
-  authorized. Follow `docs/implementation/PUBLICATION_FREEZE.md`.
+- Inspect `git status --short`, relevant contracts, package manifests, tools,
+  generated outputs, and tests before editing. Preserve unrelated work.
+- Run `cargo extbuild doctor` before the first mutating build, test, check,
+  dependency, package, or generation command, then route it through
+  `cargo extbuild run -- ...`.
+- `pnpm run contracts:check` validates the exact historical inventory and the
+  absence of forbidden public roots without requiring a lib checkout.
+- `pnpm run test:tools` runs standalone tool and boundary tests.
+- `pnpm run source:check` and generation/freshness commands require an exact
+  `RADROOTS_LIB_SOURCE_ROOT` matching the checked-in lock. `pnpm run check` is
+  the full generated-package lane.
+- This repository has no local `cargo xtask` package. Do not document or invoke
+  nonexistent SDK-local xtask commands; the artifact adapter invokes the
+  selected producer's governed xtask explicitly.
+- Use the narrowest check that proves a change while iterating, followed by the
+  complete affected standalone lane. Never claim a check passed unless it ran
+  successfully.
+- Prefer explicit typed models, deterministic behavior, bounded inputs, narrow
+  side effects, and fail-closed validation. Avoid hidden production panics and
+  `unsafe`; if `unsafe` becomes unavoidable, document and test its invariants.
+- Never expose secrets, credentials, tokens, private identifiers, sensitive
+  user data, or sensitive event content in source, logs, fixtures, generated
+  output, examples, or errors.
 
-## Commits, deviations, and irreversible actions
+## Changes, commits, and external gates
 
-- Format commits as `<scope>: <lower-case imperative summary>`.
-- Keep commits focused and reviewable. Use a blank line before a multi-line
-  body and `- ` bullets for notable changes and validation.
-- If repository evidence proves a planned step obsolete or unsafe, record the
-  evidence, affected specification anchor, disposition, and validation in
-  `docs/implementation/deviations.toml`, following
-  `docs/implementation/DEVIATIONS.md`. A normative change also requires an
-  approved decision record.
-- Do not publish crates or packages, create release tags, change registry
-  ownership, merge or rename repositories, merge pull requests, rotate
-  credentials, or mutate trusted-publisher configuration without explicit
-  authorization.
+- Make one coherent, reviewable target-state change at a time. Do not mix
+  unrelated cleanup, speculative abstraction, compatibility scaffolding, or
+  roadmap work.
+- Use commit subjects in the form `<scope>: <lower-case imperative summary>`.
+- A machine-contract change must update its validator and negative tests in the
+  same checkpoint. A generated contract change must update all affected
+  outputs and consumer qualification evidence in its owning sequence.
+- Repository evidence that invalidates an active parent specification is a
+  review finding to record in parent-owned authority; do not create a local
+  human deviation ledger or silently redefine behavior.
+- Do not push, tag, publish packages, mutate registry ownership, change trusted
+  publishers, deploy, or perform credential operations without the separate
+  authority required for that external action.
 
 ## Definition of done
 
-- The requested change is complete at the correct package boundary.
-- Affected code, tests, contracts, generators, outputs, and docs agree.
-- Relevant repository-owned validation passed or an exact blocker is reported.
-- The final review records files changed, checks run, residual risks, and
-  whether the next step is safe.
+- The change is complete at the source-lock, contract, generator, or package
+  boundary that owns it.
+- Contracts, tools, tests, package metadata, generated outputs, and lockfiles
+  agree, with zero tracked `docs/**`, `.github/**`, or `.act/**` paths.
+- Relevant standalone validation passed, exact failures are reported, the diff
+  contains no private dependency or unrelated change, and the next sequence
+  step is explicitly safe or blocked by a real external gate.

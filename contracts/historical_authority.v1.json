@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract_id": "radroots.sdk.historical_authority.v1",
+  "status": "historical",
+  "source_revision": "bcda74b3ebfff3f711670cc25b7910f27360fba7",
+  "parent_human_owner": "docs/oss/sdk/release-v1-history",
+  "capsule_human_docs_forbidden": true,
+  "artifacts": [
+    {
+      "path": "contracts/api_baselines/radroots-0.1.0-alpha.txt",
+      "role": "public_api_baseline",
+      "sha256": "e0c21fc096715fba3b3273bb1a8a880d6e871161772c5a1019404064aa0becb1"
+    },
+    {
+      "path": "contracts/api_baselines/radroots_sdk-0.1.0-alpha.txt",
+      "role": "public_api_baseline",
+      "sha256": "97dfccb393fcc7953a59f0b12f03485daf9b7c625e9a4529fd883fcf0306e618"
+    },
+    {
+      "path": "contracts/architecture/deviations.toml",
+      "role": "historical_deviation_ledger",
+      "sha256": "888d581264cddf6fe0b4a09a2171535094ef9fb3c422f7866e4e0c802359ea1f"
+    },
+    {
+      "path": "contracts/crates/release_v1/radroots_crates_release_v1.dot",
+      "role": "historical_release_graph",
+      "sha256": "d47de10be596a4d33fee102a4f0617f66700b49515a75a1f42d62c9710043059"
+    },
+    {
+      "path": "contracts/crates/release_v1/radroots_crates_release_v1.sha256",
+      "role": "captured_stale_checksum_manifest",
+      "sha256": "5759ceaae30a9435346320c2791cfda9eb1559b779ea79fd2e94810e14efa281"
+    },
+    {
+      "path": "contracts/crates/release_v1/radroots_crates_release_v1.toml",
+      "role": "historical_release_catalog",
+      "sha256": "1dc18437200dcd65b52090493306f452dade89b5116401d71be4ba4127239b19"
+    },
+    {
+      "path": "contracts/crates/release_v1/radroots_crates_release_v1_inventory.csv",
+      "role": "historical_release_inventory",
+      "sha256": "5020875c2cda4b2c9568c8b3f0fad5cd96756c3c779a72481a9652e558f77891"
+    }
+  ],
+  "retired_human_artifacts": [
+    {
+      "former_path": "docs/decisions/0001-public-api-leakage-migration-baseline.md",
+      "parent_path": "docs/oss/sdk/release-v1-history/decisions/0001-public-api-leakage-migration-baseline.md",
+      "sha256": "c5f2367bc85c84ce5a3af0d066d3fc8dab6d4e9f1061bb6af35b15d9e4b6e2b1"
+    },
+    {
+      "former_path": "docs/specs/radroots_crates_release_v1.md",
+      "parent_path": "docs/oss/sdk/release-v1-history/release-v1-specification.md",
+      "sha256": "6f98eb958a29921919147c44ff6a80565df367adf362f7ac872ce2588a09a1e5"
+    }
+  ],
+  "captured_checksum_manifest": {
+    "path": "contracts/crates/release_v1/radroots_crates_release_v1.sha256",
+    "status": "historical_stale_capture",
+    "current_digest_authority": "contracts/historical_authority.v1.json"
+  }
+}

@@ -1,48 +1,56 @@
 # Contributing
 
-Radroots SDK changes are contract-driven and independently reviewable. Before
-editing, read these files in order:
+Radroots SDK changes are contract-driven and independently verifiable. Before
+editing, read `AGENTS.md`, then inspect the affected source lock, contracts,
+package manifests, tools, generated outputs, and tests.
 
-1. `AGENTS.md`
-2. `docs/specs/README.md`
-3. `docs/specs/radroots_crates_release_v1.md` for crate-surface work
-4. the affected manifests, implementation, contracts, generators, and tests
-
-The release-v1 architecture identifier is `radroots.crates.release.v1`. This
-repository owns `radroots_sdk` and the ordinary-user `radroots` facade; the
-standalone core-library repository owns the other 17 public packages.
+This repository is the public generated-package and source-lock consumer for
+the Radroots SDK cohort. Canonical generator and Rust implementation source is
+selected from `radrootslabs/lib` by the exact revision in
+`radroots.lib.source-lock.v1.toml` and `Cargo.toml`. Human architecture and
+execution authority is parent-owned under `docs/oss/sdk/**`; standalone
+commands do not require that private parent documentation.
 
 ## Workflow
 
-1. Inspect repository status and the current source authority.
-2. Make one coherent, commit-sized change.
-3. Update public contracts, tests, generators, checked-in outputs, and docs
-   with the implementation they govern.
-4. Run the narrowest repository-owned checks that prove the change, followed
-   by the broader workspace or package lane required by its scope.
-5. Review the staged diff for API leakage, private dependencies, generated
-   drift, secrets, hidden side effects, and unrelated changes.
+1. Inspect repository status and the current machine authority.
+2. Make one coherent, commit-sized change at the owning contract, tool,
+   generated-output, or package boundary.
+3. If producer behavior changes, update the selected public lib source first,
+   then regenerate every affected SDK output from that exact reachable
+   revision.
+4. Update contracts, tests, generated outputs, package metadata, and lockfiles
+   together.
+5. Run the narrowest repository-owned checks that prove the change, followed
+   by the complete affected standalone lane.
+6. Review the staged diff for source-lock drift, handwritten generated output,
+   stale provenance, private dependencies, forbidden roots, secrets, and
+   unrelated changes.
 
-Use `cargo xtask check` for the repository-wide Rust and generated-package
-lane where applicable. Run targeted format, check, test, Clippy, contract, and
-generated-freshness commands while iterating.
-
-## Commits and deviations
-
-Use this commit form:
+Run `cargo extbuild doctor` before the first mutating verification command and
+route repository checks through `cargo extbuild run -- ...`. The primary
+commands are:
 
 ```text
-<scope>: <lower-case imperative summary>
+pnpm run contracts:check
+pnpm run test:tools
+pnpm run source:check
+pnpm run check
 ```
 
-Keep commits focused and keep public commit language independent of any
-private checkout. Do not publish, tag, merge, or change registry ownership
-without explicit authorization.
+The source and generation lanes require an absolute, canonical
+`RADROOTS_LIB_SOURCE_ROOT` whose Git revision matches the checked-in source
+lock. The contract and tool-test lanes remain usable without the parent
+monorepo. This capsule has no local `cargo xtask` package.
 
-When current evidence proves a planned step obsolete or unsafe, follow
-`docs/implementation/DEVIATIONS.md` and validate the machine-readable ledger
-with `cargo xtask architecture`. Complete
-`docs/implementation/STEP_REPORT_TEMPLATE.md`, and keep
-`docs/implementation/TRACEABILITY.md` aligned with durable requirements.
-Record the evidence and affected spec anchor before changing the plan; do not
-silently redefine the architecture.
+## Commits and external actions
+
+Use `<scope>: <lower-case imperative summary>` for focused commits. Do not add
+capsule-local human authority, `.github/**`, or `.act/**`; do not create a
+compatibility path for a breaking generated contract. Record any required
+normative decision in the parent-owned services-hardening authority and update
+the corresponding standalone machine contract.
+
+Do not push, tag, publish, deploy, change registry ownership or trusted
+publishers, or perform credential operations without separate explicit
+authorization.

@@ -1,7 +1,18 @@
 # radroots_sdk
 
-This is the README for `sdk` which contains the Rad Roots SDK, including Rust runtime
-APIs, generated bindings, FFI layers, and package surfaces.
+This standalone public repository owns Radroots SDK generated package outputs,
+package/export contracts, provenance, and the exact source lock that selects
+their canonical public producer revision.
+
+The Rust workspace contains only the unpublished source-lock verification
+capsule. Generated TypeScript, Wasm, Swift, and Kotlin surfaces are produced
+through `tools/radroots_sdk_artifact.mjs` from the exact
+`radrootslabs/lib` revision recorded in `radroots.lib.source-lock.v1.toml`.
+
+Use `pnpm run contracts:check` for standalone contract validation and
+`pnpm run check` with an exact `RADROOTS_LIB_SOURCE_ROOT` for the complete
+generated-package lane. See `AGENTS.md` and `CONTRIBUTING.md` for repository
+rules and command requirements.
 
 ## Copyright
 
@@ -11,4 +22,5 @@ Except as otherwise noted, all files in the `sdk` distribution are
 
 ## License
 
-This repository is licensed under either MIT or Apache-2.0, at your option. See LICENSE-MIT and LICENSE-APACHE.
+This repository is licensed under either MIT or Apache-2.0, at your option.
+See LICENSE-MIT and LICENSE-APACHE.

@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@10.25.0",
   "scripts": {
+    "contracts:check": "node tools/radroots_sdk_contract.mjs",
     "source:check": "node tools/radroots_sdk_artifact.mjs source-check",
     "generate:ts": "node tools/radroots_sdk_artifact.mjs write typescript",
     "generate:wasm": "node tools/radroots_sdk_artifact.mjs write wasm",
@@ -11,7 +12,7 @@
     "generate": "pnpm run generate:ts && pnpm run generate:wasm && pnpm run generate:swift && pnpm run generate:kotlin",
     "check:generated": "node tools/radroots_sdk_artifact.mjs check typescript && node tools/radroots_sdk_artifact.mjs check wasm && node tools/radroots_sdk_artifact.mjs check swift && node tools/radroots_sdk_artifact.mjs check kotlin",
     "test:tools": "node --test tools/*.test.mjs",
-    "check": "pnpm run generate && pnpm -r build && pnpm -r typecheck && pnpm run test:tools && pnpm run check:generated",
+    "check": "pnpm run contracts:check && pnpm run generate && pnpm -r build && pnpm -r typecheck && pnpm run test:tools && pnpm run check:generated",
     "build": "pnpm run generate:ts && pnpm run generate:wasm && pnpm -r build",
     "typecheck": "pnpm -r typecheck"
   },
