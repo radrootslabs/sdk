@@ -2,11 +2,11 @@
   "schema_version": 1,
   "source_package": "radroots_sdk_ffi",
   "source_version": "0.1.0-alpha",
-  "source_sha256": "dccf9f024910684a3225310a593667312f0c2598c22f05fa233b6012b0e133eb",
+  "source_sha256": "bb89f460401a22a2bca7d58bb9dbe3300f114f25bd8f64156e492c43563ae12c",
   "generator": "uniffi",
   "generator_version": "0.29.5",
   "language": "kotlin",
   "outputs": {
-    "uniffi/radroots_sdk/radroots_sdk.kt": "63a91b7c7790ee786d1c94cfad30cbe6e3ac5c737108ec61c74696fc068ef7da"
+    "uniffi/radroots_sdk/radroots_sdk.kt": "cc57260fade24a3b6d8366f06f17fb2d3132a0293cb61dd2a12d30d95f4a4e66"
   }
 }

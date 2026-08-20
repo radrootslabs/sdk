@@ -400,6 +400,54 @@ fileprivate final class UniffiHandleMap<T>: @unchecked Sendable {
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
+fileprivate struct FfiConverterUInt16: FfiConverterPrimitive {
+    typealias FfiType = UInt16
+    typealias SwiftType = UInt16
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UInt16 {
+        return try lift(readInt(&buf))
+    }
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(value))
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterUInt32: FfiConverterPrimitive {
+    typealias FfiType = UInt32
+    typealias SwiftType = UInt32
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UInt32 {
+        return try lift(readInt(&buf))
+    }
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(value))
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterUInt64: FfiConverterPrimitive {
+    typealias FfiType = UInt64
+    typealias SwiftType = UInt64
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> UInt64 {
+        return try lift(readInt(&buf))
+    }
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        writeInt(&buf, lower(value))
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 fileprivate struct FfiConverterBool : FfiConverter {
     typealias FfiType = Int8
     typealias SwiftType = Bool
@@ -459,6 +507,24 @@ fileprivate struct FfiConverterString: FfiConverter {
         let len = Int32(value.utf8.count)
         writeInt(&buf, len)
         writeBytes(&buf, value.utf8)
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterData: FfiConverterRustBuffer {
+    typealias SwiftType = Data
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Data {
+        let len: Int32 = try readInt(&buf)
+        return Data(try readBytes(&buf, count: Int(len)))
+    }
+
+    public static func write(_ value: Data, into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        writeBytes(&buf, value)
     }
 }
 
@@ -743,6 +809,740 @@ public func FfiConverterTypeCapabilityStatus_lower(_ value: CapabilityStatus) ->
     return FfiConverterTypeCapabilityStatus.lower(value)
 }
 
+
+/**
+ * Verified final RHI attestation projection.
+ */
+public struct RhiEvidenceAttestation {
+    public var issuerPubkey: String
+    public var tradeId: String
+    public var claimMutationId: String
+    public var outcome: TradeEvidenceOutcome
+    public var observedAtUnixS: String
+    public var tradeGeneration: String
+    public var statementDigest: String
+    public var supersession: RhiEvidenceSupersession?
+    public var canonicalContent: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(issuerPubkey: String, tradeId: String, claimMutationId: String, outcome: TradeEvidenceOutcome, observedAtUnixS: String, tradeGeneration: String, statementDigest: String, supersession: RhiEvidenceSupersession?, canonicalContent: String) {
+        self.issuerPubkey = issuerPubkey
+        self.tradeId = tradeId
+        self.claimMutationId = claimMutationId
+        self.outcome = outcome
+        self.observedAtUnixS = observedAtUnixS
+        self.tradeGeneration = tradeGeneration
+        self.statementDigest = statementDigest
+        self.supersession = supersession
+        self.canonicalContent = canonicalContent
+    }
+}
+
+#if compiler(>=6)
+extension RhiEvidenceAttestation: Sendable {}
+#endif
+
+
+extension RhiEvidenceAttestation: Equatable, Hashable {
+    public static func ==(lhs: RhiEvidenceAttestation, rhs: RhiEvidenceAttestation) -> Bool {
+        if lhs.issuerPubkey != rhs.issuerPubkey {
+            return false
+        }
+        if lhs.tradeId != rhs.tradeId {
+            return false
+        }
+        if lhs.claimMutationId != rhs.claimMutationId {
+            return false
+        }
+        if lhs.outcome != rhs.outcome {
+            return false
+        }
+        if lhs.observedAtUnixS != rhs.observedAtUnixS {
+            return false
+        }
+        if lhs.tradeGeneration != rhs.tradeGeneration {
+            return false
+        }
+        if lhs.statementDigest != rhs.statementDigest {
+            return false
+        }
+        if lhs.supersession != rhs.supersession {
+            return false
+        }
+        if lhs.canonicalContent != rhs.canonicalContent {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(issuerPubkey)
+        hasher.combine(tradeId)
+        hasher.combine(claimMutationId)
+        hasher.combine(outcome)
+        hasher.combine(observedAtUnixS)
+        hasher.combine(tradeGeneration)
+        hasher.combine(statementDigest)
+        hasher.combine(supersession)
+        hasher.combine(canonicalContent)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeRhiEvidenceAttestation: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> RhiEvidenceAttestation {
+        return
+            try RhiEvidenceAttestation(
+                issuerPubkey: FfiConverterString.read(from: &buf),
+                tradeId: FfiConverterString.read(from: &buf),
+                claimMutationId: FfiConverterString.read(from: &buf),
+                outcome: FfiConverterTypeTradeEvidenceOutcome.read(from: &buf),
+                observedAtUnixS: FfiConverterString.read(from: &buf),
+                tradeGeneration: FfiConverterString.read(from: &buf),
+                statementDigest: FfiConverterString.read(from: &buf),
+                supersession: FfiConverterOptionTypeRhiEvidenceSupersession.read(from: &buf),
+                canonicalContent: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: RhiEvidenceAttestation, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.issuerPubkey, into: &buf)
+        FfiConverterString.write(value.tradeId, into: &buf)
+        FfiConverterString.write(value.claimMutationId, into: &buf)
+        FfiConverterTypeTradeEvidenceOutcome.write(value.outcome, into: &buf)
+        FfiConverterString.write(value.observedAtUnixS, into: &buf)
+        FfiConverterString.write(value.tradeGeneration, into: &buf)
+        FfiConverterString.write(value.statementDigest, into: &buf)
+        FfiConverterOptionTypeRhiEvidenceSupersession.write(value.supersession, into: &buf)
+        FfiConverterString.write(value.canonicalContent, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceAttestation_lift(_ buf: RustBuffer) throws -> RhiEvidenceAttestation {
+    return try FfiConverterTypeRhiEvidenceAttestation.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceAttestation_lower(_ value: RhiEvidenceAttestation) -> RustBuffer {
+    return FfiConverterTypeRhiEvidenceAttestation.lower(value)
+}
+
+
+/**
+ * Bounded projection of one canonical RHI evidence report.
+ */
+public struct RhiEvidenceReport {
+    public var contractId: String
+    public var contractVersion: UInt16
+    public var issuerPubkey: String
+    public var tradeId: String
+    public var claimMutationId: String
+    public var outcome: TradeEvidenceOutcome
+    public var reasonCodes: [String]
+    public var projectionDigest: String
+    public var evidenceManifestDigest: String
+    public var evidencePolicyDigest: String
+    public var observedAtUnixS: String
+    public var tradeGeneration: String
+    public var statementDigest: String
+    public var supersession: RhiEvidenceSupersession?
+    public var canonicalContent: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(contractId: String, contractVersion: UInt16, issuerPubkey: String, tradeId: String, claimMutationId: String, outcome: TradeEvidenceOutcome, reasonCodes: [String], projectionDigest: String, evidenceManifestDigest: String, evidencePolicyDigest: String, observedAtUnixS: String, tradeGeneration: String, statementDigest: String, supersession: RhiEvidenceSupersession?, canonicalContent: String) {
+        self.contractId = contractId
+        self.contractVersion = contractVersion
+        self.issuerPubkey = issuerPubkey
+        self.tradeId = tradeId
+        self.claimMutationId = claimMutationId
+        self.outcome = outcome
+        self.reasonCodes = reasonCodes
+        self.projectionDigest = projectionDigest
+        self.evidenceManifestDigest = evidenceManifestDigest
+        self.evidencePolicyDigest = evidencePolicyDigest
+        self.observedAtUnixS = observedAtUnixS
+        self.tradeGeneration = tradeGeneration
+        self.statementDigest = statementDigest
+        self.supersession = supersession
+        self.canonicalContent = canonicalContent
+    }
+}
+
+#if compiler(>=6)
+extension RhiEvidenceReport: Sendable {}
+#endif
+
+
+extension RhiEvidenceReport: Equatable, Hashable {
+    public static func ==(lhs: RhiEvidenceReport, rhs: RhiEvidenceReport) -> Bool {
+        if lhs.contractId != rhs.contractId {
+            return false
+        }
+        if lhs.contractVersion != rhs.contractVersion {
+            return false
+        }
+        if lhs.issuerPubkey != rhs.issuerPubkey {
+            return false
+        }
+        if lhs.tradeId != rhs.tradeId {
+            return false
+        }
+        if lhs.claimMutationId != rhs.claimMutationId {
+            return false
+        }
+        if lhs.outcome != rhs.outcome {
+            return false
+        }
+        if lhs.reasonCodes != rhs.reasonCodes {
+            return false
+        }
+        if lhs.projectionDigest != rhs.projectionDigest {
+            return false
+        }
+        if lhs.evidenceManifestDigest != rhs.evidenceManifestDigest {
+            return false
+        }
+        if lhs.evidencePolicyDigest != rhs.evidencePolicyDigest {
+            return false
+        }
+        if lhs.observedAtUnixS != rhs.observedAtUnixS {
+            return false
+        }
+        if lhs.tradeGeneration != rhs.tradeGeneration {
+            return false
+        }
+        if lhs.statementDigest != rhs.statementDigest {
+            return false
+        }
+        if lhs.supersession != rhs.supersession {
+            return false
+        }
+        if lhs.canonicalContent != rhs.canonicalContent {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(contractId)
+        hasher.combine(contractVersion)
+        hasher.combine(issuerPubkey)
+        hasher.combine(tradeId)
+        hasher.combine(claimMutationId)
+        hasher.combine(outcome)
+        hasher.combine(reasonCodes)
+        hasher.combine(projectionDigest)
+        hasher.combine(evidenceManifestDigest)
+        hasher.combine(evidencePolicyDigest)
+        hasher.combine(observedAtUnixS)
+        hasher.combine(tradeGeneration)
+        hasher.combine(statementDigest)
+        hasher.combine(supersession)
+        hasher.combine(canonicalContent)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeRhiEvidenceReport: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> RhiEvidenceReport {
+        return
+            try RhiEvidenceReport(
+                contractId: FfiConverterString.read(from: &buf),
+                contractVersion: FfiConverterUInt16.read(from: &buf),
+                issuerPubkey: FfiConverterString.read(from: &buf),
+                tradeId: FfiConverterString.read(from: &buf),
+                claimMutationId: FfiConverterString.read(from: &buf),
+                outcome: FfiConverterTypeTradeEvidenceOutcome.read(from: &buf),
+                reasonCodes: FfiConverterSequenceString.read(from: &buf),
+                projectionDigest: FfiConverterString.read(from: &buf),
+                evidenceManifestDigest: FfiConverterString.read(from: &buf),
+                evidencePolicyDigest: FfiConverterString.read(from: &buf),
+                observedAtUnixS: FfiConverterString.read(from: &buf),
+                tradeGeneration: FfiConverterString.read(from: &buf),
+                statementDigest: FfiConverterString.read(from: &buf),
+                supersession: FfiConverterOptionTypeRhiEvidenceSupersession.read(from: &buf),
+                canonicalContent: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: RhiEvidenceReport, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.contractId, into: &buf)
+        FfiConverterUInt16.write(value.contractVersion, into: &buf)
+        FfiConverterString.write(value.issuerPubkey, into: &buf)
+        FfiConverterString.write(value.tradeId, into: &buf)
+        FfiConverterString.write(value.claimMutationId, into: &buf)
+        FfiConverterTypeTradeEvidenceOutcome.write(value.outcome, into: &buf)
+        FfiConverterSequenceString.write(value.reasonCodes, into: &buf)
+        FfiConverterString.write(value.projectionDigest, into: &buf)
+        FfiConverterString.write(value.evidenceManifestDigest, into: &buf)
+        FfiConverterString.write(value.evidencePolicyDigest, into: &buf)
+        FfiConverterString.write(value.observedAtUnixS, into: &buf)
+        FfiConverterString.write(value.tradeGeneration, into: &buf)
+        FfiConverterString.write(value.statementDigest, into: &buf)
+        FfiConverterOptionTypeRhiEvidenceSupersession.write(value.supersession, into: &buf)
+        FfiConverterString.write(value.canonicalContent, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceReport_lift(_ buf: RustBuffer) throws -> RhiEvidenceReport {
+    return try FfiConverterTypeRhiEvidenceReport.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceReport_lower(_ value: RhiEvidenceReport) -> RustBuffer {
+    return FfiConverterTypeRhiEvidenceReport.lower(value)
+}
+
+
+/**
+ * Exact immutable RHI supersession reference.
+ */
+public struct RhiEvidenceSupersession {
+    public var reportId: String
+    public var eventId: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(reportId: String, eventId: String) {
+        self.reportId = reportId
+        self.eventId = eventId
+    }
+}
+
+#if compiler(>=6)
+extension RhiEvidenceSupersession: Sendable {}
+#endif
+
+
+extension RhiEvidenceSupersession: Equatable, Hashable {
+    public static func ==(lhs: RhiEvidenceSupersession, rhs: RhiEvidenceSupersession) -> Bool {
+        if lhs.reportId != rhs.reportId {
+            return false
+        }
+        if lhs.eventId != rhs.eventId {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(reportId)
+        hasher.combine(eventId)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeRhiEvidenceSupersession: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> RhiEvidenceSupersession {
+        return
+            try RhiEvidenceSupersession(
+                reportId: FfiConverterString.read(from: &buf),
+                eventId: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: RhiEvidenceSupersession, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.reportId, into: &buf)
+        FfiConverterString.write(value.eventId, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceSupersession_lift(_ buf: RustBuffer) throws -> RhiEvidenceSupersession {
+    return try FfiConverterTypeRhiEvidenceSupersession.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeRhiEvidenceSupersession_lower(_ value: RhiEvidenceSupersession) -> RustBuffer {
+    return FfiConverterTypeRhiEvidenceSupersession.lower(value)
+}
+
+
+/**
+ * Signed NIP-01 event input for verified attestation admission.
+ */
+public struct SignedEvent {
+    public var id: String
+    public var authorPubkey: String
+    public var createdAtUnixS: UInt64
+    public var kind: UInt32
+    public var tags: [[String]]
+    public var content: String
+    public var signature: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(id: String, authorPubkey: String, createdAtUnixS: UInt64, kind: UInt32, tags: [[String]], content: String, signature: String) {
+        self.id = id
+        self.authorPubkey = authorPubkey
+        self.createdAtUnixS = createdAtUnixS
+        self.kind = kind
+        self.tags = tags
+        self.content = content
+        self.signature = signature
+    }
+}
+
+#if compiler(>=6)
+extension SignedEvent: Sendable {}
+#endif
+
+
+extension SignedEvent: Equatable, Hashable {
+    public static func ==(lhs: SignedEvent, rhs: SignedEvent) -> Bool {
+        if lhs.id != rhs.id {
+            return false
+        }
+        if lhs.authorPubkey != rhs.authorPubkey {
+            return false
+        }
+        if lhs.createdAtUnixS != rhs.createdAtUnixS {
+            return false
+        }
+        if lhs.kind != rhs.kind {
+            return false
+        }
+        if lhs.tags != rhs.tags {
+            return false
+        }
+        if lhs.content != rhs.content {
+            return false
+        }
+        if lhs.signature != rhs.signature {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(authorPubkey)
+        hasher.combine(createdAtUnixS)
+        hasher.combine(kind)
+        hasher.combine(tags)
+        hasher.combine(content)
+        hasher.combine(signature)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeSignedEvent: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SignedEvent {
+        return
+            try SignedEvent(
+                id: FfiConverterString.read(from: &buf),
+                authorPubkey: FfiConverterString.read(from: &buf),
+                createdAtUnixS: FfiConverterUInt64.read(from: &buf),
+                kind: FfiConverterUInt32.read(from: &buf),
+                tags: FfiConverterSequenceSequenceString.read(from: &buf),
+                content: FfiConverterString.read(from: &buf),
+                signature: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: SignedEvent, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.id, into: &buf)
+        FfiConverterString.write(value.authorPubkey, into: &buf)
+        FfiConverterUInt64.write(value.createdAtUnixS, into: &buf)
+        FfiConverterUInt32.write(value.kind, into: &buf)
+        FfiConverterSequenceSequenceString.write(value.tags, into: &buf)
+        FfiConverterString.write(value.content, into: &buf)
+        FfiConverterString.write(value.signature, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeSignedEvent_lift(_ buf: RustBuffer) throws -> SignedEvent {
+    return try FfiConverterTypeSignedEvent.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeSignedEvent_lower(_ value: SignedEvent) -> RustBuffer {
+    return FfiConverterTypeSignedEvent.lower(value)
+}
+
+
+/**
+ * Bounded projection of one canonical evidence manifest.
+ */
+public struct TradeEvidenceManifest {
+    public var contractId: String
+    public var contractVersion: UInt16
+    public var tradeId: String
+    public var tradeGeneration: String
+    public var observedAtUnixS: String
+    public var coverage: TradeEvidenceCoverage
+    public var evidencePolicyDigest: String
+    public var manifestDigest: String
+    public var canonicalBytesHex: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(contractId: String, contractVersion: UInt16, tradeId: String, tradeGeneration: String, observedAtUnixS: String, coverage: TradeEvidenceCoverage, evidencePolicyDigest: String, manifestDigest: String, canonicalBytesHex: String) {
+        self.contractId = contractId
+        self.contractVersion = contractVersion
+        self.tradeId = tradeId
+        self.tradeGeneration = tradeGeneration
+        self.observedAtUnixS = observedAtUnixS
+        self.coverage = coverage
+        self.evidencePolicyDigest = evidencePolicyDigest
+        self.manifestDigest = manifestDigest
+        self.canonicalBytesHex = canonicalBytesHex
+    }
+}
+
+#if compiler(>=6)
+extension TradeEvidenceManifest: Sendable {}
+#endif
+
+
+extension TradeEvidenceManifest: Equatable, Hashable {
+    public static func ==(lhs: TradeEvidenceManifest, rhs: TradeEvidenceManifest) -> Bool {
+        if lhs.contractId != rhs.contractId {
+            return false
+        }
+        if lhs.contractVersion != rhs.contractVersion {
+            return false
+        }
+        if lhs.tradeId != rhs.tradeId {
+            return false
+        }
+        if lhs.tradeGeneration != rhs.tradeGeneration {
+            return false
+        }
+        if lhs.observedAtUnixS != rhs.observedAtUnixS {
+            return false
+        }
+        if lhs.coverage != rhs.coverage {
+            return false
+        }
+        if lhs.evidencePolicyDigest != rhs.evidencePolicyDigest {
+            return false
+        }
+        if lhs.manifestDigest != rhs.manifestDigest {
+            return false
+        }
+        if lhs.canonicalBytesHex != rhs.canonicalBytesHex {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(contractId)
+        hasher.combine(contractVersion)
+        hasher.combine(tradeId)
+        hasher.combine(tradeGeneration)
+        hasher.combine(observedAtUnixS)
+        hasher.combine(coverage)
+        hasher.combine(evidencePolicyDigest)
+        hasher.combine(manifestDigest)
+        hasher.combine(canonicalBytesHex)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeTradeEvidenceManifest: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TradeEvidenceManifest {
+        return
+            try TradeEvidenceManifest(
+                contractId: FfiConverterString.read(from: &buf),
+                contractVersion: FfiConverterUInt16.read(from: &buf),
+                tradeId: FfiConverterString.read(from: &buf),
+                tradeGeneration: FfiConverterString.read(from: &buf),
+                observedAtUnixS: FfiConverterString.read(from: &buf),
+                coverage: FfiConverterTypeTradeEvidenceCoverage.read(from: &buf),
+                evidencePolicyDigest: FfiConverterString.read(from: &buf),
+                manifestDigest: FfiConverterString.read(from: &buf),
+                canonicalBytesHex: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: TradeEvidenceManifest, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.contractId, into: &buf)
+        FfiConverterUInt16.write(value.contractVersion, into: &buf)
+        FfiConverterString.write(value.tradeId, into: &buf)
+        FfiConverterString.write(value.tradeGeneration, into: &buf)
+        FfiConverterString.write(value.observedAtUnixS, into: &buf)
+        FfiConverterTypeTradeEvidenceCoverage.write(value.coverage, into: &buf)
+        FfiConverterString.write(value.evidencePolicyDigest, into: &buf)
+        FfiConverterString.write(value.manifestDigest, into: &buf)
+        FfiConverterString.write(value.canonicalBytesHex, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceManifest_lift(_ buf: RustBuffer) throws -> TradeEvidenceManifest {
+    return try FfiConverterTypeTradeEvidenceManifest.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceManifest_lower(_ value: TradeEvidenceManifest) -> RustBuffer {
+    return FfiConverterTypeTradeEvidenceManifest.lower(value)
+}
+
+
+/**
+ * One unsigned typed event plan ready for host-owned signing.
+ */
+public struct TypedEvidenceEventPlan {
+    public var contractId: String
+    public var kind: UInt32
+    public var authorPubkey: String
+    public var createdAtUnixS: String
+    public var expectedEventId: String
+    public var tags: [[String]]
+    public var content: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(contractId: String, kind: UInt32, authorPubkey: String, createdAtUnixS: String, expectedEventId: String, tags: [[String]], content: String) {
+        self.contractId = contractId
+        self.kind = kind
+        self.authorPubkey = authorPubkey
+        self.createdAtUnixS = createdAtUnixS
+        self.expectedEventId = expectedEventId
+        self.tags = tags
+        self.content = content
+    }
+}
+
+#if compiler(>=6)
+extension TypedEvidenceEventPlan: Sendable {}
+#endif
+
+
+extension TypedEvidenceEventPlan: Equatable, Hashable {
+    public static func ==(lhs: TypedEvidenceEventPlan, rhs: TypedEvidenceEventPlan) -> Bool {
+        if lhs.contractId != rhs.contractId {
+            return false
+        }
+        if lhs.kind != rhs.kind {
+            return false
+        }
+        if lhs.authorPubkey != rhs.authorPubkey {
+            return false
+        }
+        if lhs.createdAtUnixS != rhs.createdAtUnixS {
+            return false
+        }
+        if lhs.expectedEventId != rhs.expectedEventId {
+            return false
+        }
+        if lhs.tags != rhs.tags {
+            return false
+        }
+        if lhs.content != rhs.content {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(contractId)
+        hasher.combine(kind)
+        hasher.combine(authorPubkey)
+        hasher.combine(createdAtUnixS)
+        hasher.combine(expectedEventId)
+        hasher.combine(tags)
+        hasher.combine(content)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeTypedEvidenceEventPlan: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TypedEvidenceEventPlan {
+        return
+            try TypedEvidenceEventPlan(
+                contractId: FfiConverterString.read(from: &buf),
+                kind: FfiConverterUInt32.read(from: &buf),
+                authorPubkey: FfiConverterString.read(from: &buf),
+                createdAtUnixS: FfiConverterString.read(from: &buf),
+                expectedEventId: FfiConverterString.read(from: &buf),
+                tags: FfiConverterSequenceSequenceString.read(from: &buf),
+                content: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: TypedEvidenceEventPlan, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.contractId, into: &buf)
+        FfiConverterUInt32.write(value.kind, into: &buf)
+        FfiConverterString.write(value.authorPubkey, into: &buf)
+        FfiConverterString.write(value.createdAtUnixS, into: &buf)
+        FfiConverterString.write(value.expectedEventId, into: &buf)
+        FfiConverterSequenceSequenceString.write(value.tags, into: &buf)
+        FfiConverterString.write(value.content, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTypedEvidenceEventPlan_lift(_ buf: RustBuffer) throws -> TypedEvidenceEventPlan {
+    return try FfiConverterTypeTypedEvidenceEventPlan.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTypedEvidenceEventPlan_lower(_ value: TypedEvidenceEventPlan) -> RustBuffer {
+    return FfiConverterTypeTypedEvidenceEventPlan.lower(value)
+}
+
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 /**
@@ -993,6 +1793,222 @@ extension Error: Foundation.LocalizedError {
 
 
 
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+/**
+ * Final evidence coverage vocabulary.
+ */
+
+public enum TradeEvidenceCoverage {
+
+    case missing
+    case partial
+    case scopeSatisfied
+    case unsupported
+}
+
+
+#if compiler(>=6)
+extension TradeEvidenceCoverage: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeTradeEvidenceCoverage: FfiConverterRustBuffer {
+    typealias SwiftType = TradeEvidenceCoverage
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TradeEvidenceCoverage {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+
+        case 1: return .missing
+
+        case 2: return .partial
+
+        case 3: return .scopeSatisfied
+
+        case 4: return .unsupported
+
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: TradeEvidenceCoverage, into buf: inout [UInt8]) {
+        switch value {
+
+
+        case .missing:
+            writeInt(&buf, Int32(1))
+
+
+        case .partial:
+            writeInt(&buf, Int32(2))
+
+
+        case .scopeSatisfied:
+            writeInt(&buf, Int32(3))
+
+
+        case .unsupported:
+            writeInt(&buf, Int32(4))
+
+        }
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceCoverage_lift(_ buf: RustBuffer) throws -> TradeEvidenceCoverage {
+    return try FfiConverterTypeTradeEvidenceCoverage.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceCoverage_lower(_ value: TradeEvidenceCoverage) -> RustBuffer {
+    return FfiConverterTypeTradeEvidenceCoverage.lower(value)
+}
+
+
+extension TradeEvidenceCoverage: Equatable, Hashable {}
+
+
+
+
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+/**
+ * Final evidence outcome vocabulary.
+ */
+
+public enum TradeEvidenceOutcome {
+
+    case valid
+    case invalid
+    case indeterminate
+}
+
+
+#if compiler(>=6)
+extension TradeEvidenceOutcome: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeTradeEvidenceOutcome: FfiConverterRustBuffer {
+    typealias SwiftType = TradeEvidenceOutcome
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TradeEvidenceOutcome {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+
+        case 1: return .valid
+
+        case 2: return .invalid
+
+        case 3: return .indeterminate
+
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: TradeEvidenceOutcome, into buf: inout [UInt8]) {
+        switch value {
+
+
+        case .valid:
+            writeInt(&buf, Int32(1))
+
+
+        case .invalid:
+            writeInt(&buf, Int32(2))
+
+
+        case .indeterminate:
+            writeInt(&buf, Int32(3))
+
+        }
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceOutcome_lift(_ buf: RustBuffer) throws -> TradeEvidenceOutcome {
+    return try FfiConverterTypeTradeEvidenceOutcome.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTradeEvidenceOutcome_lower(_ value: TradeEvidenceOutcome) -> RustBuffer {
+    return FfiConverterTypeTradeEvidenceOutcome.lower(value)
+}
+
+
+extension TradeEvidenceOutcome: Equatable, Hashable {}
+
+
+
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterOptionTypeRhiEvidenceSupersession: FfiConverterRustBuffer {
+    typealias SwiftType = RhiEvidenceSupersession?
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterTypeRhiEvidenceSupersession.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterTypeRhiEvidenceSupersession.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterSequenceString: FfiConverterRustBuffer {
+    typealias SwiftType = [String]
+
+    public static func write(_ value: [String], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterString.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [String] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [String]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterString.read(from: &buf))
+        }
+        return seq
+    }
+}
+
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
@@ -1013,6 +2029,31 @@ fileprivate struct FfiConverterSequenceTypeCapabilityStatus: FfiConverterRustBuf
         seq.reserveCapacity(Int(len))
         for _ in 0 ..< len {
             seq.append(try FfiConverterTypeCapabilityStatus.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterSequenceSequenceString: FfiConverterRustBuffer {
+    typealias SwiftType = [[String]]
+
+    public static func write(_ value: [[String]], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterSequenceString.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [[String]] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [[String]]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterSequenceString.read(from: &buf))
         }
         return seq
     }
@@ -1063,6 +2104,35 @@ fileprivate func uniffiFutureContinuationCallback(handle: UInt64, pollResult: In
         print("uniffiFutureContinuationCallback invalid handle")
     }
 }
+public func parseRhiEvidenceReport(canonicalContent: String)throws  -> RhiEvidenceReport  {
+    return try  FfiConverterTypeRhiEvidenceReport_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+    uniffi_radroots_sdk_ffi_fn_func_parse_rhi_evidence_report(
+        FfiConverterString.lower(canonicalContent),$0
+    )
+})
+}
+public func parseTradeEvidenceManifest(canonicalBytes: Data)throws  -> TradeEvidenceManifest  {
+    return try  FfiConverterTypeTradeEvidenceManifest_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+    uniffi_radroots_sdk_ffi_fn_func_parse_trade_evidence_manifest(
+        FfiConverterData.lower(canonicalBytes),$0
+    )
+})
+}
+public func prepareRhiEvidenceAttestation(canonicalContent: String, createdAtUnixS: UInt64)throws  -> TypedEvidenceEventPlan  {
+    return try  FfiConverterTypeTypedEvidenceEventPlan_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+    uniffi_radroots_sdk_ffi_fn_func_prepare_rhi_evidence_attestation(
+        FfiConverterString.lower(canonicalContent),
+        FfiConverterUInt64.lower(createdAtUnixS),$0
+    )
+})
+}
+public func validateRhiEvidenceAttestation(event: SignedEvent)throws  -> RhiEvidenceAttestation  {
+    return try  FfiConverterTypeRhiEvidenceAttestation_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+    uniffi_radroots_sdk_ffi_fn_func_validate_rhi_evidence_attestation(
+        FfiConverterTypeSignedEvent_lower(event),$0
+    )
+})
+}
 
 private enum InitializationResult {
     case ok
@@ -1078,6 +2148,18 @@ private let initializationResult: InitializationResult = {
     let scaffolding_contract_version = ffi_radroots_sdk_ffi_uniffi_contract_version()
     if bindings_contract_version != scaffolding_contract_version {
         return InitializationResult.contractVersionMismatch
+    }
+    if (uniffi_radroots_sdk_ffi_checksum_func_parse_rhi_evidence_report() != 37549) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_radroots_sdk_ffi_checksum_func_parse_trade_evidence_manifest() != 35922) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_radroots_sdk_ffi_checksum_func_prepare_rhi_evidence_attestation() != 53127) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_radroots_sdk_ffi_checksum_func_validate_rhi_evidence_attestation() != 46555) {
+        return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities() != 23938) {
         return InitializationResult.apiChecksumMismatch

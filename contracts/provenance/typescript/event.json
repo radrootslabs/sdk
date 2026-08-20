@@ -5,7 +5,7 @@
   "license": "MIT OR Apache-2.0",
   "outputs": {
     "src/generated/constants.ts": "8918f0fe056d0c4dc59d05cf1245481b93dc4c135a4150bf512e8811e3b524e8",
-    "src/generated/kinds.ts": "e4f01fdf45da2a1dc3dd363bfba5c3ac9adefb0196e40e08fd9affcc65f6c5bc",
+    "src/generated/kinds.ts": "bef17435ae4573aed4ba432a208f459cc054729502498d3d38e948bf16c2c8e4",
     "src/generated/types.ts": "fe4496950852715c573ff2abc7df8edede7161de75d9c68c3f4d6836e67f829a"
   },
   "package": "@radroots/event-bindings",

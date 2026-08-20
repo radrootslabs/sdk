@@ -4,12 +4,12 @@
   "generator": "radroots_lib_xtask",
   "license": "MIT OR Apache-2.0",
   "outputs": {
-    "src/generated/types.ts": "49560c572206095bd7de5cfd377c234a7f136e4affc13d53516ae2c4b8998e87"
+    "src/generated/types.ts": "66e6a378231e5341a59cf331b23b3164b27a43fa00411e889d634e4d9d19b53d"
   },
   "package": "@radroots/trade-bindings",
   "repository": "https://github.com/radrootslabs/sdk",
   "repository_directory": "packages/trade-bindings",
-  "types_sha256": "49560c572206095bd7de5cfd377c234a7f136e4affc13d53516ae2c4b8998e87",
+  "types_sha256": "66e6a378231e5341a59cf331b23b3164b27a43fa00411e889d634e4d9d19b53d",
   "types_source": "canonical_native_type_snapshot",
   "types_source_packages": [
     "radroots_trade",

@@ -729,6 +729,14 @@ internal interface UniffiForeignFutureCompleteVoid : com.sun.jna.Callback {
 
 
 
+
+
+
+
+
+
+
+
 // For large crates we prevent `MethodTooLargeException` (see #2340)
 // N.B. the name of the extension is very misleading, since it is
 // rather `InterfaceTooLargeException`, caused by too many methods
@@ -744,7 +752,15 @@ internal interface UniffiForeignFutureCompleteVoid : com.sun.jna.Callback {
 // when the library is loaded.
 internal interface IntegrityCheckingUniffiLib : Library {
     // Integrity check functions only
-    fun uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities(
+    fun uniffi_radroots_sdk_ffi_checksum_func_parse_rhi_evidence_report(
+): Short
+fun uniffi_radroots_sdk_ffi_checksum_func_parse_trade_evidence_manifest(
+): Short
+fun uniffi_radroots_sdk_ffi_checksum_func_prepare_rhi_evidence_attestation(
+): Short
+fun uniffi_radroots_sdk_ffi_checksum_func_validate_rhi_evidence_attestation(
+): Short
+fun uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities(
 ): Short
 fun uniffi_radroots_sdk_ffi_checksum_method_mobileclient_close(
 ): Short
@@ -813,6 +829,14 @@ fun uniffi_radroots_sdk_ffi_fn_method_mobileclient_close(`ptr`: Pointer,
 ): Long
 fun uniffi_radroots_sdk_ffi_fn_method_mobileclient_is_closed(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus,
 ): Byte
+fun uniffi_radroots_sdk_ffi_fn_func_parse_rhi_evidence_report(`canonicalContent`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus,
+): RustBuffer.ByValue
+fun uniffi_radroots_sdk_ffi_fn_func_parse_trade_evidence_manifest(`canonicalBytes`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus,
+): RustBuffer.ByValue
+fun uniffi_radroots_sdk_ffi_fn_func_prepare_rhi_evidence_attestation(`canonicalContent`: RustBuffer.ByValue,`createdAtUnixS`: Long,uniffi_out_err: UniffiRustCallStatus,
+): RustBuffer.ByValue
+fun uniffi_radroots_sdk_ffi_fn_func_validate_rhi_evidence_attestation(`event`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus,
+): RustBuffer.ByValue
 fun ffi_radroots_sdk_ffi_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus,
 ): RustBuffer.ByValue
 fun ffi_radroots_sdk_ffi_rustbuffer_from_bytes(`bytes`: ForeignBytes.ByValue,uniffi_out_err: UniffiRustCallStatus,
@@ -939,6 +963,18 @@ private fun uniffiCheckContractApiVersion(lib: IntegrityCheckingUniffiLib) {
 }
 @Suppress("UNUSED_PARAMETER")
 private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
+    if (lib.uniffi_radroots_sdk_ffi_checksum_func_parse_rhi_evidence_report() != 37549.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_radroots_sdk_ffi_checksum_func_parse_trade_evidence_manifest() != 35922.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_radroots_sdk_ffi_checksum_func_prepare_rhi_evidence_attestation() != 53127.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_radroots_sdk_ffi_checksum_func_validate_rhi_evidence_attestation() != 46555.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities() != 23938.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1137,6 +1173,75 @@ private class JavaLangRefCleanable(
 /**
  * @suppress
  */
+public object FfiConverterUShort: FfiConverter<UShort, Short> {
+    override fun lift(value: Short): UShort {
+        return value.toUShort()
+    }
+
+    override fun read(buf: ByteBuffer): UShort {
+        return lift(buf.getShort())
+    }
+
+    override fun lower(value: UShort): Short {
+        return value.toShort()
+    }
+
+    override fun allocationSize(value: UShort) = 2UL
+
+    override fun write(value: UShort, buf: ByteBuffer) {
+        buf.putShort(value.toShort())
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterUInt: FfiConverter<UInt, Int> {
+    override fun lift(value: Int): UInt {
+        return value.toUInt()
+    }
+
+    override fun read(buf: ByteBuffer): UInt {
+        return lift(buf.getInt())
+    }
+
+    override fun lower(value: UInt): Int {
+        return value.toInt()
+    }
+
+    override fun allocationSize(value: UInt) = 4UL
+
+    override fun write(value: UInt, buf: ByteBuffer) {
+        buf.putInt(value.toInt())
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterULong: FfiConverter<ULong, Long> {
+    override fun lift(value: Long): ULong {
+        return value.toULong()
+    }
+
+    override fun read(buf: ByteBuffer): ULong {
+        return lift(buf.getLong())
+    }
+
+    override fun lower(value: ULong): Long {
+        return value.toLong()
+    }
+
+    override fun allocationSize(value: ULong) = 8UL
+
+    override fun write(value: ULong, buf: ByteBuffer) {
+        buf.putLong(value.toLong())
+    }
+}
+
+/**
+ * @suppress
+ */
 public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
     override fun lift(value: Byte): Boolean {
         return value.toInt() != 0
@@ -1211,6 +1316,25 @@ public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
         val byteBuf = toUtf8(value)
         buf.putInt(byteBuf.limit())
         buf.put(byteBuf)
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterByteArray: FfiConverterRustBuffer<ByteArray> {
+    override fun read(buf: ByteBuffer): ByteArray {
+        val len = buf.getInt()
+        val byteArr = ByteArray(len)
+        buf.get(byteArr)
+        return byteArr
+    }
+    override fun allocationSize(value: ByteArray): ULong {
+        return 4UL + value.size.toULong()
+    }
+    override fun write(value: ByteArray, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        buf.put(value)
     }
 }
 
@@ -1577,6 +1701,364 @@ public object FfiConverterTypeCapabilityStatus: FfiConverterRustBuffer<Capabilit
 
 
 /**
+ * Verified final RHI attestation projection.
+ */
+data class RhiEvidenceAttestation (
+    var `issuerPubkey`: kotlin.String,
+    var `tradeId`: kotlin.String,
+    var `claimMutationId`: kotlin.String,
+    var `outcome`: TradeEvidenceOutcome,
+    var `observedAtUnixS`: kotlin.String,
+    var `tradeGeneration`: kotlin.String,
+    var `statementDigest`: kotlin.String,
+    var `supersession`: RhiEvidenceSupersession?,
+    var `canonicalContent`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeRhiEvidenceAttestation: FfiConverterRustBuffer<RhiEvidenceAttestation> {
+    override fun read(buf: ByteBuffer): RhiEvidenceAttestation {
+        return RhiEvidenceAttestation(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterTypeTradeEvidenceOutcome.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalTypeRhiEvidenceSupersession.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RhiEvidenceAttestation) = (
+            FfiConverterString.allocationSize(value.`issuerPubkey`) +
+            FfiConverterString.allocationSize(value.`tradeId`) +
+            FfiConverterString.allocationSize(value.`claimMutationId`) +
+            FfiConverterTypeTradeEvidenceOutcome.allocationSize(value.`outcome`) +
+            FfiConverterString.allocationSize(value.`observedAtUnixS`) +
+            FfiConverterString.allocationSize(value.`tradeGeneration`) +
+            FfiConverterString.allocationSize(value.`statementDigest`) +
+            FfiConverterOptionalTypeRhiEvidenceSupersession.allocationSize(value.`supersession`) +
+            FfiConverterString.allocationSize(value.`canonicalContent`)
+    )
+
+    override fun write(value: RhiEvidenceAttestation, buf: ByteBuffer) {
+            FfiConverterString.write(value.`issuerPubkey`, buf)
+            FfiConverterString.write(value.`tradeId`, buf)
+            FfiConverterString.write(value.`claimMutationId`, buf)
+            FfiConverterTypeTradeEvidenceOutcome.write(value.`outcome`, buf)
+            FfiConverterString.write(value.`observedAtUnixS`, buf)
+            FfiConverterString.write(value.`tradeGeneration`, buf)
+            FfiConverterString.write(value.`statementDigest`, buf)
+            FfiConverterOptionalTypeRhiEvidenceSupersession.write(value.`supersession`, buf)
+            FfiConverterString.write(value.`canonicalContent`, buf)
+    }
+}
+
+
+
+/**
+ * Bounded projection of one canonical RHI evidence report.
+ */
+data class RhiEvidenceReport (
+    var `contractId`: kotlin.String,
+    var `contractVersion`: kotlin.UShort,
+    var `issuerPubkey`: kotlin.String,
+    var `tradeId`: kotlin.String,
+    var `claimMutationId`: kotlin.String,
+    var `outcome`: TradeEvidenceOutcome,
+    var `reasonCodes`: List<kotlin.String>,
+    var `projectionDigest`: kotlin.String,
+    var `evidenceManifestDigest`: kotlin.String,
+    var `evidencePolicyDigest`: kotlin.String,
+    var `observedAtUnixS`: kotlin.String,
+    var `tradeGeneration`: kotlin.String,
+    var `statementDigest`: kotlin.String,
+    var `supersession`: RhiEvidenceSupersession?,
+    var `canonicalContent`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeRhiEvidenceReport: FfiConverterRustBuffer<RhiEvidenceReport> {
+    override fun read(buf: ByteBuffer): RhiEvidenceReport {
+        return RhiEvidenceReport(
+            FfiConverterString.read(buf),
+            FfiConverterUShort.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterTypeTradeEvidenceOutcome.read(buf),
+            FfiConverterSequenceString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterOptionalTypeRhiEvidenceSupersession.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RhiEvidenceReport) = (
+            FfiConverterString.allocationSize(value.`contractId`) +
+            FfiConverterUShort.allocationSize(value.`contractVersion`) +
+            FfiConverterString.allocationSize(value.`issuerPubkey`) +
+            FfiConverterString.allocationSize(value.`tradeId`) +
+            FfiConverterString.allocationSize(value.`claimMutationId`) +
+            FfiConverterTypeTradeEvidenceOutcome.allocationSize(value.`outcome`) +
+            FfiConverterSequenceString.allocationSize(value.`reasonCodes`) +
+            FfiConverterString.allocationSize(value.`projectionDigest`) +
+            FfiConverterString.allocationSize(value.`evidenceManifestDigest`) +
+            FfiConverterString.allocationSize(value.`evidencePolicyDigest`) +
+            FfiConverterString.allocationSize(value.`observedAtUnixS`) +
+            FfiConverterString.allocationSize(value.`tradeGeneration`) +
+            FfiConverterString.allocationSize(value.`statementDigest`) +
+            FfiConverterOptionalTypeRhiEvidenceSupersession.allocationSize(value.`supersession`) +
+            FfiConverterString.allocationSize(value.`canonicalContent`)
+    )
+
+    override fun write(value: RhiEvidenceReport, buf: ByteBuffer) {
+            FfiConverterString.write(value.`contractId`, buf)
+            FfiConverterUShort.write(value.`contractVersion`, buf)
+            FfiConverterString.write(value.`issuerPubkey`, buf)
+            FfiConverterString.write(value.`tradeId`, buf)
+            FfiConverterString.write(value.`claimMutationId`, buf)
+            FfiConverterTypeTradeEvidenceOutcome.write(value.`outcome`, buf)
+            FfiConverterSequenceString.write(value.`reasonCodes`, buf)
+            FfiConverterString.write(value.`projectionDigest`, buf)
+            FfiConverterString.write(value.`evidenceManifestDigest`, buf)
+            FfiConverterString.write(value.`evidencePolicyDigest`, buf)
+            FfiConverterString.write(value.`observedAtUnixS`, buf)
+            FfiConverterString.write(value.`tradeGeneration`, buf)
+            FfiConverterString.write(value.`statementDigest`, buf)
+            FfiConverterOptionalTypeRhiEvidenceSupersession.write(value.`supersession`, buf)
+            FfiConverterString.write(value.`canonicalContent`, buf)
+    }
+}
+
+
+
+/**
+ * Exact immutable RHI supersession reference.
+ */
+data class RhiEvidenceSupersession (
+    var `reportId`: kotlin.String,
+    var `eventId`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeRhiEvidenceSupersession: FfiConverterRustBuffer<RhiEvidenceSupersession> {
+    override fun read(buf: ByteBuffer): RhiEvidenceSupersession {
+        return RhiEvidenceSupersession(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: RhiEvidenceSupersession) = (
+            FfiConverterString.allocationSize(value.`reportId`) +
+            FfiConverterString.allocationSize(value.`eventId`)
+    )
+
+    override fun write(value: RhiEvidenceSupersession, buf: ByteBuffer) {
+            FfiConverterString.write(value.`reportId`, buf)
+            FfiConverterString.write(value.`eventId`, buf)
+    }
+}
+
+
+
+/**
+ * Signed NIP-01 event input for verified attestation admission.
+ */
+data class SignedEvent (
+    var `id`: kotlin.String,
+    var `authorPubkey`: kotlin.String,
+    var `createdAtUnixS`: kotlin.ULong,
+    var `kind`: kotlin.UInt,
+    var `tags`: List<List<kotlin.String>>,
+    var `content`: kotlin.String,
+    var `signature`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeSignedEvent: FfiConverterRustBuffer<SignedEvent> {
+    override fun read(buf: ByteBuffer): SignedEvent {
+        return SignedEvent(
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterUInt.read(buf),
+            FfiConverterSequenceSequenceString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: SignedEvent) = (
+            FfiConverterString.allocationSize(value.`id`) +
+            FfiConverterString.allocationSize(value.`authorPubkey`) +
+            FfiConverterULong.allocationSize(value.`createdAtUnixS`) +
+            FfiConverterUInt.allocationSize(value.`kind`) +
+            FfiConverterSequenceSequenceString.allocationSize(value.`tags`) +
+            FfiConverterString.allocationSize(value.`content`) +
+            FfiConverterString.allocationSize(value.`signature`)
+    )
+
+    override fun write(value: SignedEvent, buf: ByteBuffer) {
+            FfiConverterString.write(value.`id`, buf)
+            FfiConverterString.write(value.`authorPubkey`, buf)
+            FfiConverterULong.write(value.`createdAtUnixS`, buf)
+            FfiConverterUInt.write(value.`kind`, buf)
+            FfiConverterSequenceSequenceString.write(value.`tags`, buf)
+            FfiConverterString.write(value.`content`, buf)
+            FfiConverterString.write(value.`signature`, buf)
+    }
+}
+
+
+
+/**
+ * Bounded projection of one canonical evidence manifest.
+ */
+data class TradeEvidenceManifest (
+    var `contractId`: kotlin.String,
+    var `contractVersion`: kotlin.UShort,
+    var `tradeId`: kotlin.String,
+    var `tradeGeneration`: kotlin.String,
+    var `observedAtUnixS`: kotlin.String,
+    var `coverage`: TradeEvidenceCoverage,
+    var `evidencePolicyDigest`: kotlin.String,
+    var `manifestDigest`: kotlin.String,
+    var `canonicalBytesHex`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeTradeEvidenceManifest: FfiConverterRustBuffer<TradeEvidenceManifest> {
+    override fun read(buf: ByteBuffer): TradeEvidenceManifest {
+        return TradeEvidenceManifest(
+            FfiConverterString.read(buf),
+            FfiConverterUShort.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterTypeTradeEvidenceCoverage.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: TradeEvidenceManifest) = (
+            FfiConverterString.allocationSize(value.`contractId`) +
+            FfiConverterUShort.allocationSize(value.`contractVersion`) +
+            FfiConverterString.allocationSize(value.`tradeId`) +
+            FfiConverterString.allocationSize(value.`tradeGeneration`) +
+            FfiConverterString.allocationSize(value.`observedAtUnixS`) +
+            FfiConverterTypeTradeEvidenceCoverage.allocationSize(value.`coverage`) +
+            FfiConverterString.allocationSize(value.`evidencePolicyDigest`) +
+            FfiConverterString.allocationSize(value.`manifestDigest`) +
+            FfiConverterString.allocationSize(value.`canonicalBytesHex`)
+    )
+
+    override fun write(value: TradeEvidenceManifest, buf: ByteBuffer) {
+            FfiConverterString.write(value.`contractId`, buf)
+            FfiConverterUShort.write(value.`contractVersion`, buf)
+            FfiConverterString.write(value.`tradeId`, buf)
+            FfiConverterString.write(value.`tradeGeneration`, buf)
+            FfiConverterString.write(value.`observedAtUnixS`, buf)
+            FfiConverterTypeTradeEvidenceCoverage.write(value.`coverage`, buf)
+            FfiConverterString.write(value.`evidencePolicyDigest`, buf)
+            FfiConverterString.write(value.`manifestDigest`, buf)
+            FfiConverterString.write(value.`canonicalBytesHex`, buf)
+    }
+}
+
+
+
+/**
+ * One unsigned typed event plan ready for host-owned signing.
+ */
+data class TypedEvidenceEventPlan (
+    var `contractId`: kotlin.String,
+    var `kind`: kotlin.UInt,
+    var `authorPubkey`: kotlin.String,
+    var `createdAtUnixS`: kotlin.String,
+    var `expectedEventId`: kotlin.String,
+    var `tags`: List<List<kotlin.String>>,
+    var `content`: kotlin.String
+) {
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeTypedEvidenceEventPlan: FfiConverterRustBuffer<TypedEvidenceEventPlan> {
+    override fun read(buf: ByteBuffer): TypedEvidenceEventPlan {
+        return TypedEvidenceEventPlan(
+            FfiConverterString.read(buf),
+            FfiConverterUInt.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterString.read(buf),
+            FfiConverterSequenceSequenceString.read(buf),
+            FfiConverterString.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: TypedEvidenceEventPlan) = (
+            FfiConverterString.allocationSize(value.`contractId`) +
+            FfiConverterUInt.allocationSize(value.`kind`) +
+            FfiConverterString.allocationSize(value.`authorPubkey`) +
+            FfiConverterString.allocationSize(value.`createdAtUnixS`) +
+            FfiConverterString.allocationSize(value.`expectedEventId`) +
+            FfiConverterSequenceSequenceString.allocationSize(value.`tags`) +
+            FfiConverterString.allocationSize(value.`content`)
+    )
+
+    override fun write(value: TypedEvidenceEventPlan, buf: ByteBuffer) {
+            FfiConverterString.write(value.`contractId`, buf)
+            FfiConverterUInt.write(value.`kind`, buf)
+            FfiConverterString.write(value.`authorPubkey`, buf)
+            FfiConverterString.write(value.`createdAtUnixS`, buf)
+            FfiConverterString.write(value.`expectedEventId`, buf)
+            FfiConverterSequenceSequenceString.write(value.`tags`, buf)
+            FfiConverterString.write(value.`content`, buf)
+    }
+}
+
+
+
+/**
  * Current side-effect-free capability availability.
  */
 
@@ -1717,6 +2199,135 @@ public object FfiConverterTypeError : FfiConverterRustBuffer<Exception> {
 
 
 
+/**
+ * Final evidence coverage vocabulary.
+ */
+
+enum class TradeEvidenceCoverage {
+
+    MISSING,
+    PARTIAL,
+    SCOPE_SATISFIED,
+    UNSUPPORTED;
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeTradeEvidenceCoverage: FfiConverterRustBuffer<TradeEvidenceCoverage> {
+    override fun read(buf: ByteBuffer) = try {
+        TradeEvidenceCoverage.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: TradeEvidenceCoverage) = 4UL
+
+    override fun write(value: TradeEvidenceCoverage, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
+ * Final evidence outcome vocabulary.
+ */
+
+enum class TradeEvidenceOutcome {
+
+    VALID,
+    INVALID,
+    INDETERMINATE;
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeTradeEvidenceOutcome: FfiConverterRustBuffer<TradeEvidenceOutcome> {
+    override fun read(buf: ByteBuffer) = try {
+        TradeEvidenceOutcome.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: TradeEvidenceOutcome) = 4UL
+
+    override fun write(value: TradeEvidenceOutcome, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterOptionalTypeRhiEvidenceSupersession: FfiConverterRustBuffer<RhiEvidenceSupersession?> {
+    override fun read(buf: ByteBuffer): RhiEvidenceSupersession? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeRhiEvidenceSupersession.read(buf)
+    }
+
+    override fun allocationSize(value: RhiEvidenceSupersession?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeRhiEvidenceSupersession.allocationSize(value)
+        }
+    }
+
+    override fun write(value: RhiEvidenceSupersession?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeRhiEvidenceSupersession.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceString: FfiConverterRustBuffer<List<kotlin.String>> {
+    override fun read(buf: ByteBuffer): List<kotlin.String> {
+        val len = buf.getInt()
+        return List<kotlin.String>(len) {
+            FfiConverterString.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<kotlin.String>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterString.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<kotlin.String>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterString.write(it, buf)
+        }
+    }
+}
+
+
+
 
 /**
  * @suppress
@@ -1742,3 +2353,77 @@ public object FfiConverterSequenceTypeCapabilityStatus: FfiConverterRustBuffer<L
         }
     }
 }
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceSequenceString: FfiConverterRustBuffer<List<List<kotlin.String>>> {
+    override fun read(buf: ByteBuffer): List<List<kotlin.String>> {
+        val len = buf.getInt()
+        return List<List<kotlin.String>>(len) {
+            FfiConverterSequenceString.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<List<kotlin.String>>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterSequenceString.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<List<kotlin.String>>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterSequenceString.write(it, buf)
+        }
+    }
+}
+
+
+
+
+
+
+
+
+    @Throws(Exception::class) fun `parseRhiEvidenceReport`(`canonicalContent`: kotlin.String): RhiEvidenceReport {
+            return FfiConverterTypeRhiEvidenceReport.lift(
+    uniffiRustCallWithError(Exception) { _status ->
+    UniffiLib.INSTANCE.uniffi_radroots_sdk_ffi_fn_func_parse_rhi_evidence_report(
+        FfiConverterString.lower(`canonicalContent`),_status)
+}
+    )
+    }
+
+
+    @Throws(Exception::class) fun `parseTradeEvidenceManifest`(`canonicalBytes`: kotlin.ByteArray): TradeEvidenceManifest {
+            return FfiConverterTypeTradeEvidenceManifest.lift(
+    uniffiRustCallWithError(Exception) { _status ->
+    UniffiLib.INSTANCE.uniffi_radroots_sdk_ffi_fn_func_parse_trade_evidence_manifest(
+        FfiConverterByteArray.lower(`canonicalBytes`),_status)
+}
+    )
+    }
+
+
+    @Throws(Exception::class) fun `prepareRhiEvidenceAttestation`(`canonicalContent`: kotlin.String, `createdAtUnixS`: kotlin.ULong): TypedEvidenceEventPlan {
+            return FfiConverterTypeTypedEvidenceEventPlan.lift(
+    uniffiRustCallWithError(Exception) { _status ->
+    UniffiLib.INSTANCE.uniffi_radroots_sdk_ffi_fn_func_prepare_rhi_evidence_attestation(
+        FfiConverterString.lower(`canonicalContent`),FfiConverterULong.lower(`createdAtUnixS`),_status)
+}
+    )
+    }
+
+
+    @Throws(Exception::class) fun `validateRhiEvidenceAttestation`(`event`: SignedEvent): RhiEvidenceAttestation {
+            return FfiConverterTypeRhiEvidenceAttestation.lift(
+    uniffiRustCallWithError(Exception) { _status ->
+    UniffiLib.INSTANCE.uniffi_radroots_sdk_ffi_fn_func_validate_rhi_evidence_attestation(
+        FfiConverterTypeSignedEvent.lower(`event`),_status)
+}
+    )
+    }
