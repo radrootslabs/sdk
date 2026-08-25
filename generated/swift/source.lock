@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source_package": "radroots_sdk_ffi",
   "source_version": "0.1.0-alpha",
-  "source_sha256": "bb89f460401a22a2bca7d58bb9dbe3300f114f25bd8f64156e492c43563ae12c",
+  "source_sha256": "d8b1391c6f58ef35d9abefb005b6adabf3b424fadc3a615180a9df75fb55b0b5",
   "generator": "uniffi",
   "generator_version": "0.29.5",
   "language": "swift",

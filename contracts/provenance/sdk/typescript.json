@@ -10,12 +10,12 @@
   "files": [],
   "provenance": {
     "repository": "https://github.com/radrootslabs/lib",
-    "revision": "3563f3b5a4331eb2cb3f925cafc9de524d844228",
+    "revision": "fce00896ca3f87a14ea57f46e628c429167d4f2c",
     "architecture": "radroots.crates.release.v2",
     "catalog_sha256": "deca0c080deae187ff8186c0708903e42f41ea57f77c5f91581e23aa561164a4",
-    "lockfile_sha256": "f296a4199802e629cfd04e058b67471a8e68a50efc262a0a15d94bdf383a13df",
-    "source_archive_sha256": "2da62bd0112d43b634ba5e87dfc09d048f7ea1836ab89d2fd18fcfce5186ad6b",
-    "source_date_epoch": 1787209450,
+    "lockfile_sha256": "f015913af23ecff185f42b31f5852c629dd79843d76a9e9d49a5f481b4cb94eb",
+    "source_archive_sha256": "dda3973e080e2319712636da98cc36eec61a667d6735f0e662657804f19360ca",
+    "source_date_epoch": 1787658011,
     "builder_id": "radroots_sdk_artifact_v1",
     "features": []
   }
