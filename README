@@ -9,7 +9,8 @@ capsule. Generated TypeScript, Wasm, Swift, and Kotlin surfaces are produced
 through `tools/radroots_sdk_artifact.mjs` from the exact
 `radrootslabs/lib` revision recorded in `radroots.lib.source-lock.v1.toml`.
 
-Use `pnpm run contracts:check` for standalone contract validation and
+Use `pnpm run supply-chain:check` for locked dependency, source, and license
+validation, `pnpm run contracts:check` for standalone contract validation, and
 `pnpm run check` with an exact `RADROOTS_LIB_SOURCE_ROOT` for the complete
 generated-package lane. See `AGENTS.md` and `CONTRIBUTING.md` for repository
 rules and command requirements.

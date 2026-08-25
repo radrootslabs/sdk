@@ -72,6 +72,9 @@ its subtree.
   `cargo extbuild run -- ...`.
 - `pnpm run contracts:check` validates the exact historical inventory and the
   absence of forbidden public roots without requiring a lib checkout.
+- `pnpm run supply-chain:check` validates the exact pnpm toolchain and lock,
+  immutable public Lib source lock, package repository identities, workspace-
+  only internal edges, and byte-identical package license artifacts.
 - `pnpm run test:tools` runs standalone tool and boundary tests.
 - `pnpm run source:check` and generation/freshness commands require an exact
   `RADROOTS_LIB_SOURCE_ROOT` matching the checked-in lock. `pnpm run check` is
