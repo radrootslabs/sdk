@@ -57,7 +57,10 @@ its subtree.
   complete diff, and run freshness checks. Generated output never dictates a
   native source model or creates a second source authority.
 - Keep package manifests, the pnpm lockfile, provenance, exports, generated
-  source, and consumer-facing package READMEs synchronized.
+  source, producer-revision-bound package licenses, and consumer-facing package
+  READMEs synchronized. Repository-root license files remain repository-owned
+  and are not a substitute for the selected producer's generated-package
+  license bytes.
 - Do not reintroduce retired prototype evidence, outcomes, receipts, event
   models, runtime contracts, or compatibility aliases. Services-hardening
   generated changes must expose the approved four coverage states and three
@@ -72,13 +75,17 @@ its subtree.
   `cargo extbuild run -- ...`.
 - `pnpm run contracts:check` validates the exact historical inventory and the
   absence of forbidden public roots without requiring a lib checkout.
+- `pnpm run boundaries:check` validates the historical API baselines, exact
+  generated-source inventory, forbidden surfaces, and credential exclusions
+  without requiring a lib checkout.
 - `pnpm run supply-chain:check` validates the exact pnpm toolchain and lock,
   immutable public Lib source lock, package repository identities, workspace-
   only internal edges, and byte-identical package license artifacts.
 - `pnpm run test:tools` runs standalone tool and boundary tests.
 - `pnpm run source:check` and generation/freshness commands require an exact
   `RADROOTS_LIB_SOURCE_ROOT` matching the checked-in lock. `pnpm run check` is
-  the full generated-package lane.
+  the full non-mutating generated-package lane; use `pnpm run generate`
+  explicitly when intentionally refreshing outputs.
 - This repository has no local `cargo xtask` package. Do not document or invoke
   nonexistent SDK-local xtask commands; the artifact adapter invokes the
   selected producer's governed xtask explicitly.

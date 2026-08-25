@@ -33,6 +33,7 @@ commands are:
 
 ```text
 pnpm run contracts:check
+pnpm run boundaries:check
 pnpm run test:tools
 pnpm run source:check
 pnpm run check

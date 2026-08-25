@@ -2,6 +2,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { validateGeneratedPackageLicenses } from "./radroots_sdk_package_license_lib.mjs";
+
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const expectedLicense = "MIT OR Apache-2.0";
 const expectedRepository = "git+https://github.com/radrootslabs/sdk.git";
@@ -63,11 +65,6 @@ function verifyManifest(path) {
       }
     }
   }
-  for (const license of ["LICENSE-MIT", "LICENSE-APACHE"]) {
-    if (readFileSync(join(path, license)).compare(readFileSync(join(root, license))) !== 0) {
-      fail("package license bytes differ from the repository authority");
-    }
-  }
 }
 
 const manifest = readJson(join(root, "package.json"));
@@ -94,6 +91,8 @@ if (!/^repository = "https:\/\/github\.com\/radrootslabs\/lib"$/m.test(sourceLoc
 }
 if (!/^revision = "[0-9a-f]{40}"$/m.test(sourceLock)) fail("Lib revision is not immutable");
 if (!/^lockfile_sha256 = "[0-9a-f]{64}"$/m.test(sourceLock)) fail("Cargo lock digest is absent");
+const sourceRevision = sourceLock.match(/^revision = "([0-9a-f]{40})"$/m)?.[1];
+if (!sourceRevision) fail("Lib revision is not immutable");
 
 const packages = packageDirectories();
 if (
@@ -103,5 +102,6 @@ if (
   fail("package inventory drifted");
 }
 for (const path of packages) verifyManifest(path);
+validateGeneratedPackageLicenses(root, packages, sourceRevision);
 
 console.log(`supply-chain ok: ${packages.length} packages`);

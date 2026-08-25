@@ -10,10 +10,15 @@ through `tools/radroots_sdk_artifact.mjs` from the exact
 `radrootslabs/lib` revision recorded in `radroots.lib.source-lock.v1.toml`.
 
 Use `pnpm run supply-chain:check` for locked dependency, source, and license
-validation, `pnpm run contracts:check` for standalone contract validation, and
-`pnpm run check` with an exact `RADROOTS_LIB_SOURCE_ROOT` for the complete
-generated-package lane. See `AGENTS.md` and `CONTRIBUTING.md` for repository
-rules and command requirements.
+validation, `pnpm run boundaries:check` for forbidden-surface, secret, API
+baseline, and exact generated-inventory validation, and `pnpm run
+contracts:check` for standalone contract validation. Run `pnpm run check` with
+an exact `RADROOTS_LIB_SOURCE_ROOT` for the complete producer-backed generated
+freshness lane. Verification is non-mutating; `pnpm run generate` is the
+explicit write command. Generated package license bytes remain bound to the
+selected Lib producer revision, while repository-root licenses remain owned by
+this SDK repository. See `AGENTS.md` and `CONTRIBUTING.md` for repository rules
+and command requirements.
 
 ## Copyright
 

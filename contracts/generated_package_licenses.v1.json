@@ -1,0 +1,15 @@
+{
+  "schema": "radroots.sdk.generated-package-licenses.v1",
+  "source_repository": "https://github.com/radrootslabs/lib",
+  "source_revision": "3563f3b5a4331eb2cb3f925cafc9de524d844228",
+  "files": [
+    {
+      "name": "LICENSE-APACHE",
+      "sha256": "a1cd22441ac900622e68fc6469dcb20ea71894a96f858f62b692e9e9b3451645"
+    },
+    {
+      "name": "LICENSE-MIT",
+      "sha256": "abdbcc7cdee9ce504c7e07fcccd37bfd713509d94886308b96d4817a1c02f926"
+    }
+  ]
+}
