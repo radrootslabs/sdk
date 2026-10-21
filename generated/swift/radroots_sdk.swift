@@ -39,6 +39,52 @@ fileprivate extension ForeignBytes {
     init(bufferPointer: UnsafeBufferPointer<UInt8>) {
         self.init(len: Int32(bufferPointer.count), data: bufferPointer.baseAddress)
     }
+
+    init(rawBufferPointer: UnsafeRawBufferPointer) {
+        self.init(
+            len: Int32(rawBufferPointer.count),
+            data: rawBufferPointer.baseAddress?.assumingMemoryBound(to: UInt8.self)
+        )
+    }
+}
+
+// Converter for `&[u8]` / `[ByRef] bytes` arguments.
+//
+// Conforms to `FfiConverter` so the compiler enforces the full converter
+// method set. Only the scope-bound `lower(_:_body:)` overload is sound —
+// zero-copy byte buffers only flow foreign -> Rust, and only in argument
+// position. The four protocol-witness methods (`lift`, `lower`, `read`,
+// `write`) `fatalError` at runtime if anyone reaches them.
+//
+// The scope-bound `lower` takes a closure because the `ForeignBytes`
+// pointer is only guaranteed valid for the duration of
+// `Data.withUnsafeBytes`. Callers must run the full FFI call inside
+// the closure body.
+fileprivate enum FfiConverterByRefBytes: FfiConverter {
+    typealias SwiftType = Data
+    typealias FfiType = ForeignBytes
+
+    static func lower<R>(_ value: Data, _ body: (ForeignBytes) throws -> R) rethrows -> R {
+        return try value.withUnsafeBytes { rawBuf in
+            try body(ForeignBytes(rawBufferPointer: rawBuf))
+        }
+    }
+
+    static func lower(_ value: Data) -> ForeignBytes {
+        fatalError("ByRef bytes cannot use the plain lower: returning ForeignBytes escapes the Data.withUnsafeBytes scope. Use the scope-bound lower(_:_body:) overload instead.")
+    }
+
+    static func lift(_ value: ForeignBytes) throws -> Data {
+        fatalError("ByRef bytes cannot be lifted: zero-copy &[u8] only flows foreign->Rust")
+    }
+
+    static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Data {
+        fatalError("ByRef bytes cannot be read from a buffer: zero-copy &[u8] is only supported in argument position, not nested in records/options/etc.")
+    }
+
+    static func write(_ value: Data, into buf: inout [UInt8]) {
+        fatalError("ByRef bytes cannot be written to a buffer: zero-copy &[u8] is only supported in argument position, not nested in records/options/etc.")
+    }
 }
 
 // For every type used in the interface, we provide helper methods for conveniently
@@ -316,7 +362,7 @@ private func uniffiCheckCallStatus<E: Swift.Error>(
             }
 
         case CALL_CANCELLED:
-            fatalError("Cancellation not supported yet")
+            throw CancellationError()
 
         default:
             throw UniffiInternalError.unexpectedRustCallStatusCode
@@ -352,19 +398,29 @@ private func uniffiTraitInterfaceCallWithError<T, E>(
         callStatus.pointee.errorBuf = FfiConverterString.lower(String(describing: error))
     }
 }
+// Initial value and increment amount for handles.
+// These ensure that SWIFT handles always have the lowest bit set
+fileprivate let UNIFFI_HANDLEMAP_INITIAL: UInt64 = 1
+fileprivate let UNIFFI_HANDLEMAP_DELTA: UInt64 = 2
+
 fileprivate final class UniffiHandleMap<T>: @unchecked Sendable {
     // All mutation happens with this lock held, which is why we implement @unchecked Sendable.
     private let lock = NSLock()
     private var map: [UInt64: T] = [:]
-    private var currentHandle: UInt64 = 1
+    private var currentHandle: UInt64 = UNIFFI_HANDLEMAP_INITIAL
 
     func insert(obj: T) -> UInt64 {
         lock.withLock {
-            let handle = currentHandle
-            currentHandle += 1
-            map[handle] = obj
-            return handle
+            return doInsert(obj)
         }
+    }
+
+    // Low-level insert function, this assumes `lock` is held.
+    private func doInsert(_ obj: T) -> UInt64 {
+        let handle = currentHandle
+        currentHandle += UNIFFI_HANDLEMAP_DELTA
+        map[handle] = obj
+        return handle
     }
 
      func get(handle: UInt64) throws -> T {
@@ -373,6 +429,15 @@ fileprivate final class UniffiHandleMap<T>: @unchecked Sendable {
                 throw UniffiInternalError.unexpectedStaleHandle
             }
             return obj
+        }
+    }
+
+     func clone(handle: UInt64) throws -> UInt64 {
+        try lock.withLock {
+            guard let obj = map[handle] else {
+                throw UniffiInternalError.unexpectedStaleHandle
+            }
+            return doInsert(obj)
         }
     }
 
@@ -484,7 +549,11 @@ fileprivate struct FfiConverterString: FfiConverter {
             return String()
         }
         let bytes = UnsafeBufferPointer<UInt8>(start: value.data!, count: Int(value.len))
-        return String(bytes: bytes, encoding: String.Encoding.utf8)!
+        // Use Swift's native UTF-8 decoder; `String(bytes:encoding:.utf8)` goes
+        // through Foundation's NSString and silently strips a leading U+FEFF BOM.
+        // Invalid UTF-8 substitutes U+FFFD instead of trapping (unreachable
+        // given Rust's `String` invariant).
+        return String(decoding: bytes, as: UTF8.self)
     }
 
     public static func lower(_ value: String) -> RustBuffer {
@@ -500,7 +569,8 @@ fileprivate struct FfiConverterString: FfiConverter {
 
     public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> String {
         let len: Int32 = try readInt(&buf)
-        return String(bytes: try readBytes(&buf, count: Int(len)), encoding: String.Encoding.utf8)!
+        // See `lift` above for why we avoid Foundation's NSString-backed decoder here.
+        return String(decoding: try readBytes(&buf, count: Int(len)), as: UTF8.self)
     }
 
     public static func write(_ value: String, into buf: inout [UInt8]) {
@@ -556,13 +626,13 @@ public protocol MobileClientProtocol: AnyObject, Sendable {
  * Thread-safe mobile handle delegating lifecycle to [`radroots_sdk::Client`].
  */
 open class MobileClient: MobileClientProtocol, @unchecked Sendable {
-    fileprivate let pointer: UnsafeMutableRawPointer!
+    fileprivate let handle: UInt64
 
-    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
+    /// Used to instantiate a [FFIObject] without an actual handle, for fakes in tests, mostly.
 #if swift(>=5.8)
     @_documentation(visibility: private)
 #endif
-    public struct NoPointer {
+    public struct NoHandle {
         public init() {}
     }
 
@@ -572,36 +642,37 @@ open class MobileClient: MobileClientProtocol, @unchecked Sendable {
 #if swift(>=5.8)
     @_documentation(visibility: private)
 #endif
-    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        self.pointer = pointer
+    required public init(unsafeFromHandle handle: UInt64) {
+        self.handle = handle
     }
 
     // This constructor can be used to instantiate a fake object.
-    // - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
+    // - Parameter noHandle: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
     //
     // - Warning:
-    //     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
+    //     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing handle the FFI lower functions will crash.
 #if swift(>=5.8)
     @_documentation(visibility: private)
 #endif
-    public init(noPointer: NoPointer) {
-        self.pointer = nil
+    public init(noHandle: NoHandle) {
+        self.handle = 0
     }
 
 #if swift(>=5.8)
     @_documentation(visibility: private)
 #endif
-    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
-        return try! rustCall { uniffi_radroots_sdk_ffi_fn_clone_mobileclient(self.pointer, $0) }
+    public func uniffiCloneHandle() -> UInt64 {
+        return try! rustCall { uniffi_radroots_sdk_ffi_fn_clone_mobileclient(self.handle, $0) }
     }
     // No primary constructor declared for this class.
 
     deinit {
-        guard let pointer = pointer else {
+        if handle == 0 {
+            // Mock objects have handle=0 don't try to free them
             return
         }
 
-        try! rustCall { uniffi_radroots_sdk_ffi_fn_free_mobileclient(pointer, $0) }
+        try! rustCall { uniffi_radroots_sdk_ffi_fn_free_mobileclient(handle, $0) }
     }
 
 
@@ -610,7 +681,8 @@ open class MobileClient: MobileClientProtocol, @unchecked Sendable {
      */
 public static func memory()throws  -> MobileClient  {
     return try  FfiConverterTypeMobileClient_lift(try rustCallWithError(FfiConverterTypeError_lift) {
-    uniffi_radroots_sdk_ffi_fn_constructor_mobileclient_memory($0
+        uniffiCallStatus in
+    uniffi_radroots_sdk_ffi_fn_constructor_mobileclient_memory(uniffiCallStatus
     )
 })
 }
@@ -622,7 +694,9 @@ public static func memory()throws  -> MobileClient  {
      */
 open func capabilities() -> [CapabilityStatus]  {
     return try!  FfiConverterSequenceTypeCapabilityStatus.lift(try! rustCall() {
-    uniffi_radroots_sdk_ffi_fn_method_mobileclient_capabilities(self.uniffiClonePointer(),$0
+        uniffiCallStatus in
+    uniffi_radroots_sdk_ffi_fn_method_mobileclient_capabilities(
+            self.uniffiCloneHandle(),uniffiCallStatus
     )
 })
 }
@@ -635,12 +709,12 @@ open func close()async throws   {
         try  await uniffiRustCallAsync(
             rustFutureFunc: {
                 uniffi_radroots_sdk_ffi_fn_method_mobileclient_close(
-                    self.uniffiClonePointer()
-
+                        self.uniffiCloneHandle()
                 )
             },
             pollFunc: ffi_radroots_sdk_ffi_rust_future_poll_void,
             completeFunc: ffi_radroots_sdk_ffi_rust_future_complete_void,
+            cancelFunc: ffi_radroots_sdk_ffi_rust_future_cancel_void,
             freeFunc: ffi_radroots_sdk_ffi_rust_future_free_void,
             liftFunc: { $0 },
             errorHandler: FfiConverterTypeError_lift
@@ -652,10 +726,13 @@ open func close()async throws   {
      */
 open func isClosed() -> Bool  {
     return try!  FfiConverterBool.lift(try! rustCall() {
-    uniffi_radroots_sdk_ffi_fn_method_mobileclient_is_closed(self.uniffiClonePointer(),$0
+        uniffiCallStatus in
+    uniffi_radroots_sdk_ffi_fn_method_mobileclient_is_closed(
+            self.uniffiCloneHandle(),uniffiCallStatus
     )
 })
 }
+
 
 
 }
@@ -665,33 +742,24 @@ open func isClosed() -> Bool  {
 @_documentation(visibility: private)
 #endif
 public struct FfiConverterTypeMobileClient: FfiConverter {
-
-    typealias FfiType = UnsafeMutableRawPointer
+    typealias FfiType = UInt64
     typealias SwiftType = MobileClient
 
-    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MobileClient {
-        return MobileClient(unsafeFromRawPointer: pointer)
+    public static func lift(_ handle: UInt64) throws -> MobileClient {
+        return MobileClient(unsafeFromHandle: handle)
     }
 
-    public static func lower(_ value: MobileClient) -> UnsafeMutableRawPointer {
-        return value.uniffiClonePointer()
+    public static func lower(_ value: MobileClient) -> UInt64 {
+        return value.uniffiCloneHandle()
     }
 
     public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MobileClient {
-        let v: UInt64 = try readInt(&buf)
-        // The Rust code won't compile if a pointer won't fit in a UInt64.
-        // We have to go via `UInt` because that's the thing that's the size of a pointer.
-        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
-        if (ptr == nil) {
-            throw UniffiInternalError.unexpectedNullPointer
-        }
-        return try lift(ptr!)
+        let handle: UInt64 = try readInt(&buf)
+        return try lift(handle)
     }
 
     public static func write(_ value: MobileClient, into buf: inout [UInt8]) {
-        // This fiddling is because `Int` is the thing that's the same size as a pointer.
-        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
-        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
+        writeInt(&buf, lower(value))
     }
 }
 
@@ -699,14 +767,14 @@ public struct FfiConverterTypeMobileClient: FfiConverter {
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
-public func FfiConverterTypeMobileClient_lift(_ pointer: UnsafeMutableRawPointer) throws -> MobileClient {
-    return try FfiConverterTypeMobileClient.lift(pointer)
+public func FfiConverterTypeMobileClient_lift(_ handle: UInt64) throws -> MobileClient {
+    return try FfiConverterTypeMobileClient.lift(handle)
 }
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
-public func FfiConverterTypeMobileClient_lower(_ value: MobileClient) -> UnsafeMutableRawPointer {
+public func FfiConverterTypeMobileClient_lower(_ value: MobileClient) -> UInt64 {
     return FfiConverterTypeMobileClient.lower(value)
 }
 
@@ -716,7 +784,7 @@ public func FfiConverterTypeMobileClient_lower(_ value: MobileClient) -> UnsafeM
 /**
  * Versioned, presentation-independent capability observation.
  */
-public struct CapabilityStatus {
+public struct CapabilityStatus: Equatable, Hashable {
     public var id: String
     public var compiled: Bool
     public var configured: Bool
@@ -732,43 +800,15 @@ public struct CapabilityStatus {
         self.availability = availability
         self.maturity = maturity
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension CapabilityStatus: Sendable {}
 #endif
-
-
-extension CapabilityStatus: Equatable, Hashable {
-    public static func ==(lhs: CapabilityStatus, rhs: CapabilityStatus) -> Bool {
-        if lhs.id != rhs.id {
-            return false
-        }
-        if lhs.compiled != rhs.compiled {
-            return false
-        }
-        if lhs.configured != rhs.configured {
-            return false
-        }
-        if lhs.availability != rhs.availability {
-            return false
-        }
-        if lhs.maturity != rhs.maturity {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(compiled)
-        hasher.combine(configured)
-        hasher.combine(availability)
-        hasher.combine(maturity)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -813,7 +853,7 @@ public func FfiConverterTypeCapabilityStatus_lower(_ value: CapabilityStatus) ->
 /**
  * Verified final RHI attestation projection.
  */
-public struct RhiEvidenceAttestation {
+public struct RhiEvidenceAttestation: Equatable, Hashable {
     public var issuerPubkey: String
     public var tradeId: String
     public var claimMutationId: String
@@ -837,59 +877,15 @@ public struct RhiEvidenceAttestation {
         self.supersession = supersession
         self.canonicalContent = canonicalContent
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension RhiEvidenceAttestation: Sendable {}
 #endif
-
-
-extension RhiEvidenceAttestation: Equatable, Hashable {
-    public static func ==(lhs: RhiEvidenceAttestation, rhs: RhiEvidenceAttestation) -> Bool {
-        if lhs.issuerPubkey != rhs.issuerPubkey {
-            return false
-        }
-        if lhs.tradeId != rhs.tradeId {
-            return false
-        }
-        if lhs.claimMutationId != rhs.claimMutationId {
-            return false
-        }
-        if lhs.outcome != rhs.outcome {
-            return false
-        }
-        if lhs.observedAtUnixS != rhs.observedAtUnixS {
-            return false
-        }
-        if lhs.tradeGeneration != rhs.tradeGeneration {
-            return false
-        }
-        if lhs.statementDigest != rhs.statementDigest {
-            return false
-        }
-        if lhs.supersession != rhs.supersession {
-            return false
-        }
-        if lhs.canonicalContent != rhs.canonicalContent {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(issuerPubkey)
-        hasher.combine(tradeId)
-        hasher.combine(claimMutationId)
-        hasher.combine(outcome)
-        hasher.combine(observedAtUnixS)
-        hasher.combine(tradeGeneration)
-        hasher.combine(statementDigest)
-        hasher.combine(supersession)
-        hasher.combine(canonicalContent)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -942,7 +938,7 @@ public func FfiConverterTypeRhiEvidenceAttestation_lower(_ value: RhiEvidenceAtt
 /**
  * Bounded projection of one canonical RHI evidence report.
  */
-public struct RhiEvidenceReport {
+public struct RhiEvidenceReport: Equatable, Hashable {
     public var contractId: String
     public var contractVersion: UInt16
     public var issuerPubkey: String
@@ -978,83 +974,15 @@ public struct RhiEvidenceReport {
         self.supersession = supersession
         self.canonicalContent = canonicalContent
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension RhiEvidenceReport: Sendable {}
 #endif
-
-
-extension RhiEvidenceReport: Equatable, Hashable {
-    public static func ==(lhs: RhiEvidenceReport, rhs: RhiEvidenceReport) -> Bool {
-        if lhs.contractId != rhs.contractId {
-            return false
-        }
-        if lhs.contractVersion != rhs.contractVersion {
-            return false
-        }
-        if lhs.issuerPubkey != rhs.issuerPubkey {
-            return false
-        }
-        if lhs.tradeId != rhs.tradeId {
-            return false
-        }
-        if lhs.claimMutationId != rhs.claimMutationId {
-            return false
-        }
-        if lhs.outcome != rhs.outcome {
-            return false
-        }
-        if lhs.reasonCodes != rhs.reasonCodes {
-            return false
-        }
-        if lhs.projectionDigest != rhs.projectionDigest {
-            return false
-        }
-        if lhs.evidenceManifestDigest != rhs.evidenceManifestDigest {
-            return false
-        }
-        if lhs.evidencePolicyDigest != rhs.evidencePolicyDigest {
-            return false
-        }
-        if lhs.observedAtUnixS != rhs.observedAtUnixS {
-            return false
-        }
-        if lhs.tradeGeneration != rhs.tradeGeneration {
-            return false
-        }
-        if lhs.statementDigest != rhs.statementDigest {
-            return false
-        }
-        if lhs.supersession != rhs.supersession {
-            return false
-        }
-        if lhs.canonicalContent != rhs.canonicalContent {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(contractId)
-        hasher.combine(contractVersion)
-        hasher.combine(issuerPubkey)
-        hasher.combine(tradeId)
-        hasher.combine(claimMutationId)
-        hasher.combine(outcome)
-        hasher.combine(reasonCodes)
-        hasher.combine(projectionDigest)
-        hasher.combine(evidenceManifestDigest)
-        hasher.combine(evidencePolicyDigest)
-        hasher.combine(observedAtUnixS)
-        hasher.combine(tradeGeneration)
-        hasher.combine(statementDigest)
-        hasher.combine(supersession)
-        hasher.combine(canonicalContent)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1119,7 +1047,7 @@ public func FfiConverterTypeRhiEvidenceReport_lower(_ value: RhiEvidenceReport) 
 /**
  * Exact immutable RHI supersession reference.
  */
-public struct RhiEvidenceSupersession {
+public struct RhiEvidenceSupersession: Equatable, Hashable {
     public var reportId: String
     public var eventId: String
 
@@ -1129,31 +1057,15 @@ public struct RhiEvidenceSupersession {
         self.reportId = reportId
         self.eventId = eventId
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension RhiEvidenceSupersession: Sendable {}
 #endif
-
-
-extension RhiEvidenceSupersession: Equatable, Hashable {
-    public static func ==(lhs: RhiEvidenceSupersession, rhs: RhiEvidenceSupersession) -> Bool {
-        if lhs.reportId != rhs.reportId {
-            return false
-        }
-        if lhs.eventId != rhs.eventId {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(reportId)
-        hasher.combine(eventId)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1192,7 +1104,7 @@ public func FfiConverterTypeRhiEvidenceSupersession_lower(_ value: RhiEvidenceSu
 /**
  * Signed NIP-01 event input for verified attestation admission.
  */
-public struct SignedEvent {
+public struct SignedEvent: Equatable, Hashable {
     public var id: String
     public var authorPubkey: String
     public var createdAtUnixS: UInt64
@@ -1212,51 +1124,15 @@ public struct SignedEvent {
         self.content = content
         self.signature = signature
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension SignedEvent: Sendable {}
 #endif
-
-
-extension SignedEvent: Equatable, Hashable {
-    public static func ==(lhs: SignedEvent, rhs: SignedEvent) -> Bool {
-        if lhs.id != rhs.id {
-            return false
-        }
-        if lhs.authorPubkey != rhs.authorPubkey {
-            return false
-        }
-        if lhs.createdAtUnixS != rhs.createdAtUnixS {
-            return false
-        }
-        if lhs.kind != rhs.kind {
-            return false
-        }
-        if lhs.tags != rhs.tags {
-            return false
-        }
-        if lhs.content != rhs.content {
-            return false
-        }
-        if lhs.signature != rhs.signature {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(authorPubkey)
-        hasher.combine(createdAtUnixS)
-        hasher.combine(kind)
-        hasher.combine(tags)
-        hasher.combine(content)
-        hasher.combine(signature)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1305,7 +1181,7 @@ public func FfiConverterTypeSignedEvent_lower(_ value: SignedEvent) -> RustBuffe
 /**
  * Bounded projection of one canonical evidence manifest.
  */
-public struct TradeEvidenceManifest {
+public struct TradeEvidenceManifest: Equatable, Hashable {
     public var contractId: String
     public var contractVersion: UInt16
     public var tradeId: String
@@ -1329,59 +1205,15 @@ public struct TradeEvidenceManifest {
         self.manifestDigest = manifestDigest
         self.canonicalBytesHex = canonicalBytesHex
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension TradeEvidenceManifest: Sendable {}
 #endif
-
-
-extension TradeEvidenceManifest: Equatable, Hashable {
-    public static func ==(lhs: TradeEvidenceManifest, rhs: TradeEvidenceManifest) -> Bool {
-        if lhs.contractId != rhs.contractId {
-            return false
-        }
-        if lhs.contractVersion != rhs.contractVersion {
-            return false
-        }
-        if lhs.tradeId != rhs.tradeId {
-            return false
-        }
-        if lhs.tradeGeneration != rhs.tradeGeneration {
-            return false
-        }
-        if lhs.observedAtUnixS != rhs.observedAtUnixS {
-            return false
-        }
-        if lhs.coverage != rhs.coverage {
-            return false
-        }
-        if lhs.evidencePolicyDigest != rhs.evidencePolicyDigest {
-            return false
-        }
-        if lhs.manifestDigest != rhs.manifestDigest {
-            return false
-        }
-        if lhs.canonicalBytesHex != rhs.canonicalBytesHex {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(contractId)
-        hasher.combine(contractVersion)
-        hasher.combine(tradeId)
-        hasher.combine(tradeGeneration)
-        hasher.combine(observedAtUnixS)
-        hasher.combine(coverage)
-        hasher.combine(evidencePolicyDigest)
-        hasher.combine(manifestDigest)
-        hasher.combine(canonicalBytesHex)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1434,7 +1266,7 @@ public func FfiConverterTypeTradeEvidenceManifest_lower(_ value: TradeEvidenceMa
 /**
  * One unsigned typed event plan ready for host-owned signing.
  */
-public struct TypedEvidenceEventPlan {
+public struct TypedEvidenceEventPlan: Equatable, Hashable {
     public var contractId: String
     public var kind: UInt32
     public var authorPubkey: String
@@ -1454,51 +1286,15 @@ public struct TypedEvidenceEventPlan {
         self.tags = tags
         self.content = content
     }
+
+
+
+
 }
 
 #if compiler(>=6)
 extension TypedEvidenceEventPlan: Sendable {}
 #endif
-
-
-extension TypedEvidenceEventPlan: Equatable, Hashable {
-    public static func ==(lhs: TypedEvidenceEventPlan, rhs: TypedEvidenceEventPlan) -> Bool {
-        if lhs.contractId != rhs.contractId {
-            return false
-        }
-        if lhs.kind != rhs.kind {
-            return false
-        }
-        if lhs.authorPubkey != rhs.authorPubkey {
-            return false
-        }
-        if lhs.createdAtUnixS != rhs.createdAtUnixS {
-            return false
-        }
-        if lhs.expectedEventId != rhs.expectedEventId {
-            return false
-        }
-        if lhs.tags != rhs.tags {
-            return false
-        }
-        if lhs.content != rhs.content {
-            return false
-        }
-        return true
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(contractId)
-        hasher.combine(kind)
-        hasher.combine(authorPubkey)
-        hasher.combine(createdAtUnixS)
-        hasher.combine(expectedEventId)
-        hasher.combine(tags)
-        hasher.combine(content)
-    }
-}
-
-
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1543,20 +1339,23 @@ public func FfiConverterTypeTypedEvidenceEventPlan_lower(_ value: TypedEvidenceE
     return FfiConverterTypeTypedEvidenceEventPlan.lower(value)
 }
 
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
 /**
  * Current side-effect-free capability availability.
  */
 
-public enum CapabilityAvailability {
+public enum CapabilityAvailability: Equatable, Hashable {
 
     case available
     case degraded
     case unavailable
     case unsupported
-}
 
+
+
+
+
+}
 
 #if compiler(>=6)
 extension CapabilityAvailability: Sendable {}
@@ -1623,26 +1422,22 @@ public func FfiConverterTypeCapabilityAvailability_lower(_ value: CapabilityAvai
 }
 
 
-extension CapabilityAvailability: Equatable, Hashable {}
 
-
-
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 /**
  * Stable capability maturity independent of runtime availability.
  */
 
-public enum CapabilityMaturity {
+public enum CapabilityMaturity: Equatable, Hashable {
 
     case stable
     case preview
     case experimental
-}
 
+
+
+
+
+}
 
 #if compiler(>=6)
 extension CapabilityMaturity: Sendable {}
@@ -1703,25 +1498,32 @@ public func FfiConverterTypeCapabilityMaturity_lower(_ value: CapabilityMaturity
 }
 
 
-extension CapabilityMaturity: Equatable, Hashable {}
-
-
-
-
-
-
 
 /**
  * Secret-safe SDK failure at the language boundary.
  */
-public enum Error: Swift.Error {
+public
+enum Error: Swift.Error, Equatable, Hashable, Foundation.LocalizedError {
 
 
 
     case Sdk(code: String, message: String, retryable: Bool
     )
+
+
+
+
+
+
+    public var errorDescription: String? {
+        String(reflecting: self)
+    }
+
 }
 
+#if compiler(>=6)
+extension Error: Sendable {}
+#endif
 
 #if swift(>=5.8)
 @_documentation(visibility: private)
@@ -1779,34 +1581,22 @@ public func FfiConverterTypeError_lower(_ value: Error) -> RustBuffer {
 }
 
 
-extension Error: Equatable, Hashable {}
-
-
-
-
-extension Error: Foundation.LocalizedError {
-    public var errorDescription: String? {
-        String(reflecting: self)
-    }
-}
-
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 /**
  * Final evidence coverage vocabulary.
  */
 
-public enum TradeEvidenceCoverage {
+public enum TradeEvidenceCoverage: Equatable, Hashable {
 
     case missing
     case partial
     case scopeSatisfied
     case unsupported
-}
 
+
+
+
+
+}
 
 #if compiler(>=6)
 extension TradeEvidenceCoverage: Sendable {}
@@ -1873,26 +1663,22 @@ public func FfiConverterTypeTradeEvidenceCoverage_lower(_ value: TradeEvidenceCo
 }
 
 
-extension TradeEvidenceCoverage: Equatable, Hashable {}
 
-
-
-
-
-
-// Note that we don't yet support `indirect` for enums.
-// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 /**
  * Final evidence outcome vocabulary.
  */
 
-public enum TradeEvidenceOutcome {
+public enum TradeEvidenceOutcome: Equatable, Hashable {
 
     case valid
     case invalid
     case indeterminate
-}
 
+
+
+
+
+}
 
 #if compiler(>=6)
 extension TradeEvidenceOutcome: Sendable {}
@@ -1951,13 +1737,6 @@ public func FfiConverterTypeTradeEvidenceOutcome_lift(_ buf: RustBuffer) throws 
 public func FfiConverterTypeTradeEvidenceOutcome_lower(_ value: TradeEvidenceOutcome) -> RustBuffer {
     return FfiConverterTypeTradeEvidenceOutcome.lower(value)
 }
-
-
-extension TradeEvidenceOutcome: Equatable, Hashable {}
-
-
-
-
 
 
 #if swift(>=5.8)
@@ -2059,40 +1838,66 @@ fileprivate struct FfiConverterSequenceSequenceString: FfiConverterRustBuffer {
     }
 }
 private let UNIFFI_RUST_FUTURE_POLL_READY: Int8 = 0
-private let UNIFFI_RUST_FUTURE_POLL_MAYBE_READY: Int8 = 1
+private let UNIFFI_RUST_FUTURE_POLL_WAKE: Int8 = 1
 
 fileprivate let uniffiContinuationHandleMap = UniffiHandleMap<UnsafeContinuation<Int8, Never>>()
+
+// radroots-swift-cancellation-v1. Only the observing Rust future is cancelled;
+// admitted work and obtained material remain owned by the shared runtime.
+// NSLock serializes cancel against release. The unchecked Sendable owner has
+// no unsynchronized mutable state; its immutable C callback is Sendable.
+fileprivate final class UniffiRustCancellation: @unchecked Sendable {
+    private let lock = NSLock()
+    private var handle: UInt64?
+    private let cancelFunction: @Sendable (UInt64) -> Void
+    init(_ handle: UInt64, _ cancelFunction: @escaping @Sendable (UInt64) -> Void) {
+        self.handle = handle
+        self.cancelFunction = cancelFunction
+    }
+    func cancel() {
+        lock.lock()
+        defer { lock.unlock() }
+        if let handle { cancelFunction(handle) }
+    }
+    func finish() {
+        lock.lock()
+        defer { lock.unlock() }
+        handle = nil
+    }
+}
 
 fileprivate func uniffiRustCallAsync<F, T>(
     rustFutureFunc: () -> UInt64,
     pollFunc: (UInt64, @escaping UniffiRustFutureContinuationCallback, UInt64) -> (),
     completeFunc: (UInt64, UnsafeMutablePointer<RustCallStatus>) -> F,
+    cancelFunc: @escaping @Sendable (UInt64) -> Void,
     freeFunc: (UInt64) -> (),
     liftFunc: (F) throws -> T,
     errorHandler: ((RustBuffer) throws -> Swift.Error)?
 ) async throws -> T {
-    // Make sure to call the ensure init function since future creation doesn't have a
-    // RustCallStatus param, so doesn't use makeRustCall()
+    try Task.checkCancellation()
     uniffiEnsureRadrootsSdkFfiInitialized()
-    let rustFuture = rustFutureFunc()
+    let handle = rustFutureFunc()
+    let cancellation = UniffiRustCancellation(handle, cancelFunc)
     defer {
-        freeFunc(rustFuture)
+        cancellation.finish()
+        freeFunc(handle)
     }
-    var pollResult: Int8;
-    repeat {
-        pollResult = await withUnsafeContinuation {
-            pollFunc(
-                rustFuture,
-                uniffiFutureContinuationCallback,
-                uniffiContinuationHandleMap.insert(obj: $0)
-            )
-        }
-    } while pollResult != UNIFFI_RUST_FUTURE_POLL_READY
-
-    return try liftFunc(makeRustCall(
-        { completeFunc(rustFuture, $0) },
-        errorHandler: errorHandler
-    ))
+    return try await withTaskCancellationHandler {
+        var ready: Int8
+        repeat {
+            ready = await withUnsafeContinuation { continuation in
+                let callbackHandle = uniffiContinuationHandleMap.insert(obj: continuation)
+                pollFunc(handle, { callbackHandle, status in
+                    uniffiFutureContinuationCallback(handle: callbackHandle, pollResult: status)
+                }, callbackHandle)
+            }
+        } while ready != UNIFFI_RUST_FUTURE_POLL_READY
+        let result = try makeRustCall({ completeFunc(handle, $0) }, errorHandler: errorHandler)
+        return try liftFunc(result)
+    } onCancel: {
+        cancellation.cancel()
+    }
 }
 
 // Callback handlers for an async calls.  These are invoked by Rust when the future is ready.  They
@@ -2106,30 +1911,34 @@ fileprivate func uniffiFutureContinuationCallback(handle: UInt64, pollResult: In
 }
 public func parseRhiEvidenceReport(canonicalContent: String)throws  -> RhiEvidenceReport  {
     return try  FfiConverterTypeRhiEvidenceReport_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+        uniffiCallStatus in
     uniffi_radroots_sdk_ffi_fn_func_parse_rhi_evidence_report(
-        FfiConverterString.lower(canonicalContent),$0
+        FfiConverterString.lower(canonicalContent),uniffiCallStatus
     )
 })
 }
 public func parseTradeEvidenceManifest(canonicalBytes: Data)throws  -> TradeEvidenceManifest  {
     return try  FfiConverterTypeTradeEvidenceManifest_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+        uniffiCallStatus in
     uniffi_radroots_sdk_ffi_fn_func_parse_trade_evidence_manifest(
-        FfiConverterData.lower(canonicalBytes),$0
+        FfiConverterData.lower(canonicalBytes),uniffiCallStatus
     )
 })
 }
 public func prepareRhiEvidenceAttestation(canonicalContent: String, createdAtUnixS: UInt64)throws  -> TypedEvidenceEventPlan  {
     return try  FfiConverterTypeTypedEvidenceEventPlan_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+        uniffiCallStatus in
     uniffi_radroots_sdk_ffi_fn_func_prepare_rhi_evidence_attestation(
         FfiConverterString.lower(canonicalContent),
-        FfiConverterUInt64.lower(createdAtUnixS),$0
+        FfiConverterUInt64.lower(createdAtUnixS),uniffiCallStatus
     )
 })
 }
 public func validateRhiEvidenceAttestation(event: SignedEvent)throws  -> RhiEvidenceAttestation  {
     return try  FfiConverterTypeRhiEvidenceAttestation_lift(try rustCallWithError(FfiConverterTypeError_lift) {
+        uniffiCallStatus in
     uniffi_radroots_sdk_ffi_fn_func_validate_rhi_evidence_attestation(
-        FfiConverterTypeSignedEvent_lower(event),$0
+        FfiConverterTypeSignedEvent_lower(event),uniffiCallStatus
     )
 })
 }
@@ -2143,34 +1952,34 @@ private enum InitializationResult {
 // the code inside is only computed once.
 private let initializationResult: InitializationResult = {
     // Get the bindings contract version from our ComponentInterface
-    let bindings_contract_version = 29
+    let bindings_contract_version = 30
     // Get the scaffolding contract version by calling the into the dylib
     let scaffolding_contract_version = ffi_radroots_sdk_ffi_uniffi_contract_version()
     if bindings_contract_version != scaffolding_contract_version {
         return InitializationResult.contractVersionMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_func_parse_rhi_evidence_report() != 37549) {
+    if (uniffi_radroots_sdk_ffi_checksum_func_parse_rhi_evidence_report() != 10431) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_func_parse_trade_evidence_manifest() != 35922) {
+    if (uniffi_radroots_sdk_ffi_checksum_func_parse_trade_evidence_manifest() != 17039) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_func_prepare_rhi_evidence_attestation() != 53127) {
+    if (uniffi_radroots_sdk_ffi_checksum_func_prepare_rhi_evidence_attestation() != 35556) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_func_validate_rhi_evidence_attestation() != 46555) {
+    if (uniffi_radroots_sdk_ffi_checksum_func_validate_rhi_evidence_attestation() != 64772) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities() != 23938) {
+    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_capabilities() != 35060) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_close() != 15210) {
+    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_close() != 34026) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_is_closed() != 40205) {
+    if (uniffi_radroots_sdk_ffi_checksum_method_mobileclient_is_closed() != 56426) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_radroots_sdk_ffi_checksum_constructor_mobileclient_memory() != 50243) {
+    if (uniffi_radroots_sdk_ffi_checksum_constructor_mobileclient_memory() != 5837) {
         return InitializationResult.apiChecksumMismatch
     }
 

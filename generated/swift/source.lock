@@ -2,13 +2,13 @@
   "schema_version": 1,
   "source_package": "radroots_sdk_ffi",
   "source_version": "0.1.0-alpha",
-  "source_sha256": "d8b1391c6f58ef35d9abefb005b6adabf3b424fadc3a615180a9df75fb55b0b5",
-  "generator": "uniffi",
-  "generator_version": "0.29.5",
+  "source_sha256": "ff679e85748e0872694dac745522801997d192774f77238ec050379027d1fb70",
+  "generator": "radroots_ffi_bindgen",
+  "generator_version": "0.32.2+radroots-native-v2",
   "language": "swift",
   "outputs": {
-    "radroots_sdk.swift": "38ff1a652ff49b45c48601d2b1c0064103c1e815df9e80604f3369af2e53f4ac",
-    "radroots_sdkFFI.h": "2efe02ecda4a68a495bacc61acf8ff41dc84bc01d9132a00b38353a57c51466a",
+    "radroots_sdk.swift": "232932067903afb88fdb6f30714a35ef688b691da23b12ff98c07afdba3a3109",
+    "radroots_sdkFFI.h": "03601cc25edbd4d3098460c828a55009b788cbf787864983f974db22db1e47e0",
     "radroots_sdkFFI.modulemap": "b18fa5af1567a940fc699afe371a3a4653dca206f3233bcdf322062ab8192170"
   }
 }
