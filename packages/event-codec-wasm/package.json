@@ -18,7 +18,8 @@
     "dist",
     "README.md",
     "LICENSE-MIT",
-    "LICENSE-APACHE"
+    "LICENSE-APACHE",
+    "NOTICE"
   ],
   "main": "./dist/radroots_event_codec_wasm.js",
   "types": "./dist/radroots_event_codec_wasm.d.ts",

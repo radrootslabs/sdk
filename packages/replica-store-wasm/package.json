@@ -18,7 +18,8 @@
     "dist",
     "README.md",
     "LICENSE-MIT",
-    "LICENSE-APACHE"
+    "LICENSE-APACHE",
+    "NOTICE"
   ],
   "main": "./dist/radroots_replica_store_wasm.js",
   "types": "./dist/radroots_replica_store_wasm.d.ts",

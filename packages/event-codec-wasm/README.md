@@ -6,4 +6,4 @@ This package publishes generated ESM JavaScript, TypeScript declarations, and an
 
 ## License
 
-Licensed under either MIT or Apache-2.0, at your option. See `LICENSE-MIT` and `LICENSE-APACHE`.
+Radroots source is licensed under either MIT or Apache-2.0, at your option. See `LICENSE-MIT` and `LICENSE-APACHE`. Retain `NOTICE` for the separately attributed pinned currency and timezone data material.

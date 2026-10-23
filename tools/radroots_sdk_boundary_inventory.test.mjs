@@ -22,6 +22,15 @@ test("generated source inventory is exact", () => {
   );
 });
 
+test("both native language artifacts retain their complete data notice", () => {
+  for (const language of ["swift", "kotlin"]) {
+    assert.throws(
+      () => validateTrackedInventory(GENERATED_FILES.filter((path) => path !== `generated/${language}/NOTICE`)),
+      /generated source inventory is not exact/,
+    );
+  }
+});
+
 test("tracked credential paths fail closed", () => {
   assert.throws(
     () => validateTrackedInventory([...GENERATED_FILES, "packages/core/.env"]),

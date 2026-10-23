@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const CONTRACT_PATH = "contracts/generated_package_licenses.v1.json";
-const EXPECTED_FILES = Object.freeze(["LICENSE-APACHE", "LICENSE-MIT"]);
+const EXPECTED_FILES = Object.freeze(["LICENSE-APACHE", "LICENSE-MIT", "NOTICE"]);
 
 function fail(message) {
   throw new Error(`supply_chain_invalid: ${message}`);

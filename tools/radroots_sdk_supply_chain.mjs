@@ -54,7 +54,8 @@ function verifyManifest(path) {
   if (
     !Array.isArray(manifest.files) ||
     !manifest.files.includes("LICENSE-MIT") ||
-    !manifest.files.includes("LICENSE-APACHE")
+    !manifest.files.includes("LICENSE-APACHE") ||
+    !manifest.files.includes("NOTICE")
   ) {
     fail("package artifact omits governed license files");
   }

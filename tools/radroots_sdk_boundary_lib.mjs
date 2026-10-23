@@ -2,8 +2,10 @@ import { lstatSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 export const GENERATED_FILES = Object.freeze([
+  "generated/kotlin/NOTICE",
   "generated/kotlin/source.lock",
   "generated/kotlin/uniffi/radroots_sdk/radroots_sdk.kt",
+  "generated/swift/NOTICE",
   "generated/swift/radroots_sdk.swift",
   "generated/swift/radroots_sdkFFI.h",
   "generated/swift/radroots_sdkFFI.modulemap",
@@ -19,7 +21,7 @@ export const GENERATED_FILES = Object.freeze([
 
 const SENSITIVE_PATH = /(^|\/)(\.env|id_rsa|id_ed25519|credentials|[^/]+\.(pem|key|p12|pfx|jks|keystore))$/i;
 const CREDENTIAL_MATERIAL = /-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9_]{36,}|nsec1[023456789acdefghjklmnpqrstuvwxyz]{40,}/;
-const TEXT_SOURCE = /\.(?:h|js|json|kt|md|mjs|modulemap|rs|swift|toml|ts)$/;
+const TEXT_SOURCE = /(?:\.(?:h|js|json|kt|md|mjs|modulemap|rs|swift|toml|ts)|\/NOTICE)$/;
 
 function fail(message) {
   throw new Error(`boundary_invalid: ${message}`);
