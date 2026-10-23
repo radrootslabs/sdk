@@ -1,7 +1,7 @@
 {
   "schema": "radroots.sdk.generated-package-licenses.v1",
   "source_repository": "https://github.com/radrootslabs/lib",
-  "source_revision": "60ce9294ff271bc311b7d18af97dc78e48e75377",
+  "source_revision": "05ad0ff0f521535f7649027d4f3391e6464f7fa1",
   "files": [
     {
       "name": "LICENSE-APACHE",
