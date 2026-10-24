@@ -8,7 +8,7 @@ import test from "node:test";
 import { validateGeneratedPackageLicenses } from "./radroots_sdk_package_license_lib.mjs";
 
 const sourceRoot = fileURLToPath(new URL("..", import.meta.url));
-const revision = "3be774d8a5e56a5e36f914273f1c7ba562a47af3";
+const revision = "e55c1749902811732167a2ce5c099e22e964624f";
 
 function fixture() {
   const root = mkdtempSync(join(tmpdir(), "radroots-sdk-licenses-"));
